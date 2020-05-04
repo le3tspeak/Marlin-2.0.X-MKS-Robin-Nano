@@ -77,22 +77,22 @@
 #define E0_STEP_PIN        PD6
 #define E0_DIR_PIN         PD3
 
-//#define E1_ENABLE_PIN      PA3
-//#define E1_STEP_PIN        PA6
-//#define E1_DIR_PIN         PA1
+//#define E1_ENABLE_PIN      PA3  //Used for UART X 
+//#define E1_STEP_PIN        PA6  //Used for UART Y
+//#define E1_DIR_PIN         PA1  //Used for UART z
 
 //
 //TMC UART RX / TX Pins
 //
 
-#define X_SERIAL_RX_PIN PA3
-#define X_SERIAL_TX_PIN PA3
+//#define X_SERIAL_RX_PIN PA3
+//#define X_SERIAL_TX_PIN PA3
 
-#define Y_SERIAL_TX_PIN PA6
-#define Y_SERIAL_RX_PIN PA6
+//#define Y_SERIAL_TX_PIN PA6
+//#define Y_SERIAL_RX_PIN PA6
 
-#define Z_SERIAL_TX_PIN PA1
-#define Z_SERIAL_RX_PIN PA1
+//#define Z_SERIAL_TX_PIN PA1
+//#define Z_SERIAL_RX_PIN PA1
 
 //#define E0_SERIAL_TX_PIN PE6
 //#define E0_SERIAL_RX_PIN PE6
@@ -117,7 +117,7 @@
 #define HEATER_BED_PIN     PA0   // HOT BED
 
 #define FAN_PIN            PB1   // FAN
-#define E0_AUTO_FAN_PIN    PB0
+//#define E0_AUTO_FAN_PIN    PB0
 
 //
 // Thermocouples
