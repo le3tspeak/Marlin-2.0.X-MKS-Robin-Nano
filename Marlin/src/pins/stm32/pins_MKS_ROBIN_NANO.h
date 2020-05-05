@@ -97,6 +97,8 @@
 //#define E0_SERIAL_TX_PIN PE6
 //#define E0_SERIAL_RX_PIN PE6
 
+//#define TMC_BAUD_RATE 19200 
+
 //
 // Servos
 //
