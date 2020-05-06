@@ -77,27 +77,43 @@
 #define E0_STEP_PIN        PD6
 #define E0_DIR_PIN         PD3
 
-//#define E1_ENABLE_PIN      PA3  //Used for UART X 
-//#define E1_STEP_PIN        PA6  //Used for UART Y
-//#define E1_DIR_PIN         PA1  //Used for UART z
+//#define E1_ENABLE_PIN                     PA3  //USED BY UART X
+//#define E1_STEP_PIN                       PA6  //USED BY UART Y
+//#define E1_DIR_PIN                        PA1  //USED BY UART Z
 
 //
 //TMC UART RX / TX Pins
 //
+#if HAS_TMC220x
+  /**
+   * TMC2208/TMC2209 stepper drivers
+   *
+   * Hardware serial communication ports.
+   * If undefined software serial is used according to the pins below
+   */
+  //#define X_HARDWARE_SERIAL  Serial1
+  //#define Y_HARDWARE_SERIAL  Serial1
+  //#define Z_HARDWARE_SERIAL  Serial1
+  //#define E0_HARDWARE_SERIAL Serial1
 
-//#define X_SERIAL_RX_PIN PA3
-//#define X_SERIAL_TX_PIN PA3
+  //
+  // Software serial
+  //
+  #define X_SERIAL_TX_PIN                   PA3
+  #define X_SERIAL_RX_PIN                   PA3
 
-//#define Y_SERIAL_TX_PIN PA6
-//#define Y_SERIAL_RX_PIN PA6
+  #define Y_SERIAL_TX_PIN                   PA6
+  #define Y_SERIAL_RX_PIN                   PA6
 
-//#define Z_SERIAL_TX_PIN PA1
-//#define Z_SERIAL_RX_PIN PA1
+  #define Z_SERIAL_TX_PIN                   PA1
+  #define Z_SERIAL_RX_PIN                   PA1
 
-//#define E0_SERIAL_TX_PIN PE6
-//#define E0_SERIAL_RX_PIN PE6
+  #define E0_SERIAL_TX_PIN                  PA9
+  #define E0_SERIAL_RX_PIN                  PA9
 
-//#define TMC_BAUD_RATE 19200 
+  // Reduce baud rate to improve software serial reliability
+  #define TMC_BAUD_RATE 19200
+#endif
 
 //
 // Servos
