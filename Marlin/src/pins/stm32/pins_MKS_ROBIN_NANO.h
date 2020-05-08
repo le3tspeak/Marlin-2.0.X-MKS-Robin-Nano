@@ -108,8 +108,8 @@
   #define Z_SERIAL_TX_PIN                   PA1
   #define Z_SERIAL_RX_PIN                   PA1
 
-  #define E0_SERIAL_TX_PIN                  PA9
-  #define E0_SERIAL_RX_PIN                  PA9
+  #define E0_SERIAL_TX_PIN                  PE5
+  #define E0_SERIAL_RX_PIN                  PE5
 
   // Reduce baud rate to improve software serial reliability
   #define TMC_BAUD_RATE 19200
@@ -140,7 +140,7 @@
 //
 // Thermocouples
 //
-//#define MAX6675_SS_PIN     PE5  // TC1 - CS1
+//#define MAX6675_SS_PIN     PE5  // TC1 - CS1  //USED BY UART Z
 //#define MAX6675_SS_PIN     PE6  // TC2 - CS2
 
 //
