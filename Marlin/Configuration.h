@@ -73,7 +73,7 @@
 
 // Author info of this build printed to the host during boot and M115
 #define STRING_CONFIG_H_AUTHOR "(le3tspeak, Sapphire Pro)" // Who made the changes.
-//#define CUSTOM_VERSION_FILE Version.h // Path from the root directory (no quotes)
+#define CUSTOM_VERSION_FILE Version.h // Path from the root directory (no quotes)
 
 /**
  * *** VENDORS PLEASE READ ***
@@ -88,9 +88,6 @@
 
 // Show the Marlin bootscreen on startup. ** ENABLE FOR PRODUCTION **
 #define SHOW_BOOTSCREEN
-#define SHORT_BUILD_VERSION "2.0.5.X"
-#define STRING_DISTRIBUTION_DATE "02.05.2020"
-#define WEBSITE_URL "http://marlinfw.org"
 
 
 // Show the bitmap in Marlin/_Bootscreen.h on startup.
