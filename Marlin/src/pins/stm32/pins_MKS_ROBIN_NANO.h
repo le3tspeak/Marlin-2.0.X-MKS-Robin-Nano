@@ -147,10 +147,11 @@
 //
 // Misc. Functions
 //
-#define POWER_LOSS_PIN     PA2   // PW_DET
+//#define POWER_LOSS_PIN     PA2   // PW_DET
 //#define PS_ON_PIN          PA3   // PW_OFF
 
-#define LED_PIN            PB2
+//#define LED_PIN            PB2
+//#define NEO_PIXEL_PIN      PA10
 
 //
 // SD Card
