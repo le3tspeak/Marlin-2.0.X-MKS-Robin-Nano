@@ -151,7 +151,7 @@
 //#define PS_ON_PIN          PA3   // PW_OFF
 
 //#define LED_PIN            PB2
-//#define NEO_PIXEL_PIN      PA10
+//#define NEO_PIXEL_PIN      PA10  // USED WIFI RX PIN
 
 //
 // SD Card
