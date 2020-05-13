@@ -41,8 +41,8 @@
 //
 // EEPROM
 //
-//#define SDCARD_EEPROM_EMULATION
-#define SPI_FLASH_EEPROM_EMULATION
+//#define SDCARD_EEPROM_EMULATION        // Activate if EEPROM is to be saved on the SD card...
+#define SPI_FLASH_EEPROM_EMULATION       // Deactivate if EEPROM is to be saved on the SD card, SPI_FLASH_EEPROM_EMULATION must then be //...
 #define SPI_FLASH_EEPROM_OFFSET 0x700000
 #define SPI_FLASH_DEVICE 2
 #define SPI_FLASH_CS_PIN PB12
@@ -78,9 +78,9 @@
 #define E0_STEP_PIN        PD6
 #define E0_DIR_PIN         PD3
 
-//#define E1_ENABLE_PIN                     PA3  //USED BY UART X
-//#define E1_STEP_PIN                       PA6  //USED BY UART Y
-//#define E1_DIR_PIN                        PA1  //USED BY UART Z
+//#define E1_ENABLE_PIN                     PA3  // USED BY UART X
+//#define E1_STEP_PIN                       PA6  // USED BY UART Y
+//#define E1_DIR_PIN                        PA1  // USED BY UART Z
 
 //
 //TMC UART RX / TX Pins
@@ -136,7 +136,7 @@
 #define HEATER_BED_PIN     PA0   // HOT BED
 
 #define FAN_PIN            PB1   // FAN
-//#define E0_AUTO_FAN_PIN    PB0
+//#define E0_AUTO_FAN    PB0
 
 //
 // Thermocouples
@@ -150,8 +150,21 @@
 //#define POWER_LOSS_PIN     PA2   // PW_DET
 //#define PS_ON_PIN          PA3   // PW_OFF
 
+//
+// LED / NEOPixel
+//
+
 //#define LED_PIN            PB2
-//#define NEO_PIXEL_PIN      PA10  // USED WIFI RX PIN
+//#define NEO_PIXEL_1        PA10  // USED WIFI RX PIN
+//#define NEO_PIXEL_2        PA9   // USED WIFI TX PIN
+
+//
+// WIFI ESP8266   (Not working in the version coming in the following updates)
+//
+//#define WIFI_TX_PIN    PA10
+//#define WIFI_RX_PIN    PA9
+//#define WIFI_IO0_PIN   PC13
+//#define WIFI_IO1_PIN   PC7
 
 //
 // SD Card
