@@ -413,7 +413,7 @@
  * Multiple extruders can be assigned to the same pin in which case
  * the fan will turn on when any selected extruder is above the threshold.
  */
-#define E0_AUTO_FAN_PIN -1   // hotend fan on heater2 use E0_AUTO_FAN_PIN
+#define E0_AUTO_FAN_PIN -1   //E0_AUTO_FAN   // Hotend fan on Heater2 use E0_AUTO_FAN
 #define E1_AUTO_FAN_PIN -1
 #define E2_AUTO_FAN_PIN -1
 #define E3_AUTO_FAN_PIN -1
@@ -584,8 +584,8 @@
 // @section homing
 
 // Homing hits each endstop, retracts by these distances, then does a slower bump.
-#define X_HOME_BUMP_MM 10
-#define Y_HOME_BUMP_MM 10
+#define X_HOME_BUMP_MM 5
+#define Y_HOME_BUMP_MM 5
 #define Z_HOME_BUMP_MM 4
 #define HOMING_BUMP_DIVISOR { 5, 5, 10 }  // Re-Bump Speed Divisor (Divides the Homing Feedrate)
 #define QUICK_HOME                     // If homing includes X and Y, do a diagonal move initially
@@ -928,7 +928,7 @@
 // @section lcd
 
 #if EITHER(ULTIPANEL, EXTENSIBLE_UI)
-  #define MANUAL_FEEDRATE { 60*60, 60*60, 6*60, 60 } // Feedrates for manual moves along X, Y, Z, E from panel
+  #define MANUAL_FEEDRATE { 60*60, 60*60, 7*60, 60 } // Feedrates for manual moves along X, Y, Z, E from panel
   #define SHORT_MANUAL_Z_MOVE 0.025 // (mm) Smallest manual Z move (< 0.1mm)
   #if ENABLED(ULTIPANEL)
     #define MANUAL_E_MOVES_RELATIVE // Display extruder move distance rather than "position"
@@ -1423,8 +1423,8 @@
   #define TFT_MARLINBG_COLOR COLOR_BLACK // Black
   #define TFT_DISABLED_COLOR COLOR_DARK // currently not used
   #define TFT_BTCANCEL_COLOR COLOR_RED // Red
-  #define TFT_BTARROWS_COLOR COLOR_YELLOW // 11011 110111 00110 Yellow
-  #define TFT_BTOKMENU_COLOR COLOR_GREEN // 00010 100010 11111 Cyan
+  #define TFT_BTARROWS_COLOR COLOR_BLUE // Blue
+  #define TFT_BTOKMENU_COLOR COLOR_GREEN // Green
 #endif
 
 //
@@ -1730,7 +1730,7 @@
 // For debug-echo: 128 bytes for the optimal speed.
 // Other output doesn't need to be that speedy.
 // :[0, 2, 4, 8, 16, 32, 64, 128, 256]
-#define TX_BUFFER_SIZE 4
+//#define TX_BUFFER_SIZE 4
 
 // Host Receive Buffer Size
 // Without XON/XOFF flow control (see SERIAL_XON_XOFF below) 32 bytes should be enough.
@@ -2841,7 +2841,7 @@
 /**
  * User-defined menu items that execute custom GCode
  */
-#define CUSTOM_USER_MENUS
+//#define CUSTOM_USER_MENUS
 #if ENABLED(CUSTOM_USER_MENUS)
   #define CUSTOM_USER_MENU_TITLE "TFT Farb Profile"
   #define USER_SCRIPT_DONE "M117 Color profile changed"
