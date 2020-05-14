@@ -168,7 +168,7 @@ x ||^24    ^136   ^248   ^360   ||/___ y = 301 px
 #define COLOR_AQUA        0x07FF  // #00FFFF
 
 #define COLOR_MAROON      0x7800  // #800000
-#define COLOR_GREEN       0x03E0  // #008000
+#define COLOR_GREEN       0x26E1  // 0x27DD0B
 #define COLOR_NAVY        0x000F  // #000080
 #define COLOR_OLIVE       0x8400  // #808000
 #define COLOR_PURPLE      0x8010  // #800080
