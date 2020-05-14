@@ -78,7 +78,7 @@ void GcodeSuite::M303() {
 
   const int c = parser.intval('C', 5);
   const bool u = parser.boolval('U');
-  const int16_t temp = parser.celsiusval('S', e < 0 ? 70 : 150);
+  const int16_t temp = parser.celsiusval('S', e < 0 ? 70 : 200);
 
   #if DISABLED(BUSY_WHILE_HEATING)
     KEEPALIVE_STATE(NOT_BUSY);
