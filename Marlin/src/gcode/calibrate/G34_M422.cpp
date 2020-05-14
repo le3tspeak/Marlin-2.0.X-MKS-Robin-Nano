@@ -32,7 +32,7 @@
 #include "../../module/motion.h"
 #include "../../module/probe.h"
 
-#if HOTENDS > 1
+#if HAS_MULTI_HOTEND
   #include "../../module/tool_change.h"
 #endif
 
@@ -113,34 +113,24 @@ void GcodeSuite::G34() {
 
     // Disable the leveling matrix before auto-aligning
     #if HAS_LEVELING
-      #if ENABLED(RESTORE_LEVELING_AFTER_G34)
-        const bool leveling_was_active = planner.leveling_active;
-      #endif
+      TERN_(RESTORE_LEVELING_AFTER_G34, const bool leveling_was_active = planner.leveling_active);
       set_bed_leveling_enabled(false);
     #endif
 
-    #if ENABLED(CNC_WORKSPACE_PLANES)
-      workspace_plane = PLANE_XY;
-    #endif
+    TERN_(CNC_WORKSPACE_PLANES, workspace_plane = PLANE_XY);
 
     // Always home with tool 0 active
-    #if HOTENDS > 1
+    #if HAS_MULTI_HOTEND
       const uint8_t old_tool_index = active_extruder;
       tool_change(0, true);
     #endif
 
-    #if HAS_DUPLICATION_MODE
-      extruder_duplication_enabled = false;
-    #endif
+    TERN_(HAS_DUPLICATION_MODE, extruder_duplication_enabled = false);
 
-    #if BOTH(BLTOUCH, BLTOUCH_HS_MODE)
-        // In BLTOUCH HS mode, the probe travels in a deployed state.
-        // Users of G34 might have a badly misaligned bed, so raise Z by the
-        // length of the deployed pin (BLTOUCH stroke < 7mm)
-      #define Z_BASIC_CLEARANCE Z_CLEARANCE_BETWEEN_PROBES + 7.0f
-    #else
-      #define Z_BASIC_CLEARANCE Z_CLEARANCE_BETWEEN_PROBES
-    #endif
+    // In BLTOUCH HS mode, the probe travels in a deployed state.
+    // Users of G34 might have a badly misaligned bed, so raise Z by the
+    // length of the deployed pin (BLTOUCH stroke < 7mm)
+    #define Z_BASIC_CLEARANCE Z_CLEARANCE_BETWEEN_PROBES + 7.0f * BOTH(BLTOUCH, BLTOUCH_HS_MODE)
 
     // Compute a worst-case clearance height to probe from. After the first
     // iteration this will be re-calculated based on the actual bed position
@@ -203,7 +193,7 @@ void GcodeSuite::G34() {
         const uint8_t iprobe = (iteration & 1) ? NUM_Z_STEPPER_DRIVERS - 1 - i : i;
 
         // Safe clearance even on an incline
-        if (iteration == 0 || i > 0) do_blocking_move_to_z(z_probe);
+        if ((iteration == 0 || i > 0) && z_probe > current_position.z) do_blocking_move_to_z(z_probe);
 
         if (DEBUGGING(LEVELING))
           DEBUG_ECHOLNPAIR_P(PSTR("Probing X"), z_stepper_align.xy[iprobe].x, SP_Y_STR, z_stepper_align.xy[iprobe].y);
@@ -386,11 +376,9 @@ void GcodeSuite::G34() {
     #endif
 
     // Restore the active tool after homing
-    #if HOTENDS > 1
-      tool_change(old_tool_index, DISABLED(PARKING_EXTRUDER)); // Fetch previous tool for parking extruder
-    #endif
+    TERN_(HAS_MULTI_HOTEND, tool_change(old_tool_index, DISABLED(PARKING_EXTRUDER))); // Fetch previous tool for parking extruder
 
-    #if HAS_LEVELING && ENABLED(RESTORE_LEVELING_AFTER_G34)
+    #if BOTH(HAS_LEVELING, RESTORE_LEVELING_AFTER_G34)
       set_bed_leveling_enabled(leveling_was_active);
     #endif
 

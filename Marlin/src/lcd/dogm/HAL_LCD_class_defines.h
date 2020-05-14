@@ -107,7 +107,6 @@ public:
   { }
 };
 
-
 extern u8g_dev_t u8g_dev_uc1701_mini12864_HAL_2x_sw_spi, u8g_dev_uc1701_mini12864_HAL_2x_hw_spi;
 
 class U8GLIB_MINI12864_2X_HAL : public U8GLIB {

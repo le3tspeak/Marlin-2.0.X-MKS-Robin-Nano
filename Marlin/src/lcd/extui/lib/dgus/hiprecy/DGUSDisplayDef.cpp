@@ -37,7 +37,7 @@
 #include "../../../../ultralcd.h"
 
 #if ENABLED(DGUS_UI_MOVE_DIS_OPTION)
-  uint16_t distanceToMove = 0.1;
+  uint16_t distanceToMove = 10;
 #endif
 
 const uint16_t VPList_Boot[] PROGMEM = {
@@ -56,7 +56,7 @@ const uint16_t VPList_Main[] PROGMEM = {
   #if HAS_HEATED_BED
     VP_T_Bed_Is, VP_T_Bed_Set, VP_BED_STATUS,
   #endif
-  #if FAN_COUNT > 0
+  #if HAS_FAN
     VP_Fan0_Percentage, VP_FAN0_STATUS,
   #endif
   VP_XPos, VP_YPos, VP_ZPos,
@@ -92,7 +92,7 @@ const uint16_t VPList_Status[] PROGMEM = {
   #if HAS_HEATED_BED
     VP_T_Bed_Is, VP_T_Bed_Set,
   #endif
-  #if FAN_COUNT > 0
+  #if HAS_FAN
     VP_Fan0_Percentage,
   #endif
   VP_XPos, VP_YPos, VP_ZPos,
@@ -191,7 +191,7 @@ const uint16_t VPList_SD_PrintManipulation[] PROGMEM = {
   #if HAS_HEATED_BED
     VP_T_Bed_Is, VP_T_Bed_Set,
   #endif
-  #if FAN_COUNT > 0
+  #if HAS_FAN
     VP_Fan0_Percentage,
     #if FAN_COUNT > 1
       VP_Fan1_Percentage,
@@ -212,7 +212,7 @@ const uint16_t VPList_SDPrintTune[] PROGMEM = {
     VP_T_Bed_Is, VP_T_Bed_Set,
   #endif
   VP_Feedrate_Percentage,
-  #if FAN_COUNT > 0
+  #if HAS_FAN
     VP_Fan0_Percentage,
   #endif
   VP_Flowrate_E0,
@@ -283,6 +283,13 @@ const uint16_t VPList_FLCPrinting[] PROGMEM = {
   0x0000
 };
 
+const uint16_t VPList_Z_Offset[] PROGMEM = {
+  #if HOTENDS >= 1
+    VP_SD_Print_ProbeOffsetZ,
+  #endif
+  0x0000
+};
+
 const struct VPMapping VPMap[] PROGMEM = {
   { DGUSLCD_SCREEN_BOOT, VPList_Boot },
   { DGUSLCD_SCREEN_MAIN, VPList_Main },
@@ -291,6 +298,7 @@ const struct VPMapping VPMap[] PROGMEM = {
   { DGUSLCD_SCREEN_STATUS2, VPList_Status2 },
   { DGUSLCD_SCREEN_PREHEAT, VPList_Preheat },
   { DGUSLCD_SCREEN_MANUALMOVE, VPList_ManualMove },
+  { DGUSLCD_SCREEN_Z_OFFSET, VPList_Z_Offset },
   { DGUSLCD_SCREEN_MANUALEXTRUDE, VPList_ManualExtrude },
   { DGUSLCD_SCREEN_FILAMENT_HEATING, VPList_Filament_heating },
   { DGUSLCD_SCREEN_FILAMENT_LOADING, VPList_Filament_load_unload },
@@ -322,7 +330,9 @@ const struct DGUS_VP_Variable ListOfVP[] PROGMEM = {
   // Helper to detect touch events
   VPHELPER(VP_SCREENCHANGE, nullptr, DGUSScreenVariableHandler::ScreenChangeHook, nullptr),
   VPHELPER(VP_SCREENCHANGE_ASK, nullptr, DGUSScreenVariableHandler::ScreenChangeHookIfIdle, nullptr),
-  VPHELPER(VP_SCREENCHANGE_WHENSD, nullptr, DGUSScreenVariableHandler::ScreenChangeHookIfSD, nullptr),
+  #if ENABLED(SDSUPPORT)
+    VPHELPER(VP_SCREENCHANGE_WHENSD, nullptr, DGUSScreenVariableHandler::ScreenChangeHookIfSD, nullptr),
+  #endif
   VPHELPER(VP_CONFIRMED, nullptr, DGUSScreenVariableHandler::ScreenConfirmedOK, nullptr),
 
   VPHELPER(VP_TEMP_ALL_OFF, nullptr, &DGUSScreenVariableHandler::HandleAllHeatersOff, nullptr),
@@ -361,7 +371,7 @@ const struct DGUS_VP_Variable ListOfVP[] PROGMEM = {
   #if HOTENDS >= 1
     VPHELPER(VP_T_E0_Is, &thermalManager.temp_hotend[0].celsius, nullptr, DGUSScreenVariableHandler::DGUSLCD_SendFloatAsLongValueToDisplay<0>),
     VPHELPER(VP_T_E0_Set, &thermalManager.temp_hotend[0].target, DGUSScreenVariableHandler::HandleTemperatureChanged, &DGUSScreenVariableHandler::DGUSLCD_SendWordValueToDisplay),
-    VPHELPER(VP_Flowrate_E0, nullptr, DGUSScreenVariableHandler::HandleFlowRateChanged, &DGUSScreenVariableHandler::DGUSLCD_SendWordValueToDisplay),
+    VPHELPER(VP_Flowrate_E0, &planner.flow_percentage[ExtUI::extruder_t::E0], DGUSScreenVariableHandler::HandleFlowRateChanged, &DGUSScreenVariableHandler::DGUSLCD_SendWordValueToDisplay),
     VPHELPER(VP_EPos, &destination.e, nullptr, DGUSScreenVariableHandler::DGUSLCD_SendFloatAsLongValueToDisplay<2>),
     VPHELPER(VP_MOVE_E0, nullptr, &DGUSScreenVariableHandler::HandleManualExtrude, nullptr),
     VPHELPER(VP_E0_CONTROL, &thermalManager.temp_hotend[0].target, &DGUSScreenVariableHandler::HandleHeaterControl, nullptr),
@@ -401,7 +411,7 @@ const struct DGUS_VP_Variable ListOfVP[] PROGMEM = {
   #endif
 
   // Fan Data
-  #if FAN_COUNT
+  #if HAS_FAN
     #define FAN_VPHELPER(N) \
       VPHELPER(VP_Fan##N##_Percentage, &thermalManager.fan_speed[N], DGUSScreenVariableHandler::DGUSLCD_PercentageToUint8, &DGUSScreenVariableHandler::DGUSLCD_SendPercentageToDisplay), \
       VPHELPER(VP_FAN##N##_CONTROL, &thermalManager.fan_speed[N], &DGUSScreenVariableHandler::HandleFanControl, nullptr), \
