@@ -77,9 +77,48 @@
 #define E0_STEP_PIN                         PD6
 #define E0_DIR_PIN                          PD3
 
-#define E1_ENABLE_PIN                       PA3
-#define E1_STEP_PIN                         PA6
-#define E1_DIR_PIN                          PA1
+//#define E1_ENABLE_PIN                     PA3  // USED BY UART X
+//#define E1_STEP_PIN                       PA6  // USED BY UART Y
+//#define E1_DIR_PIN                        PA1  // USED BY UART Z
+
+//
+//TMC UART RX / TX Pins
+//
+#if HAS_TMC220x
+  /**
+   * TMC2208/TMC2209 stepper drivers
+   *
+   * Hardware serial communication ports.
+   * If undefined software serial is used according to the pins below
+   */
+  //#define X_HARDWARE_SERIAL  Serial1
+  //#define Y_HARDWARE_SERIAL  Serial1
+  //#define Z_HARDWARE_SERIAL  Serial1
+  //#define E0_HARDWARE_SERIAL Serial1
+
+  //
+  // Software serial
+  //
+  #define X_SERIAL_TX_PIN                   PA3
+  #define X_SERIAL_RX_PIN                   PA3
+
+  #define Y_SERIAL_TX_PIN                   PA6
+  #define Y_SERIAL_RX_PIN                   PA6
+
+  #define Z_SERIAL_TX_PIN                   PA1
+  #define Z_SERIAL_RX_PIN                   PA1
+
+  #define E0_SERIAL_TX_PIN                  PE5
+  #define E0_SERIAL_RX_PIN                  PE5
+
+  // Reduce baud rate to improve software serial reliability
+  #define TMC_BAUD_RATE 19200
+#endif
+
+//
+// Servos
+//
+#define SERVO0_PIN                          PA8   // BLTOUCH
 
 //
 // Temperature Sensors
@@ -96,6 +135,7 @@
 #define HEATER_BED_PIN                      PA0   // HOT BED
 
 #define FAN_PIN                             PB1   // FAN
+//#define E0_AUTO_FAN                       PB0
 
 //
 // Thermocouples
@@ -106,10 +146,23 @@
 //
 // Misc. Functions
 //
-#define POWER_LOSS_PIN                      PA2   // PW_DET
-#define PS_ON_PIN                           PA3   // PW_OFF
+//#define POWER_LOSS_PIN                      PA2   // PW_DET
+//#define PS_ON_PIN                           PA3   // PW_OFF
 
-#define LED_PIN                             PB2
+//
+// LED / NEOPixel
+//
+//#define LED_PIN            PB2
+//#define NEO_PIXEL_1        PA10  // USED WIFI RX PIN
+//#define NEO_PIXEL_2        PA9   // USED WIFI TX PIN
+
+//
+// WIFI ESP8266   (Not working in the version coming in the following updates)
+//
+//#define WIFI_TX_PIN    PA10
+//#define WIFI_RX_PIN    PA9
+//#define WIFI_IO0_PIN   PC13
+//#define WIFI_IO1_PIN   PC7
 
 //
 // SD Card
@@ -131,19 +184,24 @@
  * If the screen stays white, disable 'LCD_RESET_PIN'
  * to let the bootloader init the screen.
  */
-#if ENABLED(FSMC_GRAPHICAL_TFT)
-  #define FSMC_CS_PIN                       PD7   // NE4
-  #define FSMC_RS_PIN                       PD11  // A0
+#if ENABLED(FSMC_GRAPHICAL_TFT) || ENABLED(SAPPHIRE_GRAPHICAL_TFT)
+  #define DOGLCD_MOSI -1 // prevent redefine Conditionals_post.h
+  #define DOGLCD_SCK -1
+  #define FSMC_CS_PIN        PD7    // NE4
+  #define FSMC_RS_PIN        PD11   // A0
 
-  #define LCD_RESET_PIN                     PC6   // FSMC_RST
-  #define NO_LCD_REINIT                           // Suppress LCD re-initialization
+  //#define LCD_RESET_PIN      PC6    // FSMC_RST
+  #define LCD_USE_DMA_FSMC
+  #define FSMC_DMA_DEV DMA2
+  #define FSMC_DMA_CHANNEL DMA_CH5
+  //#define NO_LCD_REINIT             // Suppress LCD re-initialization
 
-  #define LCD_BACKLIGHT_PIN                 PD13
+  #define LCD_BACKLIGHT_PIN  PD13
 
   #if ENABLED(TOUCH_BUTTONS)
-    #define TOUCH_CS_PIN                    PA7   // SPI2_NSS
-    #define TOUCH_SCK_PIN                   PB13  // SPI2_SCK
-    #define TOUCH_MISO_PIN                  PB14  // SPI2_MISO
-    #define TOUCH_MOSI_PIN                  PB15  // SPI2_MOSI
+    #define TOUCH_CS_PIN     PA7  // SPI2_NSS
+    #define TOUCH_SCK_PIN    PB13 // SPI2_SCK
+    #define TOUCH_MISO_PIN   PB14 // SPI2_MISO
+    #define TOUCH_MOSI_PIN   PB15 // SPI2_MOSI
   #endif
 #endif
