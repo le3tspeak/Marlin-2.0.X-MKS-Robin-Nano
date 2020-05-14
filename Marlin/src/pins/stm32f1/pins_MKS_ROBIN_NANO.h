@@ -131,11 +131,11 @@
 // Heaters / Fans
 //
 #define HEATER_0_PIN                        PC3   // HEATER1
-#define HEATER_1_PIN                        PB0   // HEATER2
+#define HEATER_1_PIN                        PC3   // HEATER2
 #define HEATER_BED_PIN                      PA0   // HOT BED
 
 #define FAN_PIN                             PB1   // FAN
-//#define E0_AUTO_FAN                       PB0
+#define E0_AUTO_FAN                         PB0   // USED HEATER_1_PIN  
 
 //
 // Thermocouples
