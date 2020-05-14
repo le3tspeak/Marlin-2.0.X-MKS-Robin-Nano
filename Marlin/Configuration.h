@@ -1377,7 +1377,7 @@
 // - Move the Z probe (or nozzle) to a defined XY point before Z Homing when homing all axes (G28).
 // - Prevent Z homing when the Z probe is outside bed area.
 //
-//#define Z_SAFE_HOMING
+#define Z_SAFE_HOMING
 
 #if ENABLED(Z_SAFE_HOMING)
   #define Z_SAFE_HOMING_X_POINT X_CENTER  // X point for Z homing when homing all axes (G28).
@@ -2234,7 +2234,7 @@
 #define NEOPIXEL_LED
 #if ENABLED(NEOPIXEL_LED)
   #define NEOPIXEL_TYPE   NEO_GRB // NEO_GRBW / NEO_GRB - four/three channel driver type (defined in Adafruit_NeoPixel.h)
-  #define NEOPIXEL_PIN     NEO_PIXEL_1       // LED driving pin
+  #define NEOPIXEL_PIN    NEO_PIXEL_1       // LED driving pin
   //#define NEOPIXEL2_TYPE NEOPIXEL_TYPE
   //#define NEOPIXEL2_PIN    NEO_PIXEL_2
   #define NEOPIXEL_PIXELS 29       // Number of LEDs in the strip, larger of 2 strips if 2 neopixel strips are used

@@ -153,8 +153,11 @@
 // LED / NEOPixel
 //
 //#define LED_PIN            PB2
-//#define NEO_PIXEL_1        PA10  // USED WIFI RX PIN
+
+#if ENABLED(NEOPIXEL_LED)
+#define NEO_PIXEL_1        PA10  // USED WIFI RX PIN
 //#define NEO_PIXEL_2        PA9   // USED WIFI TX PIN
+#endif
 
 //
 // WIFI ESP8266   (Not working in the version coming in the following updates)
