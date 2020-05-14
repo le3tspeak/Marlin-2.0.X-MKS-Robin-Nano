@@ -52,7 +52,7 @@
 // ------------------------
 
 #ifndef STM32_FLASH_SIZE
-  #ifdef MCU_STM32F103RE
+  #if defined(MCU_STM32F103RE) || defined(MCU_STM32F103VE)
     #define STM32_FLASH_SIZE 512
   #else
     #define STM32_FLASH_SIZE 256
@@ -160,6 +160,7 @@ void HAL_idletask();
 
 #ifndef digitalPinHasPWM
   #define digitalPinHasPWM(P) (PIN_MAP[P].timer_device != nullptr)
+  #define NO_COMPILE_TIME_PWM
 #endif
 
 #define CRITICAL_SECTION_START()  uint32_t primask = __get_primask(); (void)__iCliRetVal()
@@ -248,19 +249,6 @@ static int freeMemory() {
 #pragma GCC diagnostic pop
 
 //
-// EEPROM
-//
-
-/**
- * TODO: Write all this EEPROM stuff. Can emulate EEPROM in flash as last resort.
- * Wire library should work for i2c EEPROMs.
- */
-void eeprom_write_byte(uint8_t *pos, unsigned char value);
-uint8_t eeprom_read_byte(uint8_t *pos);
-void eeprom_read_block(void *__dst, const void *__src, size_t __n);
-void eeprom_update_block(const void *__src, void *__dst, size_t __n);
-
-//
 // ADC
 //
 
@@ -287,4 +275,4 @@ void analogWrite(pin_t pin, int pwm_val8); // PWM only! mul by 257 in maple!?
 #define JTAGSWD_DISABLE() afio_cfg_debug_ports(AFIO_DEBUG_NONE)
 
 #define PLATFORM_M997_SUPPORT
-void flashFirmware(int16_t value);
+void flashFirmware(const int16_t);
