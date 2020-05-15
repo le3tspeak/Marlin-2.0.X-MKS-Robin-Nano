@@ -276,17 +276,27 @@ void Endstops::init() {
     #endif
   #endif
 
-  TERN_(ENDSTOP_INTERRUPTS_FEATURE, setup_endstop_interrupts());
+  #if ENABLED(ENDSTOP_INTERRUPTS_FEATURE)
+    setup_endstop_interrupts();
+  #endif
 
   // Enable endstops
-  enable_globally(ENABLED(ENDSTOPS_ALWAYS_ON_DEFAULT));
+  enable_globally(
+    #if ENABLED(ENDSTOPS_ALWAYS_ON_DEFAULT)
+      true
+    #else
+      false
+    #endif
+  );
 
 } // Endstops::init
 
 // Called at ~1KHz from Temperature ISR: Poll endstop state if required
 void Endstops::poll() {
 
-  TERN_(PINS_DEBUGGING, run_monitor()); // Report changes in endstop status
+  #if ENABLED(PINS_DEBUGGING)
+    run_monitor();  // report changes in endstop status
+  #endif
 
   #if DISABLED(ENDSTOP_INTERRUPTS_FEATURE)
     update();
@@ -315,7 +325,7 @@ void Endstops::not_homing() {
   // If the last move failed to trigger an endstop, call kill
   void Endstops::validate_homing_move() {
     if (trigger_state()) hit_on_purpose();
-    else kill(GET_TEXT(MSG_KILL_HOMING_FAILED));
+    else kill(GET_TEXT(MSG_LCD_HOMING_FAILED));
   }
 #endif
 
@@ -331,9 +341,14 @@ void Endstops::not_homing() {
 void Endstops::resync() {
   if (!abort_enabled()) return;     // If endstops/probes are disabled the loop below can hang
 
-  // Wait for Temperature ISR to run at least once (runs at 1KHz)
-  TERN(ENDSTOP_INTERRUPTS_FEATURE, update(), safe_delay(2));
-  while (TERN0(ENDSTOP_NOISE_THRESHOLD, endstop_poll_count)) safe_delay(1);
+  #if ENABLED(ENDSTOP_INTERRUPTS_FEATURE)
+    update();
+  #else
+    safe_delay(2);  // Wait for Temperature ISR to run at least once (runs at 1KHz)
+  #endif
+  #if ENDSTOP_NOISE_THRESHOLD
+    while (endstop_poll_count) safe_delay(1);
+  #endif
 }
 
 #if ENABLED(PINS_DEBUGGING)
@@ -382,7 +397,9 @@ void Endstops::event_handler() {
     #endif
     SERIAL_EOL();
 
-    TERN_(HAS_SPI_LCD, ui.status_printf_P(0, PSTR(S_FMT " %c %c %c %c"), GET_TEXT(MSG_LCD_ENDSTOPS), chrX, chrY, chrZ, chrP));
+    #if HAS_SPI_LCD
+      ui.status_printf_P(0, PSTR(S_FMT " %c %c %c %c"), GET_TEXT(MSG_LCD_ENDSTOPS), chrX, chrY, chrZ, chrP);
+    #endif
 
     #if BOTH(SD_ABORT_ON_ENDSTOP_HIT, SDSUPPORT)
       if (planner.abort_on_endstop_hit) {
@@ -403,7 +420,9 @@ static void print_es_state(const bool is_hit, PGM_P const label=nullptr) {
 }
 
 void _O2 Endstops::report_states() {
-  TERN_(BLTOUCH, bltouch._set_SW_mode());
+  #if ENABLED(BLTOUCH)
+    bltouch._set_SW_mode();
+  #endif
   SERIAL_ECHOLNPGM(STR_M119_REPORT);
   #define ES_REPORT(S) print_es_state(READ(S##_PIN) != S##_ENDSTOP_INVERTING, PSTR(STR_##S))
   #if HAS_X_MIN
@@ -475,9 +494,13 @@ void _O2 Endstops::report_states() {
       #undef _CASE_RUNOUT
     #endif
   #endif
+  #if ENABLED(BLTOUCH)
+    bltouch._reset_SW_mode();
+  #endif
 
-  TERN_(BLTOUCH, bltouch._reset_SW_mode());
-  TERN_(JOYSTICK_DEBUG, joystick.report());
+  #if ENABLED(JOYSTICK_DEBUG)
+    joystick.report();
+  #endif
 
 } // Endstops::report_states
 
@@ -773,8 +796,12 @@ void Endstops::update() {
     if (stepper.motor_direction(Z_AXIS_HEAD)) { // Z -direction. Gantry down, bed up.
 
       #if HAS_Z_MIN || (Z_SPI_SENSORLESS && Z_HOME_DIR < 0)
-        if ( TERN1(Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN, z_probe_enabled)
-          && TERN1(HAS_CUSTOM_PROBE_PIN, !z_probe_enabled)
+        if (true
+          #if ENABLED(Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN)
+            && z_probe_enabled
+          #elif HAS_CUSTOM_PROBE_PIN
+            && !z_probe_enabled
+          #endif
         ) PROCESS_ENDSTOP_Z(MIN);
       #endif
 
@@ -825,9 +852,15 @@ void Endstops::update() {
   }
 
   void Endstops::clear_endstop_state() {
-    TERN_(X_SPI_SENSORLESS, CBI(live_state, X_STOP));
-    TERN_(Y_SPI_SENSORLESS, CBI(live_state, Y_STOP));
-    TERN_(Z_SPI_SENSORLESS, CBI(live_state, Z_STOP));
+    #if X_SPI_SENSORLESS
+      CBI(live_state, X_STOP);
+    #endif
+    #if Y_SPI_SENSORLESS
+      CBI(live_state, Y_STOP);
+    #endif
+    #if Z_SPI_SENSORLESS
+      CBI(live_state, Z_STOP);
+    #endif
   }
 
 #endif // SPI_ENDSTOPS

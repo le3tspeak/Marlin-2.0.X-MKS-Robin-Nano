@@ -44,7 +44,6 @@
 #endif
 
 #define BOARD_INFO_NAME "RAMPS4DUE"
-
 #define IS_RAMPS4DUE
 
 //

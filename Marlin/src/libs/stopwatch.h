@@ -114,9 +114,5 @@ class Stopwatch {
        */
       static void debug(const char func[]);
 
-    #else
-
-      static inline void debug(const char[]) {}
-
     #endif
 };

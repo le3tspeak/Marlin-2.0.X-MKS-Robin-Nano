@@ -32,17 +32,9 @@
 #define BOARD_INFO_NAME "BIGTREE GTR 1.0"
 
 // Use one of these or SDCard-based Emulation will be used
-#if NO_EEPROM_SELECTED
-  //#define I2C_EEPROM
-  //#define SRAM_EEPROM_EMULATION                 // Use BackSRAM-based EEPROM emulation
-  //#define FLASH_EEPROM_EMULATION                // Use Flash-based EEPROM emulation
-#endif
-
-#if ENABLED(FLASH_EEPROM_EMULATION)
-  // Decrease delays and flash wear by spreading writes across the
-  // 128 kB sector allocated for EEPROM emulation.
-  #define FLASH_EEPROM_LEVELING
-#endif
+//#define I2C_EEPROM
+//#define SRAM_EEPROM_EMULATION                   // Use BackSRAM-based EEPROM emulation
+//#define FLASH_EEPROM_EMULATION                  // Use Flash-based EEPROM emulation
 
 #define TP                                        // Enable to define servo and probe pins
 
@@ -397,5 +389,3 @@
   //#define DOGLCD_MOSI                     PB15
 
 #endif // HAS_SPI_LCD
-
-#undef TP

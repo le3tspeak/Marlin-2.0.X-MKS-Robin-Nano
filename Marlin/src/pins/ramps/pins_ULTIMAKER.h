@@ -111,10 +111,7 @@
 #define LED_PIN                               13
 #define PS_ON_PIN                             12
 #define SUICIDE_PIN                           54  // PIN that has to be turned on right after start, to keep power flowing.
-
-#ifndef CASE_LIGHT_PIN
-  #define CASE_LIGHT_PIN                       8
-#endif
+#define CASE_LIGHT_PIN                         8
 
 //
 // LCD / Controller

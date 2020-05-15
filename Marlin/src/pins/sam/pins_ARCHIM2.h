@@ -216,9 +216,7 @@
 
 // Case Light
 
-#ifndef CASE_LIGHT_PIN
-  #define CASE_LIGHT_PIN          GPIO_PB1_J20_5
-#endif
+#define CASE_LIGHT_PIN            GPIO_PB1_J20_5
 
 // 2MB SPI Flash
 #define SPI_FLASH_SS                          52  // D52 PB21

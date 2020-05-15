@@ -277,7 +277,7 @@ void DGUSScreenVariableHandler::DGUSLCD_SendStringToDisplayPGM(DGUS_VP_Variable 
 #endif
 
 // Send fan status value to the display.
-#if HAS_FAN
+#if FAN_COUNT > 0
   void DGUSScreenVariableHandler::DGUSLCD_SendFanStatusToDisplay(DGUS_VP_Variable &var) {
     if (var.memadr) {
       DEBUG_ECHOPAIR(" DGUSLCD_SendFanStatusToDisplay ", var.VP);
@@ -441,9 +441,9 @@ void DGUSScreenVariableHandler::DGUSLCD_SendHeaterStatusToDisplay(DGUS_VP_Variab
     DGUSLCD_SendStringToDisplay(var);
   }
 
+
   void DGUSScreenVariableHandler::SDCardInserted() {
     top_file = 0;
-    filelist.refresh();
     auto cs = ScreenHandler.getCurrentScreen();
     if (cs == DGUSLCD_SCREEN_MAIN || cs == DGUSLCD_SCREEN_STATUS)
       ScreenHandler.GotoScreen(DGUSLCD_SCREEN_SDFILELIST);
@@ -573,7 +573,8 @@ void DGUSScreenVariableHandler::HandleFlowRateChanged(DGUS_VP_Variable &var, voi
       #endif
     }
 
-    planner.set_flow(target_extruder, newvalue);
+    planner.flow_percentage[target_extruder] = newvalue;
+    planner.refresh_e_factor(target_extruder);
     ScreenHandler.skipVP = var.VP; // don't overwrite value the next update time as the display might autoincrement in parallel
   #else
     UNUSED(var); UNUSED(val_ptr);
@@ -614,10 +615,8 @@ void DGUSScreenVariableHandler::HandleManualMove(DGUS_VP_Variable &var, void *va
 
   int16_t movevalue = swap16(*(uint16_t*)val_ptr);
   #if ENABLED(DGUS_UI_MOVE_DIS_OPTION)
-    if (movevalue) {
-      const uint16_t choice = *(uint16_t*)var.memadr;
-      movevalue = movevalue < 0 ? -choice : choice;
-    }
+    const uint16_t choice = *(uint16_t*)var.memadr;
+    movevalue = movevalue > 0 ? choice : -choice;
   #endif
   char axiscode;
   unsigned int speed = 1500;  //FIXME: get default feedrate for manual moves, dont hardcode.
@@ -733,11 +732,13 @@ void DGUSScreenVariableHandler::HandleSettings(DGUS_VP_Variable &var, void *val_
   switch (value) {
     default: break;
     case 1:
-      TERN_(PRINTCOUNTER, print_job_timer.initStats());
-      queue.inject_P(PSTR("M502\nM500"));
+      #if ENABLED(PRINTCOUNTER)
+        print_job_timer.initStats();
+      #endif
+      queue.enqueue_now_P(PSTR("M502\nM500"));
       break;
-    case 2: queue.inject_P(PSTR("M501")); break;
-    case 3: queue.inject_P(PSTR("M500")); break;
+    case 2: queue.enqueue_now_P(PSTR("M501")); break;
+    case 3: queue.enqueue_now_P(PSTR("M500")); break;
   }
 }
 
@@ -851,16 +852,14 @@ void DGUSScreenVariableHandler::HandleStepPerMMExtruderChanged(DGUS_VP_Variable 
   }
 #endif
 
-#if HAS_BED_PROBE
-  void DGUSScreenVariableHandler::HandleProbeOffsetZChanged(DGUS_VP_Variable &var, void *val_ptr) {
-    DEBUG_ECHOLNPGM("HandleProbeOffsetZChanged");
+void DGUSScreenVariableHandler::HandleProbeOffsetZChanged(DGUS_VP_Variable &var, void *val_ptr) {
+  DEBUG_ECHOLNPGM("HandleProbeOffsetZChanged");
 
-    const float offset = float(int16_t(swap16(*(uint16_t*)val_ptr))) / 100.0f;
-    ExtUI::setZOffset_mm(offset);
-    ScreenHandler.skipVP = var.VP; // don't overwrite value the next update time as the display might autoincrement in parallel
-    return;
-  }
-#endif
+  const float offset = float(int16_t(swap16(*(uint16_t*)val_ptr))) / 100.0f;
+  ExtUI::setZOffset_mm(offset);
+  ScreenHandler.skipVP = var.VP; // don't overwrite value the next update time as the display might autoincrement in parallel
+  return;
+}
 
 #if ENABLED(BABYSTEPPING)
   void DGUSScreenVariableHandler::HandleLiveAdjustZ(DGUS_VP_Variable &var, void *val_ptr) {
@@ -874,7 +873,7 @@ void DGUSScreenVariableHandler::HandleStepPerMMExtruderChanged(DGUS_VP_Variable 
   }
 #endif
 
-#if HAS_FAN
+#if FAN_COUNT
   void DGUSScreenVariableHandler::HandleFanControl(DGUS_VP_Variable &var, void *val_ptr) {
     DEBUG_ECHOLNPGM("HandleFanControl");
     *(uint8_t*)var.memadr = *(uint8_t*)var.memadr > 0 ? 0 : 255;
@@ -957,13 +956,17 @@ void DGUSScreenVariableHandler::HandleHeaterControl(DGUS_VP_Variable &var, void 
       #if HOTENDS >= 1
         case VP_E0_BED_PREHEAT:
           thermalManager.setTargetHotend(e_temp, 0);
-          TERN_(HAS_HEATED_BED, thermalManager.setTargetBed(bed_temp));
+          #if HAS_HEATED_BED
+            thermalManager.setTargetBed(bed_temp);
+          #endif
           break;
       #endif
       #if HOTENDS >= 2
         case VP_E1_BED_PREHEAT:
           thermalManager.setTargetHotend(e_temp, 1);
-          TERN_(HAS_HEATED_BED, thermalManager.setTargetBed(bed_temp));
+          #if HAS_HEATED_BED
+            thermalManager.setTargetBed(bed_temp);
+          #endif
         break;
       #endif
     }
@@ -997,7 +1000,9 @@ void DGUSScreenVariableHandler::HandleHeaterControl(DGUS_VP_Variable &var, void 
         #endif
         break;
       case 1: // Load ABS
-        TERN_(PREHEAT_2_TEMP_HOTEND, e_temp = PREHEAT_2_TEMP_HOTEND);
+        #if ENABLED(PREHEAT_2_TEMP_HOTEND)
+          e_temp = PREHEAT_2_TEMP_HOTEND;
+        #endif
         break;
       case 2: // Load PET
         #ifdef PREHEAT_3_TEMP_HOTEND
@@ -1220,8 +1225,9 @@ bool DGUSScreenVariableHandler::loop() {
 
   #if ENABLED(SHOW_BOOTSCREEN)
     static bool booted = false;
-    if (!booted && TERN0(POWER_LOSS_RECOVERY, recovery.valid()))
-      booted = true;
+    #if ENABLED(POWER_LOSS_RECOVERY)
+      if (!booted && recovery.valid()) booted = true;
+    #endif
     if (!booted && ELAPSED(ms, BOOTSCREEN_TIMEOUT)) {
       booted = true;
       GotoScreen(DGUSLCD_SCREEN_MAIN);

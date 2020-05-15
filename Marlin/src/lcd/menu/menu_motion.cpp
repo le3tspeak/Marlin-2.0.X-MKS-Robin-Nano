@@ -59,11 +59,11 @@ extern int8_t manual_move_axis;
 // Tell ui.update() to start a move to current_position" after a short delay.
 //
 inline void manual_move_to_current(AxisEnum axis
-  #if MULTI_MANUAL
+  #if E_MANUAL > 1
     , const int8_t eindex=-1
   #endif
 ) {
-  #if MULTI_MANUAL
+  #if E_MANUAL > 1
     if (axis == E_AXIS) ui.manual_move_e_index = eindex >= 0 ? eindex : active_extruder;
   #endif
   manual_move_start_time = millis() + (move_menu_scale < 0.99f ? 0UL : 250UL); // delay for bigger moves
@@ -86,16 +86,28 @@ static void _lcd_move_xyz(PGM_P const name, const AxisEnum axis) {
     #if HAS_SOFTWARE_ENDSTOPS
       if (soft_endstops_enabled) switch (axis) {
         case X_AXIS:
-          TERN_(MIN_SOFTWARE_ENDSTOP_X, min = soft_endstop.min.x);
-          TERN_(MAX_SOFTWARE_ENDSTOP_X, max = soft_endstop.max.x);
+          #if ENABLED(MIN_SOFTWARE_ENDSTOP_X)
+            min = soft_endstop.min.x;
+          #endif
+          #if ENABLED(MAX_SOFTWARE_ENDSTOP_X)
+            max = soft_endstop.max.x;
+          #endif
           break;
         case Y_AXIS:
-          TERN_(MIN_SOFTWARE_ENDSTOP_Y, min = soft_endstop.min.y);
-          TERN_(MAX_SOFTWARE_ENDSTOP_Y, max = soft_endstop.max.y);
+          #if ENABLED(MIN_SOFTWARE_ENDSTOP_Y)
+            min = soft_endstop.min.y;
+          #endif
+          #if ENABLED(MAX_SOFTWARE_ENDSTOP_Y)
+            max = soft_endstop.max.y;
+          #endif
           break;
         case Z_AXIS:
-          TERN_(MIN_SOFTWARE_ENDSTOP_Z, min = soft_endstop.min.z);
-          TERN_(MAX_SOFTWARE_ENDSTOP_Z, max = soft_endstop.max.z);
+          #if ENABLED(MIN_SOFTWARE_ENDSTOP_Z)
+            min = soft_endstop.min.z;
+          #endif
+          #if ENABLED(MAX_SOFTWARE_ENDSTOP_Z)
+            max = soft_endstop.max.z;
+          #endif
         default: break;
       }
     #endif // HAS_SOFTWARE_ENDSTOPS
@@ -144,14 +156,22 @@ void lcd_move_z() { _lcd_move_xyz(GET_TEXT(MSG_MOVE_Z), Z_AXIS); }
 
 #if E_MANUAL
 
-  static void lcd_move_e(TERN_(MULTI_MANUAL, const int8_t eindex=-1)) {
+  static void lcd_move_e(
+    #if E_MANUAL > 1
+      const int8_t eindex=-1
+    #endif
+  ) {
     if (ui.use_click()) return ui.goto_previous_screen_no_defer();
     if (ui.encoderPosition) {
       if (!ui.processing_manual_move) {
         const float diff = float(int32_t(ui.encoderPosition)) * move_menu_scale;
-        TERN(IS_KINEMATIC, manual_move_offset, current_position.e) += diff;
+        #if IS_KINEMATIC
+          manual_move_offset += diff;
+        #else
+          current_position.e += diff;
+        #endif
         manual_move_to_current(E_AXIS
-          #if MULTI_MANUAL
+          #if E_MANUAL > 1
             , eindex
           #endif
         );
@@ -160,14 +180,24 @@ void lcd_move_z() { _lcd_move_xyz(GET_TEXT(MSG_MOVE_Z), Z_AXIS); }
       ui.encoderPosition = 0;
     }
     if (ui.should_draw()) {
-      #if MULTI_MANUAL
+      #if E_MANUAL > 1
         MenuItemBase::init(eindex);
       #endif
       MenuEditItemBase::draw_edit_screen(
-        GET_TEXT(TERN(MULTI_MANUAL, MSG_MOVE_EN, MSG_MOVE_E)),
+        GET_TEXT(
+          #if E_MANUAL > 1
+            MSG_MOVE_EN
+          #else
+            MSG_MOVE_E
+          #endif
+        ),
         ftostr41sign(current_position.e
-          + TERN0(IS_KINEMATIC, manual_move_offset)
-          - TERN0(MANUAL_E_MOVES_RELATIVE, manual_move_e_origin)
+          #if IS_KINEMATIC
+            + manual_move_offset
+          #endif
+          #if ENABLED(MANUAL_E_MOVES_RELATIVE)
+            - manual_move_e_origin
+          #endif
         )
       );
     } // should_draw
@@ -193,11 +223,6 @@ void _goto_manual_move(const float scale) {
 
 void _menu_move_distance(const AxisEnum axis, const screenFunc_t func, const int8_t eindex=-1) {
   _manual_move_func_ptr = func;
-  #if ENABLED(PREVENT_COLD_EXTRUSION)
-    const bool too_cold = axis == E_AXIS && thermalManager.tooColdToExtrude(eindex >= 0 ? eindex : active_extruder);
-  #else
-    constexpr bool too_cold = false;
-  #endif
   START_MENU();
   if (LCD_HEIGHT >= 4) {
     switch (axis) {
@@ -205,14 +230,19 @@ void _menu_move_distance(const AxisEnum axis, const screenFunc_t func, const int
       case Y_AXIS: STATIC_ITEM(MSG_MOVE_Y, SS_CENTER|SS_INVERT); break;
       case Z_AXIS: STATIC_ITEM(MSG_MOVE_Z, SS_CENTER|SS_INVERT); break;
       default:
-        TERN_(MANUAL_E_MOVES_RELATIVE, manual_move_e_origin = current_position.e);
+        #if ENABLED(MANUAL_E_MOVES_RELATIVE)
+          manual_move_e_origin = current_position.e;
+        #endif
         STATIC_ITEM(MSG_MOVE_E, SS_CENTER|SS_INVERT);
         break;
     }
   }
-  if (too_cold)
-    BACK_ITEM(MSG_HOTEND_TOO_COLD);
-  else {
+  #if ENABLED(PREVENT_COLD_EXTRUSION)
+    if (axis == E_AXIS && thermalManager.tooColdToExtrude(eindex >= 0 ? eindex : active_extruder))
+      BACK_ITEM(MSG_HOTEND_TOO_COLD);
+    else
+  #endif
+  {
     BACK_ITEM(MSG_MOVE_AXIS);
     SUBMENU(MSG_MOVE_10MM, []{ _goto_manual_move(10);    });
     SUBMENU(MSG_MOVE_1MM,  []{ _goto_manual_move( 1);    });
@@ -220,7 +250,11 @@ void _menu_move_distance(const AxisEnum axis, const screenFunc_t func, const int
     if (axis == Z_AXIS && (SHORT_MANUAL_Z_MOVE) > 0.0f && (SHORT_MANUAL_Z_MOVE) < 0.1f) {
       extern const char NUL_STR[];
       SUBMENU_P(NUL_STR, []{ _goto_manual_move(float(SHORT_MANUAL_Z_MOVE)); });
-      MENU_ITEM_ADDON_START(0 + ENABLED(HAS_CHARACTER_LCD));
+      MENU_ITEM_ADDON_START(0
+        #if HAS_CHARACTER_LCD
+          + 1
+        #endif
+      );
         char tmp[20], numstr[10];
         // Determine digits needed right of decimal
         const uint8_t digs = !UNEAR_ZERO((SHORT_MANUAL_Z_MOVE) * 1000 - int((SHORT_MANUAL_Z_MOVE) * 1000)) ? 4 :
@@ -237,12 +271,24 @@ void menu_move() {
   START_MENU();
   BACK_ITEM(MSG_MOTION);
 
-  #if BOTH(HAS_SOFTWARE_ENDSTOPS, SOFT_ENDSTOPS_MENU_ITEM)
+  #if HAS_SOFTWARE_ENDSTOPS && ENABLED(SOFT_ENDSTOPS_MENU_ITEM)
     EDIT_ITEM(bool, MSG_LCD_SOFT_ENDSTOPS, &soft_endstops_enabled);
   #endif
 
-  if (NONE(IS_KINEMATIC, NO_MOTION_BEFORE_HOMING) || all_axes_homed()) {
-    if (TERN1(DELTA, current_position.z <= delta_clip_start_height)) {
+  if (
+    #if IS_KINEMATIC || ENABLED(NO_MOTION_BEFORE_HOMING)
+      all_axes_homed()
+    #else
+      true
+    #endif
+  ) {
+    if (
+      #if ENABLED(DELTA)
+        current_position.z <= delta_clip_start_height
+      #else
+        true
+      #endif
+    ) {
       SUBMENU(MSG_MOVE_X, []{ _menu_move_distance(X_AXIS, lcd_move_x); });
       SUBMENU(MSG_MOVE_Y, []{ _menu_move_distance(Y_AXIS, lcd_move_y); });
     }
@@ -302,11 +348,13 @@ void menu_move() {
     #if EITHER(SWITCHING_EXTRUDER, SWITCHING_NOZZLE)
 
       // ...and the non-switching
-      #if E_MANUAL == 7 || E_MANUAL == 5 || E_MANUAL == 3
-        SUBMENU_MOVE_E(E_MANUAL - 1);
+      #if E_MANUAL == 5
+        SUBMENU_MOVE_E(4);
+      #elif E_MANUAL == 3
+        SUBMENU_MOVE_E(2);
       #endif
 
-    #elif MULTI_MANUAL
+    #elif E_MANUAL > 1
 
       // Independent extruders with one E-stepper per hotend
       LOOP_L_N(n, E_MANUAL) SUBMENU_MOVE_E(n);
@@ -335,8 +383,10 @@ void menu_motion() {
   //
   // Move Axis
   //
-  if (TERN1(DELTA, all_axes_homed()))
-    SUBMENU(MSG_MOVE_AXIS, menu_move);
+  #if ENABLED(DELTA)
+    if (all_axes_homed())
+  #endif
+      SUBMENU(MSG_MOVE_AXIS, menu_move);
 
   //
   // Auto Home
@@ -364,20 +414,17 @@ void menu_motion() {
 
   #elif ENABLED(LCD_BED_LEVELING)
 
-    if (!g29_in_progress)
-      SUBMENU(MSG_BED_LEVELING, menu_bed_leveling);
+    if (!g29_in_progress) SUBMENU(MSG_BED_LEVELING, menu_bed_leveling);
 
   #elif HAS_LEVELING && DISABLED(SLIM_LCD_MENUS)
 
     #if DISABLED(PROBE_MANUALLY)
       GCODES_ITEM(MSG_LEVEL_BED, PSTR("G28\nG29"));
     #endif
-
     if (all_axes_homed() && leveling_is_valid()) {
       bool show_state = planner.leveling_active;
       EDIT_ITEM(bool, MSG_BED_LEVELING, &show_state, _lcd_toggle_bed_leveling);
     }
-
     #if ENABLED(ENABLE_LEVELING_FADE_HEIGHT)
       editable.decimal = planner.z_fade_height;
       EDIT_ITEM_FAST(float3, MSG_Z_FADE_HEIGHT, &editable.decimal, 0, 100, []{ set_z_fade_height(editable.decimal); });

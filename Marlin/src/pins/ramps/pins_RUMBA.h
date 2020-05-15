@@ -153,10 +153,7 @@
 #define LED_PIN                               13
 #define PS_ON_PIN                             45
 #define KILL_PIN                              46
-
-#ifndef CASE_LIGHT_PIN
-  #define CASE_LIGHT_PIN                      45
-#endif
+#define CASE_LIGHT_PIN                        45
 
 //
 // M3/M4/M5 - Spindle/Laser Control

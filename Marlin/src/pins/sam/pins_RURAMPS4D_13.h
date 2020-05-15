@@ -240,6 +240,8 @@
 
   #elif ENABLED(MKS_MINI_12864)
 
+    #define ORIG_BEEPER_PIN                   62
+
     #define DOGLCD_A0                         52
     #define DOGLCD_CS                         50
 

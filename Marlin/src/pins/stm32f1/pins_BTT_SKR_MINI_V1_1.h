@@ -33,12 +33,10 @@
 // Ignore temp readings during development.
 //#define BOGUS_TEMPERATURE_GRACE_PERIOD 2000
 
-#if EITHER(NO_EEPROM_SELECTED, FLASH_EEPROM_EMULATION)
-  #define FLASH_EEPROM_EMULATION
-  #define EEPROM_PAGE_SIZE     (0x800U) // 2KB
-  #define EEPROM_START_ADDRESS (0x8000000UL + (STM32_FLASH_SIZE) * 1024UL - (EEPROM_PAGE_SIZE) * 2UL)
-  #define E2END                (EEPROM_PAGE_SIZE - 1)
-#endif
+#define FLASH_EEPROM_EMULATION
+#define EEPROM_PAGE_SIZE     (0x800) // 2KB
+#define EEPROM_START_ADDRESS uint32(0x8000000 + (STM32_FLASH_SIZE) * 1024 - 2 * EEPROM_PAGE_SIZE)
+#define E2END                (EEPROM_PAGE_SIZE - 1)
 
 //
 // Limit Switches
@@ -181,7 +179,8 @@
 //
 
 // By default the onboard SD is enabled.
-// Change SDCARD_CONNECTION from 'ONBOARD' to 'LCD' for an external (LCD module) SD
+// set SDCARD_CONNECTION form 'ONBOARD' to 'LCD' and use an external SD (connected to LCD)
+#define HAS_ONBOARD_SD
 #ifndef SDCARD_CONNECTION
   #define SDCARD_CONNECTION              ONBOARD
 #endif

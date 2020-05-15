@@ -38,7 +38,9 @@ class MarlinSettings {
       reset();
       #if ENABLED(EEPROM_SETTINGS)
         const bool success = save();
-        if (TERN0(EEPROM_CHITCHAT, success)) report();
+        #if ENABLED(EEPROM_CHITCHAT)
+          if (success) report();
+        #endif
         return success;
       #else
         return true;

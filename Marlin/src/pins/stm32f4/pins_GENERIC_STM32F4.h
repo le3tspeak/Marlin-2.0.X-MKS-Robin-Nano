@@ -126,9 +126,7 @@
 #define FAN1_PIN                            PC7
 #define FAN2_PIN                            PC8
 
-#ifndef E0_AUTO_FAN_PIN
-  #define E0_AUTO_FAN_PIN                   PC7
-#endif
+#define ORIG_E0_AUTO_FAN_PIN            FAN1_PIN  // Use this by NOT overriding E0_AUTO_FAN_PIN
 
 //
 // Misc. Functions

@@ -65,6 +65,7 @@
 #endif
 
 #define BOARD_INFO_NAME "RAMPS-SMART"
+
 #define IS_RAMPS_SMART
 #include "../ramps/pins_RAMPS.h"
 

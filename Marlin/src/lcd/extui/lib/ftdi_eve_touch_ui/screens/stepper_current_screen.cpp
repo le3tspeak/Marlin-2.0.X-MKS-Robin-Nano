@@ -22,7 +22,7 @@
 
 #include "../config.h"
 
-#if BOTH(TOUCH_UI_FTDI_EVE, HAS_TRINAMIC_CONFIG)
+#if ENABLED(TOUCH_UI_FTDI_EVE) && HAS_TRINAMIC_CONFIG
 
 #include "screens.h"
 

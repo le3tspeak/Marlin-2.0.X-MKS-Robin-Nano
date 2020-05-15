@@ -32,9 +32,7 @@
 #define Z_STOP_PIN                           15
 #define FIL_RUNOUT_PIN                       39
 
-#ifndef E0_AUTO_FAN_PIN
-  #define E0_AUTO_FAN_PIN                     7
-#endif
+#define ORIG_E0_AUTO_FAN_PIN                  7
 
 //
 // Import RAMPS 1.4 pins

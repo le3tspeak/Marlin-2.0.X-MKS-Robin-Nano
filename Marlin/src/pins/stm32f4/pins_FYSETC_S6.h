@@ -34,23 +34,19 @@
   #define DEFAULT_MACHINE_NAME BOARD_INFO_NAME
 #endif
 
-// Change the priority to 3. Priority 2 is for software serial.
+// change the prio to 3 , 2 is for software serial
 //#define TEMP_TIMER_IRQ_PRIO 3
 
 //
 // EEPROM Emulation
 //
-#if NO_EEPROM_SELECTED
-  #define FLASH_EEPROM_EMULATION
-  //#define SRAM_EEPROM_EMULATION
-  //#define I2C_EEPROM
-#endif
-
+#define FLASH_EEPROM_EMULATION
 #if ENABLED(FLASH_EEPROM_EMULATION)
-  // Decrease delays and flash wear by spreading writes across the
-  // 128 kB sector allocated for EEPROM emulation.
   #define FLASH_EEPROM_LEVELING
-#elif ENABLED(I2C_EEPROM)
+#endif
+//#define SRAM_EEPROM_EMULATION
+//#define I2C_EEPROM
+#ifdef I2C_EEPROM
   #undef E2END                                    // Defined in Arduino Core STM32 to be used with EEPROM emulation. This board uses a real EEPROM.
   #define E2END 0xFFF                             // 4KB
 #endif

@@ -36,6 +36,7 @@
 #include "temperature.h"
 
 #include "../MarlinCore.h"
+#include "../core/language.h"
 #include "../gcode/queue.h"
 
 // See the meaning in the documentation of cubic_b_spline().

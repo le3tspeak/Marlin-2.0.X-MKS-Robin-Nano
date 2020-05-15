@@ -453,7 +453,9 @@ bool UIFlashStorage::is_present = false;
         if (nBytes != write_page_size)
           break;
 
-        TERN_(EXTENSIBLE_UI, ExtUI::yield());
+        #if ENABLED(EXTENSIBLE_UI)
+          ExtUI::yield();
+        #endif
       }
 
       SERIAL_ECHOLNPGM("DONE");
@@ -491,7 +493,9 @@ bool UIFlashStorage::is_present = false;
 
         addr += nBytes;
         if (nBytes != write_page_size) break;
-        TERN_(EXTENSIBLE_UI, ExtUI::yield());
+        #if ENABLED(EXTENSIBLE_UI)
+          ExtUI::yield();
+        #endif
       };
 
       if (verifyOk) {
@@ -503,7 +507,7 @@ bool UIFlashStorage::is_present = false;
       }
     #else
       return VERIFY_ERROR;
-    #endif // SDSUPPORT
+    #endif // ENABLED(SDSUPPORT)
   }
 
   bool UIFlashStorage::BootMediaReader::isAvailable(uint32_t slot) {
