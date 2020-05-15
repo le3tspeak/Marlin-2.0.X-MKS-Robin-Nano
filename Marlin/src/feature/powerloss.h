@@ -61,10 +61,14 @@ typedef struct {
 
   #if DISABLED(NO_VOLUMETRICS)
     bool volumetric_enabled;
-    float filament_size[EXTRUDERS];
+    #if EXTRUDERS > 1
+      float filament_size[EXTRUDERS];
+    #else
+      float filament_size;
+    #endif
   #endif
 
-  #if HAS_HOTEND
+  #if HOTENDS
     int16_t target_temperature[HOTENDS];
   #endif
 
@@ -72,7 +76,7 @@ typedef struct {
     int16_t target_temperature_bed;
   #endif
 
-  #if HAS_FAN
+  #if FAN_COUNT
     uint8_t fan_speed[FAN_COUNT];
   #endif
 

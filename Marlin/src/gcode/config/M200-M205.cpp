@@ -60,11 +60,6 @@ void GcodeSuite::M201() {
   const int8_t target_extruder = get_target_extruder_from_command();
   if (target_extruder < 0) return;
 
-  #ifdef XY_FREQUENCY_LIMIT
-    if (parser.seenval('F')) planner.set_frequency_limit(parser.value_byte());
-    if (parser.seenval('G')) planner.xy_freq_min_speed_factor = constrain(parser.value_float(), 1, 100) / 100;
-  #endif
-
   LOOP_XYZE(i) {
     if (parser.seen(axis_codes[i])) {
       const uint8_t a = (i == E_AXIS ? uint8_t(E_AXIS_N(target_extruder)) : i);
@@ -126,7 +121,7 @@ void GcodeSuite::M204() {
  *    J = Junction Deviation (mm) (If not using CLASSIC_JERK)
  */
 void GcodeSuite::M205() {
-  #if HAS_JUNCTION_DEVIATION
+  #if DISABLED(CLASSIC_JERK)
     #define J_PARAM  "J"
   #else
     #define J_PARAM
@@ -142,12 +137,14 @@ void GcodeSuite::M205() {
   if (parser.seen('B')) planner.settings.min_segment_time_us = parser.value_ulong();
   if (parser.seen('S')) planner.settings.min_feedrate_mm_s = parser.value_linear_units();
   if (parser.seen('T')) planner.settings.min_travel_feedrate_mm_s = parser.value_linear_units();
-  #if HAS_JUNCTION_DEVIATION
+  #if DISABLED(CLASSIC_JERK)
     if (parser.seen('J')) {
       const float junc_dev = parser.value_linear_units();
       if (WITHIN(junc_dev, 0.01f, 0.3f)) {
         planner.junction_deviation_mm = junc_dev;
-        TERN_(LIN_ADVANCE, planner.recalculate_max_e_jerk());
+        #if ENABLED(LIN_ADVANCE)
+          planner.recalculate_max_e_jerk();
+        #endif
       }
       else
         SERIAL_ERROR_MSG("?J out of range (0.01 to 0.3)");

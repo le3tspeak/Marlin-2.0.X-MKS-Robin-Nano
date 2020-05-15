@@ -209,11 +209,11 @@
 
   }
 
-#endif // LPC_SOFTWARE_SPI
+#endif // ENABLED(LPC_SOFTWARE_SPI)
 
 void SPIClass::begin() { spiBegin(); }
 
-void SPIClass::beginTransaction(const SPISettings &cfg) {
+void SPIClass::beginTransaction(SPISettings cfg) {
   uint8_t spiRate;
   switch (cfg.spiRate()) {
     case 8000000: spiRate = 0; break;

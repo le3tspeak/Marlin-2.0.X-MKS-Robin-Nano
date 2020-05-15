@@ -28,12 +28,6 @@
 #include "../../feature/spindle_laser.h"
 #include "../../module/stepper.h"
 
-inline cutter_power_t get_s_power() {
-  return cutter_power_t(
-    parser.intval('S', cutter.interpret_power(SPEED_POWER_STARTUP))
-  );
-}
-
 /**
  * Laser:
  *
@@ -77,26 +71,9 @@ inline cutter_power_t get_s_power() {
  */
 void GcodeSuite::M3_M4(const bool is_M4) {
 
-  #if ENABLED(LASER_POWER_INLINE)
-    if (parser.seen('I') == DISABLED(LASER_POWER_INLINE_INVERT)) {
-      // Laser power in inline mode
-      cutter.inline_direction(is_M4); // Should always be unused
-
-      #if ENABLED(SPINDLE_LASER_PWM)
-        if (parser.seen('O'))
-          cutter.inline_ocr_power(parser.value_byte()); // The OCR is a value from 0 to 255 (uint8_t)
-        else
-          cutter.inline_power(get_s_power());
-      #else
-        cutter.inline_enabled(true);
-      #endif
-      return;
-    }
-    // Non-inline, standard case
-    cutter.inline_disable(); // Prevent future blocks re-setting the power
+  #if ENABLED(SPINDLE_FEATURE)
+    planner.synchronize();   // Wait for movement to complete before changing power
   #endif
-
-  planner.synchronize();   // Wait for previous movement commands (G0/G0/G2/G3) to complete before changing power
 
   cutter.set_direction(is_M4);
 
@@ -104,25 +81,19 @@ void GcodeSuite::M3_M4(const bool is_M4) {
     if (parser.seenval('O'))
       cutter.set_ocr_power(parser.value_byte()); // The OCR is a value from 0 to 255 (uint8_t)
     else
-      cutter.set_power(get_s_power());
+      cutter.set_power(parser.intval('S', 255));
   #else
     cutter.set_enabled(true);
   #endif
 }
 
 /**
- * M5 - Cutter OFF (when moves are complete)
+ * M5 - Cutter OFF
  */
 void GcodeSuite::M5() {
-  #if ENABLED(LASER_POWER_INLINE)
-    if (parser.seen('I') == DISABLED(LASER_POWER_INLINE_INVERT)) {
-      cutter.inline_enabled(false); // Laser power in inline mode
-      return;
-    }
-    // Non-inline, standard case
-    cutter.inline_disable(); // Prevent future blocks re-setting the power
+  #if ENABLED(SPINDLE_FEATURE)
+    planner.synchronize();
   #endif
-  planner.synchronize();
   cutter.set_enabled(false);
 }
 

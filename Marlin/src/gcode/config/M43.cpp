@@ -340,8 +340,12 @@ void GcodeSuite::M43() {
     #if HAS_RESUME_CONTINUE
       KEEPALIVE_STATE(PAUSED_FOR_USER);
       wait_for_user = true;
-      TERN_(HOST_PROMPT_SUPPORT, host_prompt_do(PROMPT_USER_CONTINUE, PSTR("M43 Wait Called"), CONTINUE_STR));
-      TERN_(EXTENSIBLE_UI, ExtUI::onUserConfirmRequired_P(PSTR("M43 Wait Called")));
+      #if ENABLED(HOST_PROMPT_SUPPORT)
+        host_prompt_do(PROMPT_USER_CONTINUE, PSTR("M43 Wait Called"), CONTINUE_STR);
+      #endif
+      #if ENABLED(EXTENSIBLE_UI)
+        ExtUI::onUserConfirmRequired_P(PSTR("M43 Wait Called"));
+      #endif
     #endif
 
     for (;;) {
@@ -362,7 +366,9 @@ void GcodeSuite::M43() {
         }
       }
 
-      if (TERN0(HAS_RESUME_CONTINUE, !wait_for_user)) break;
+      #if HAS_RESUME_CONTINUE
+        if (!wait_for_user) break;
+      #endif
 
       safe_delay(200);
     }

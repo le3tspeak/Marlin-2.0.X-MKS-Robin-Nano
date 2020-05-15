@@ -72,15 +72,16 @@
     #endif
 
     #if DISABLED(AUTO_POWER_CONTROL)
-      delay(PSU_POWERUP_DELAY);
+      delay(PSU_POWERUP_DELAY); // Wait for power to settle
       restore_stepper_drivers();
-      TERN_(HAS_TRINAMIC_CONFIG, delay(PSU_POWERUP_DELAY));
     #endif
 
-    TERN_(HAS_LCD_MENU, ui.reset_status());
+    #if HAS_LCD_MENU
+      ui.reset_status();
+    #endif
   }
 
-#endif // PSU_CONTROL
+#endif // ENABLED(PSU_CONTROL)
 
 /**
  * M81: Turn off Power, including Power Supply, if there is one.
@@ -92,7 +93,7 @@ void GcodeSuite::M81() {
   print_job_timer.stop();
   planner.finish_and_disable();
 
-  #if HAS_FAN
+  #if FAN_COUNT > 0
     thermalManager.zero_fan_speeds();
     #if ENABLED(PROBING_FANS_OFF)
       thermalManager.fans_paused = false;

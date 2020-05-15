@@ -103,7 +103,7 @@ void PrintJobRecovery::check() {
   //if (!card.isMounted()) card.mount();
   if (card.isMounted()) {
     load();
-    if (!valid()) return cancel();
+    if (!valid()) return purge();
     queue.inject_P(PSTR("M1000 S"));
   }
 }
@@ -172,8 +172,12 @@ void PrintJobRecovery::save(const bool force/*=false*/) {
 
     // Machine state
     info.current_position = current_position;
-    TERN_(HAS_HOME_OFFSET, info.home_offset = home_offset);
-    TERN_(HAS_POSITION_SHIFT, info.position_shift = position_shift);
+    #if HAS_HOME_OFFSET
+      info.home_offset = home_offset;
+    #endif
+    #if HAS_POSITION_SHIFT
+      info.position_shift = position_shift;
+    #endif
     info.feedrate = uint16_t(feedrate_mm_s * 60.0f);
 
     #if EXTRUDERS > 1
@@ -185,7 +189,7 @@ void PrintJobRecovery::save(const bool force/*=false*/) {
       #if EXTRUDERS > 1
         for (int8_t e = 0; e < EXTRUDERS; e++) info.filament_size[e] = planner.filament_size[e];
       #else
-        if (parser.volumetric_enabled) info.filament_size[0] = planner.filament_size[active_extruder];
+        if (parser.volumetric_enabled) info.filament_size = planner.filament_size[active_extruder];
       #endif
     #endif
 
@@ -193,18 +197,28 @@ void PrintJobRecovery::save(const bool force/*=false*/) {
       HOTEND_LOOP() info.target_temperature[e] = thermalManager.temp_hotend[e].target;
     #endif
 
-    TERN_(HAS_HEATED_BED, info.target_temperature_bed = thermalManager.temp_bed.target);
+    #if HAS_HEATED_BED
+      info.target_temperature_bed = thermalManager.temp_bed.target;
+    #endif
 
-    #if HAS_FAN
+    #if FAN_COUNT
       COPY(info.fan_speed, thermalManager.fan_speed);
     #endif
 
     #if HAS_LEVELING
       info.leveling = planner.leveling_active;
-      info.fade = TERN0(ENABLE_LEVELING_FADE_HEIGHT, planner.z_fade_height);
+      info.fade = (
+        #if ENABLED(ENABLE_LEVELING_FADE_HEIGHT)
+          planner.z_fade_height
+        #else
+          0
+        #endif
+      );
     #endif
 
-    TERN_(GRADIENT_MIX, memcpy(&info.gradient, &mixer.gradient, sizeof(info.gradient)));
+    #if ENABLED(GRADIENT_MIX)
+      memcpy(&info.gradient, &mixer.gradient, sizeof(info.gradient));
+    #endif
 
     #if ENABLED(FWRETRACT)
       COPY(info.retract, fwretract.current_retract);
@@ -230,7 +244,9 @@ void PrintJobRecovery::save(const bool force/*=false*/) {
       lock = true;
     #endif
     if (IS_SD_PRINTING()) save(true);
-    TERN_(BACKUP_POWER_SUPPLY, raise_z());
+    #if ENABLED(BACKUP_POWER_SUPPLY)
+      raise_z();
+    #endif
 
     kill(GET_TEXT(MSG_OUTAGE_RECOVERY));
   }
@@ -283,7 +299,9 @@ void PrintJobRecovery::resume() {
       // If Z homing goes to max, just reset E and home all
       "\n"
       "G28R0"
-      TERN_(MARLIN_DEV_MODE, "S")
+      #if ENABLED(MARLIN_DEV_MODE)
+        "S"
+      #endif
 
     #else // "G92.9 E0 ..."
 
@@ -331,7 +349,7 @@ void PrintJobRecovery::resume() {
       }
     #else
       if (info.volumetric_enabled) {
-        dtostrf(info.filament_size[0], 1, 3, str_1);
+        dtostrf(info.filament_size, 1, 3, str_1);
         sprintf_P(cmd, PSTR("M200 D%s"), str_1);
         gcode.process_subcommands_now(cmd);
       }
@@ -348,11 +366,11 @@ void PrintJobRecovery::resume() {
   #endif
 
   // Restore all hotend temperatures
-  #if HAS_HOTEND
+  #if HOTENDS
     HOTEND_LOOP() {
       const int16_t et = info.target_temperature[e];
       if (et) {
-        #if HAS_MULTI_HOTEND
+        #if HOTENDS > 1
           sprintf_P(cmd, PSTR("T%i"), e);
           gcode.process_subcommands_now(cmd);
         #endif
@@ -442,8 +460,12 @@ void PrintJobRecovery::resume() {
   // Relative axis modes
   gcode.axis_relative = info.axis_relative;
 
-  TERN_(HAS_HOME_OFFSET, home_offset = info.home_offset);
-  TERN_(HAS_POSITION_SHIFT, position_shift = info.position_shift);
+  #if HAS_HOME_OFFSET
+    home_offset = info.home_offset;
+  #endif
+  #if HAS_POSITION_SHIFT
+    position_shift = info.position_shift;
+  #endif
   #if HAS_HOME_OFFSET || HAS_POSITION_SHIFT
     LOOP_XYZ(i) update_workspace_offset((AxisEnum)i);
   #endif
@@ -495,7 +517,7 @@ void PrintJobRecovery::resume() {
           DEBUG_ECHOLNPAIR("active_extruder: ", int(info.active_extruder));
         #endif
 
-        #if HAS_HOTEND
+        #if HOTENDS
           DEBUG_ECHOPGM("target_temperature: ");
           HOTEND_LOOP() {
             DEBUG_ECHO(info.target_temperature[e]);
@@ -508,7 +530,7 @@ void PrintJobRecovery::resume() {
           DEBUG_ECHOLNPAIR("target_temperature_bed: ", info.target_temperature_bed);
         #endif
 
-        #if HAS_FAN
+        #if FAN_COUNT
           DEBUG_ECHOPGM("fan_speed: ");
           FANS_LOOP(i) {
             DEBUG_ECHO(int(info.fan_speed[i]));

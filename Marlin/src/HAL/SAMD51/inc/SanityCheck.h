@@ -35,10 +35,6 @@
   #error "OnBoard SPI BUS can't be shared with other devices."
 #endif
 
-#if SERVO_TC == RTC_TIMER_NUM
-  #error "Servos can't use RTC timer"
-#endif
-
 #if ENABLED(EMERGENCY_PARSER)
   #error "EMERGENCY_PARSER is not yet implemented for SAMD51. Disable EMERGENCY_PARSER to continue."
 #endif

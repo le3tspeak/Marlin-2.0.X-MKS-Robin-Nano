@@ -66,30 +66,11 @@ public:
   static void clear();
 
   /**
-   * Next Injected Command (PROGMEM) pointer. (nullptr == empty)
-   * Internal commands are enqueued ahead of serial / SD commands.
+   * Enqueue one or many commands to run from program memory.
+   * Aborts the current queue, if any.
+   * Note: process_injected_command() will process them.
    */
-  static PGM_P injected_commands_P;
-
-  /**
-   * Injected Commands (SRAM)
-   */
-  static char injected_commands[64];
-
-  /**
-   * Enqueue command(s) to run from PROGMEM. Drained by process_injected_command_P().
-   * Don't inject comments or use leading spaces!
-   * Aborts the current PROGMEM queue so only use for one or two commands.
-   */
-  static inline void inject_P(PGM_P const pgcode) { injected_commands_P = pgcode; }
-
-  /**
-   * Enqueue command(s) to run from SRAM. Drained by process_injected_command().
-   * Aborts the current SRAM queue so only use for one or two commands.
-   */
-  static inline void inject(char * const gcode) {
-    strncpy(injected_commands, gcode, sizeof(injected_commands) - 1);
-  }
+  static void inject_P(PGM_P const pgcode);
 
   /**
    * Enqueue and return only when commands are actually enqueued
@@ -164,10 +145,7 @@ private:
     #endif
   );
 
-  // Process the next "immediate" command (PROGMEM)
-  static bool process_injected_command_P();
-
-  // Process the next "immediate" command (SRAM)
+  // Process the next "immediate" command
   static bool process_injected_command();
 
   /**

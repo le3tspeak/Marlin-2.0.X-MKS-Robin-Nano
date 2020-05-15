@@ -39,10 +39,6 @@ bool FilamentMonitorBase::enabled = true,
   bool FilamentMonitorBase::host_handling; // = false
 #endif
 
-#if ENABLED(TOOLCHANGE_MIGRATION_FEATURE)
-  #include "../module/tool_change.h"
-#endif
-
 /**
  * Called by FilamentSensorSwitch::run when filament is detected.
  * Called by FilamentSensorEncoder::block_completed when motion is detected.
@@ -78,14 +74,13 @@ void FilamentSensorBase::filament_present(const uint8_t extruder) {
 
 void event_filament_runout() {
 
-  if (TERN0(ADVANCED_PAUSE_FEATURE, did_pause_print)) return;  // Action already in progress. Purge triggered repeated runout.
-
-  #if ENABLED(TOOLCHANGE_MIGRATION_FEATURE)
-    if (migration.in_progress) return;  // Action already in progress. Purge triggered repeated runout.
-    if (migration.automode) { extruder_migration(); return; }
+  #if ENABLED(ADVANCED_PAUSE_FEATURE)
+    if (did_pause_print) return;  // Action already in progress. Purge triggered repeated runout.
   #endif
 
-  TERN_(EXTENSIBLE_UI, ExtUI::onFilamentRunout(ExtUI::getActiveTool()));
+  #if ENABLED(EXTENSIBLE_UI)
+    ExtUI::onFilamentRunout(ExtUI::getActiveTool());
+  #endif
 
   #if EITHER(HOST_PROMPT_SUPPORT, HOST_ACTION_COMMANDS)
     const char tool = '0'

@@ -53,10 +53,6 @@ GcodeSuite gcode;
   #include "../feature/cancel_object.h"
 #endif
 
-#if ENABLED(LASER_MOVE_POWER)
-  #include "../feature/spindle_laser.h"
-#endif
-
 #include "../MarlinCore.h" // for idle()
 
 millis_t GcodeSuite::previous_move_ms;
@@ -70,7 +66,7 @@ uint8_t GcodeSuite::axis_relative = (
   | (ar_init.e ? _BV(REL_E) : 0)
 );
 
-#if EITHER(HAS_AUTO_REPORTING, HOST_KEEPALIVE_FEATURE)
+#if HAS_AUTO_REPORTING || ENABLED(HOST_KEEPALIVE_FEATURE)
   bool GcodeSuite::autoreport_paused; // = false
 #endif
 
@@ -176,18 +172,6 @@ void GcodeSuite::get_destination_from_command() {
   #if BOTH(MIXING_EXTRUDER, DIRECT_MIXING_IN_G1)
     M165();
   #endif
-
-  #if ENABLED(LASER_MOVE_POWER)
-    // Set the laser power in the planner to configure this move
-    if (parser.seen('S'))
-      cutter.inline_power(parser.value_int());
-    else {
-      #if ENABLED(LASER_MOVE_G0_OFF)
-        if (parser.codenum == 0)        // G0
-          cutter.inline_enabled(false);
-      #endif
-    }
-  #endif
 }
 
 /**
@@ -202,7 +186,7 @@ void GcodeSuite::dwell(millis_t time) {
  * When G29_RETRY_AND_RECOVER is enabled, call G29() in
  * a loop with recovery and retry handling.
  */
-#if BOTH(HAS_LEVELING, G29_RETRY_AND_RECOVER)
+#if HAS_LEVELING && ENABLED(G29_RETRY_AND_RECOVER)
 
   #ifndef G29_MAX_RETRIES
     #define G29_MAX_RETRIES 0
@@ -218,7 +202,9 @@ void GcodeSuite::dwell(millis_t time) {
       }
     }
 
-    TERN_(HOST_PROMPT_SUPPORT, host_action_prompt_end());
+    #if ENABLED(HOST_PROMPT_SUPPORT)
+      host_action_prompt_end();
+    #endif
 
     #ifdef G29_SUCCESS_COMMANDS
       process_subcommands_now_P(PSTR(G29_SUCCESS_COMMANDS));
@@ -259,10 +245,6 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
 
       #if ENABLED(BEZIER_CURVE_SUPPORT)
         case 5: G5(); break;                                      // G5: Cubic B_spline
-      #endif
-
-      #if ENABLED(DIRECT_STEPPING)
-        case 6: G6(); break;                                      // G6: Direct Stepper Move
       #endif
 
       #if ENABLED(FWRETRACT)
@@ -471,7 +453,7 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
 
       case 105: M105(); return;                                   // M105: Report Temperatures (and say "ok")
 
-      #if HAS_FAN
+      #if FAN_COUNT > 0
         case 106: M106(); break;                                  // M106: Fan On
         case 107: M107(); break;                                  // M107: Fan Off
       #endif
@@ -508,7 +490,7 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
         case 191: M191(); break;                                  // M191: Wait for chamber temperature to reach target
       #endif
 
-      #if BOTH(AUTO_REPORT_TEMPERATURES, HAS_TEMP_SENSOR)
+      #if ENABLED(AUTO_REPORT_TEMPERATURES) && HAS_TEMP_SENSOR
         case 155: M155(); break;                                  // M155: Set temperature auto-report interval
       #endif
 
@@ -548,7 +530,7 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
       case 120: M120(); break;                                    // M120: Enable endstops
       case 121: M121(); break;                                    // M121: Disable endstops
 
-      #if HAS_HOTEND && HAS_LCD_MENU
+      #if HOTENDS && HAS_LCD_MENU
         case 145: M145(); break;                                  // M145: Set material heatup parameters
       #endif
 
@@ -665,10 +647,6 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
 
       #if HAS_USER_THERMISTORS
         case 305: M305(); break;                                  // M305: Set user thermistor parameters
-      #endif
-
-      #if ENABLED(REPETIER_GCODE_M360)
-        case 360: M360(); break;                                  // M360: Firmware settings
       #endif
 
       #if ENABLED(MORGAN_SCARA)
@@ -800,9 +778,9 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
         case 900: M900(); break;                                  // M900: Set advance K factor.
       #endif
 
-      #if ANY(HAS_DIGIPOTSS, HAS_MOTOR_CURRENT_PWM, HAS_I2C_DIGIPOT, DAC_STEPPER_CURRENT)
+      #if HAS_DIGIPOTSS || HAS_MOTOR_CURRENT_PWM || EITHER(DIGIPOT_I2C, DAC_STEPPER_CURRENT)
         case 907: M907(); break;                                  // M907: Set digital trimpot motor current using axis codes.
-        #if EITHER(HAS_DIGIPOTSS, DAC_STEPPER_CURRENT)
+        #if HAS_DIGIPOTSS || ENABLED(DAC_STEPPER_CURRENT)
           case 908: M908(); break;                                // M908: Control digital trimpot directly.
           #if ENABLED(DAC_STEPPER_CURRENT)
             case 909: M909(); break;                              // M909: Print digipot/DAC current value
@@ -994,7 +972,7 @@ void GcodeSuite::process_subcommands_now(char * gcode) {
           break;
       }
     }
-    next_busy_signal_ms = ms + SEC_TO_MS(host_keepalive_interval);
+    next_busy_signal_ms = ms + host_keepalive_interval * 1000UL;
   }
 
 #endif // HOST_KEEPALIVE_FEATURE

@@ -38,15 +38,10 @@
 // Defines
 // ------------------------
 
-#if defined(NEOPIXEL2_TYPE) && NEOPIXEL2_TYPE != NEOPIXEL_TYPE
-  #define MULTIPLE_NEOPIXEL_TYPES 1
-#endif
+#define MULTIPLE_NEOPIXEL_TYPES (defined(NEOPIXEL2_TYPE) && (NEOPIXEL2_TYPE != NEOPIXEL_TYPE))
 
-#if NEOPIXEL_TYPE == NEO_RGB || NEOPIXEL_TYPE == NEO_RBG || NEOPIXEL_TYPE == NEO_GRB || NEOPIXEL_TYPE == NEO_GBR || NEOPIXEL_TYPE == NEO_BRG || NEOPIXEL_TYPE == NEO_BGR
-  #define NEOPIXEL_IS_RGB 1
-#else
-  #define NEOPIXEL_IS_RGBW 1
-#endif
+#define NEOPIXEL_IS_RGB  (NEOPIXEL_TYPE == NEO_RGB || NEOPIXEL_TYPE == NEO_RBG || NEOPIXEL_TYPE == NEO_GRB || NEOPIXEL_TYPE == NEO_GBR || NEOPIXEL_TYPE == NEO_BRG || NEOPIXEL_TYPE == NEO_BGR)
+#define NEOPIXEL_IS_RGBW !NEOPIXEL_IS_RGB
 
 #if NEOPIXEL_IS_RGB
   #define NEO_WHITE 255, 255, 255, 0
@@ -78,17 +73,23 @@ public:
 
   static inline void begin() {
     adaneo1.begin();
-    TERN_(MULTIPLE_NEOPIXEL_TYPES, adaneo2.begin());
+    #if MULTIPLE_NEOPIXEL_TYPES
+      adaneo2.begin();
+    #endif
   }
 
   static inline void set_pixel_color(const uint16_t n, const uint32_t c) {
     adaneo1.setPixelColor(n, c);
-    TERN_(MULTIPLE_NEOPIXEL_TYPES, adaneo2.setPixelColor(n, c));
+    #if MULTIPLE_NEOPIXEL_TYPES
+      adaneo2.setPixelColor(n, c);
+    #endif
   }
 
   static inline void set_brightness(const uint8_t b) {
     adaneo1.setBrightness(b);
-    TERN_(MULTIPLE_NEOPIXEL_TYPES, adaneo2.setBrightness(b));
+    #if MULTIPLE_NEOPIXEL_TYPES
+      adaneo2.setBrightness(b);
+    #endif
   }
 
   static inline void show() {

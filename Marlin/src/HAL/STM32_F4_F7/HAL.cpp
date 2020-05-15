@@ -20,6 +20,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 #if defined(STM32GENERIC) && (defined(STM32F4) || defined(STM32F7))
 
 #include "HAL.h"

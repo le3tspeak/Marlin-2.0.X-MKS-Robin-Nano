@@ -65,7 +65,7 @@ void GcodeSuite::M104() {
 
   if (parser.seenval('S')) {
     const int16_t temp = parser.value_celsius();
-    #if ENABLED(SINGLENOZZLE_STANDBY_TEMP)
+    #if ENABLED(SINGLENOZZLE)
       singlenozzle_temp[target_extruder] = temp;
       if (target_extruder != active_extruder) return;
     #endif
@@ -87,7 +87,9 @@ void GcodeSuite::M104() {
     #endif
   }
 
-  TERN_(AUTOTEMP, planner.autotemp_M104_M109());
+  #if ENABLED(AUTOTEMP)
+    planner.autotemp_M104_M109();
+  #endif
 }
 
 /**
@@ -111,7 +113,7 @@ void GcodeSuite::M109() {
              set_temp = no_wait_for_cooling || parser.seenval('R');
   if (set_temp) {
     const int16_t temp = parser.value_celsius();
-    #if ENABLED(SINGLENOZZLE_STANDBY_TEMP)
+    #if ENABLED(SINGLENOZZLE)
       singlenozzle_temp[target_extruder] = temp;
       if (target_extruder != active_extruder) return;
     #endif
@@ -137,7 +139,9 @@ void GcodeSuite::M109() {
     #endif
   }
 
-  TERN_(AUTOTEMP, planner.autotemp_M104_M109());
+  #if ENABLED(AUTOTEMP)
+    planner.autotemp_M104_M109();
+  #endif
 
   if (set_temp)
     (void)thermalManager.wait_for_hotend(target_extruder, no_wait_for_cooling);

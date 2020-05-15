@@ -33,6 +33,9 @@
  *
  * Example:
  *   M73 P25 ; Set progress to 25%
+ *
+ * Notes:
+ *   This has no effect during an SD print job
  */
 void GcodeSuite::M73() {
   if (parser.seen('P'))

@@ -20,6 +20,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 #ifdef ARDUINO_ARCH_ESP32
 
 #include "HAL.h"

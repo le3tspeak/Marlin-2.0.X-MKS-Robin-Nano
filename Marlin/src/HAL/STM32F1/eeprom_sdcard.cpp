@@ -32,7 +32,6 @@
 #if ENABLED(SDCARD_EEPROM_EMULATION)
 
 #include "../shared/eeprom_api.h"
-#include "../../sd/cardreader.h"
 
 #ifndef E2END
   #define E2END 0xFFF // 4KB
@@ -42,34 +41,44 @@
 #define _ALIGN(x) __attribute__ ((aligned(x))) // SDIO uint32_t* compat.
 static char _ALIGN(4) HAL_eeprom_data[HAL_EEPROM_SIZE];
 
-#define EEPROM_FILENAME "eeprom.dat"
+#if ENABLED(SDSUPPORT)
 
-bool PersistentStore::access_start() {
-  if (!card.isMounted()) return false;
+  #include "../../sd/cardreader.h"
 
-  SdFile file, root = card.getroot();
-  if (!file.open(&root, EEPROM_FILENAME, O_RDONLY))
-    return true; // false aborts the save
+  #define EEPROM_FILENAME "eeprom.dat"
 
-  int bytes_read = file.read(HAL_eeprom_data, HAL_EEPROM_SIZE);
-  if (bytes_read < 0) return false;
-  for (; bytes_read < HAL_EEPROM_SIZE; bytes_read++)
-    HAL_eeprom_data[bytes_read] = 0xFF;
-  file.close();
-  return true;
-}
+  bool PersistentStore::access_start() {
+    if (!card.isMounted()) return false;
 
-bool PersistentStore::access_finish() {
-  if (!card.isMounted()) return false;
+    SdFile file, root = card.getroot();
+    if (!file.open(&root, EEPROM_FILENAME, O_RDONLY))
+      return true; // false aborts the save
 
-  SdFile file, root = card.getroot();
-  int bytes_written = 0;
-  if (file.open(&root, EEPROM_FILENAME, O_CREAT | O_WRITE | O_TRUNC)) {
-    bytes_written = file.write(HAL_eeprom_data, HAL_EEPROM_SIZE);
+    int bytes_read = file.read(HAL_eeprom_data, HAL_EEPROM_SIZE);
+    if (bytes_read < 0) return false;
+    for (; bytes_read < HAL_EEPROM_SIZE; bytes_read++)
+      HAL_eeprom_data[bytes_read] = 0xFF;
     file.close();
+    return true;
   }
-  return (bytes_written == HAL_EEPROM_SIZE);
-}
+
+  bool PersistentStore::access_finish() {
+    if (!card.isMounted()) return false;
+
+    SdFile file, root = card.getroot();
+    int bytes_written = 0;
+    if (file.open(&root, EEPROM_FILENAME, O_CREAT | O_WRITE | O_TRUNC)) {
+      bytes_written = file.write(HAL_eeprom_data, HAL_EEPROM_SIZE);
+      file.close();
+    }
+    return (bytes_written == HAL_EEPROM_SIZE);
+  }
+
+#else // !SDSUPPORT
+
+  #error "Please define SPI_EEPROM (in Configuration.h) or disable EEPROM_SETTINGS."
+
+#endif // !SDSUPPORT
 
 bool PersistentStore::write_data(int &pos, const uint8_t *value, size_t size, uint16_t *crc) {
   for (size_t i = 0; i < size; i++)

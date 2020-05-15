@@ -82,7 +82,9 @@ private:
     }
     transfer_active = true;
     data_waiting = 0;
-    TERN_(BINARY_STREAM_COMPRESSION, heatshrink_decoder_reset(&hsd));
+    #if ENABLED(BINARY_STREAM_COMPRESSION)
+      heatshrink_decoder_reset(&hsd);
+    #endif
     return true;
   }
 
@@ -125,7 +127,9 @@ private:
       card.closefile();
       card.release();
     }
-    TERN_(BINARY_STREAM_COMPRESSION, heatshrink_decoder_finish(&hsd));
+    #if ENABLED(BINARY_STREAM_COMPRESSION)
+      heatshrink_decoder_finish(&hsd);
+    #endif
     transfer_active = false;
     return true;
   }
@@ -135,7 +139,9 @@ private:
       card.closefile();
       card.removeFile(card.filename);
       card.release();
-      TERN_(BINARY_STREAM_COMPRESSION, heatshrink_decoder_finish(&hsd));
+      #if ENABLED(BINARY_STREAM_COMPRESSION)
+        heatshrink_decoder_finish(&hsd);
+      #endif
     }
     transfer_active = false;
     return;

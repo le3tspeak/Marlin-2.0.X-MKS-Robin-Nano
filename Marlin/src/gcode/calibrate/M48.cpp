@@ -263,7 +263,9 @@ void GcodeSuite::M48() {
   restore_feedrate_and_scaling();
 
   // Re-enable bed level correction if it had been on
-  TERN_(HAS_LEVELING, set_bed_leveling_enabled(was_enabled));
+  #if HAS_LEVELING
+    set_bed_leveling_enabled(was_enabled);
+  #endif
 
   report_current_position();
 }

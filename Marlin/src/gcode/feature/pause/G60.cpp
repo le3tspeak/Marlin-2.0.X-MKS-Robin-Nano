@@ -24,6 +24,7 @@
 
 #if SAVED_POSITIONS
 
+#include "../../../core/language.h"
 #include "../../gcode.h"
 #include "../../../module/motion.h"
 

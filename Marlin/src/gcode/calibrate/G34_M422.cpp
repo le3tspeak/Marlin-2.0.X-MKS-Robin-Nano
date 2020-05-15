@@ -32,7 +32,7 @@
 #include "../../module/motion.h"
 #include "../../module/probe.h"
 
-#if HAS_MULTI_HOTEND
+#if HOTENDS > 1
   #include "../../module/tool_change.h"
 #endif
 
@@ -113,24 +113,34 @@ void GcodeSuite::G34() {
 
     // Disable the leveling matrix before auto-aligning
     #if HAS_LEVELING
-      TERN_(RESTORE_LEVELING_AFTER_G34, const bool leveling_was_active = planner.leveling_active);
+      #if ENABLED(RESTORE_LEVELING_AFTER_G34)
+        const bool leveling_was_active = planner.leveling_active;
+      #endif
       set_bed_leveling_enabled(false);
     #endif
 
-    TERN_(CNC_WORKSPACE_PLANES, workspace_plane = PLANE_XY);
+    #if ENABLED(CNC_WORKSPACE_PLANES)
+      workspace_plane = PLANE_XY;
+    #endif
 
     // Always home with tool 0 active
-    #if HAS_MULTI_HOTEND
+    #if HOTENDS > 1
       const uint8_t old_tool_index = active_extruder;
       tool_change(0, true);
     #endif
 
-    TERN_(HAS_DUPLICATION_MODE, extruder_duplication_enabled = false);
+    #if HAS_DUPLICATION_MODE
+      extruder_duplication_enabled = false;
+    #endif
 
-    // In BLTOUCH HS mode, the probe travels in a deployed state.
-    // Users of G34 might have a badly misaligned bed, so raise Z by the
-    // length of the deployed pin (BLTOUCH stroke < 7mm)
-    #define Z_BASIC_CLEARANCE Z_CLEARANCE_BETWEEN_PROBES + 7.0f * BOTH(BLTOUCH, BLTOUCH_HS_MODE)
+    #if BOTH(BLTOUCH, BLTOUCH_HS_MODE)
+        // In BLTOUCH HS mode, the probe travels in a deployed state.
+        // Users of G34 might have a badly misaligned bed, so raise Z by the
+        // length of the deployed pin (BLTOUCH stroke < 7mm)
+      #define Z_BASIC_CLEARANCE Z_CLEARANCE_BETWEEN_PROBES + 7.0f
+    #else
+      #define Z_BASIC_CLEARANCE Z_CLEARANCE_BETWEEN_PROBES
+    #endif
 
     // Compute a worst-case clearance height to probe from. After the first
     // iteration this will be re-calculated based on the actual bed position
@@ -376,9 +386,11 @@ void GcodeSuite::G34() {
     #endif
 
     // Restore the active tool after homing
-    TERN_(HAS_MULTI_HOTEND, tool_change(old_tool_index, DISABLED(PARKING_EXTRUDER))); // Fetch previous tool for parking extruder
+    #if HOTENDS > 1
+      tool_change(old_tool_index, DISABLED(PARKING_EXTRUDER)); // Fetch previous tool for parking extruder
+    #endif
 
-    #if BOTH(HAS_LEVELING, RESTORE_LEVELING_AFTER_G34)
+    #if HAS_LEVELING && ENABLED(RESTORE_LEVELING_AFTER_G34)
       set_bed_leveling_enabled(leveling_was_active);
     #endif
 

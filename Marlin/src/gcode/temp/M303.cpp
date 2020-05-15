@@ -72,13 +72,15 @@ void GcodeSuite::M303() {
   const heater_ind_t e = (heater_ind_t)parser.intval('E');
   if (!WITHIN(e, SI, EI)) {
     SERIAL_ECHOLNPGM(STR_PID_BAD_EXTRUDER_NUM);
-    TERN_(EXTENSIBLE_UI, ExtUI::onPidTuning(ExtUI::result_t::PID_BAD_EXTRUDER_NUM));
+    #if ENABLED(EXTENSIBLE_UI)
+      ExtUI::onPidTuning(ExtUI::result_t::PID_BAD_EXTRUDER_NUM);
+    #endif
     return;
   }
 
   const int c = parser.intval('C', 5);
   const bool u = parser.boolval('U');
-  const int16_t temp = parser.celsiusval('S', e < 0 ? 70 : 200);
+  const int16_t temp = parser.celsiusval('S', e < 0 ? 70 : 150);
 
   #if DISABLED(BUSY_WHILE_HEATING)
     KEEPALIVE_STATE(NOT_BUSY);

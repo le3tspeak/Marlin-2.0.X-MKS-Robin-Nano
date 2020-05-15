@@ -22,7 +22,7 @@
 
 #include "../../inc/MarlinConfig.h"
 
-#if HAS_FAN
+#if FAN_COUNT > 0
 
 #include "../gcode.h"
 #include "../../module/motion.h"
@@ -74,4 +74,4 @@ void GcodeSuite::M107() {
   thermalManager.set_fan_speed(p, 0);
 }
 
-#endif // HAS_FAN
+#endif // FAN_COUNT > 0

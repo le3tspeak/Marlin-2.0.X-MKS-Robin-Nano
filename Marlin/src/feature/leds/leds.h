@@ -34,9 +34,7 @@
 #endif
 
 // A white component can be passed
-#if EITHER(RGBW_LED, NEOPIXEL_LED)
-  #define HAS_WHITE_LED 1
-#endif
+#define HAS_WHITE_LED EITHER(RGBW_LED, NEOPIXEL_LED)
 
 /**
  * LEDcolor type for use with leds.set_color
@@ -87,7 +85,9 @@ typedef struct LEDColor {
 
   LEDColor& operator=(const uint8_t (&rgbw)[4]) {
     r = rgbw[0]; g = rgbw[1]; b = rgbw[2];
-    TERN_(HAS_WHITE_LED, w = rgbw[3]);
+    #if HAS_WHITE_LED
+      w = rgbw[3];
+    #endif
     return *this;
   }
 

@@ -58,7 +58,9 @@ void Babystep::add_steps(const AxisEnum axis, const int16_t distance) {
   if (DISABLED(BABYSTEP_WITHOUT_HOMING) && !TEST(axis_known_position, axis)) return;
 
   accum += distance; // Count up babysteps for the UI
-  TERN_(BABYSTEP_DISPLAY_TOTAL, axis_total[BS_TOTAL_IND(axis)] += distance);
+  #if ENABLED(BABYSTEP_DISPLAY_TOTAL)
+    axis_total[BS_TOTAL_IND(axis)] += distance;
+  #endif
 
   #if ENABLED(BABYSTEP_ALWAYS_AVAILABLE)
     #define BSA_ENABLE(AXIS) do{ switch (AXIS) { case X_AXIS: ENABLE_AXIS_X(); break; case Y_AXIS: ENABLE_AXIS_Y(); break; case Z_AXIS: ENABLE_AXIS_Z(); break; default: break; } }while(0)
@@ -105,10 +107,13 @@ void Babystep::add_steps(const AxisEnum axis, const int16_t distance) {
     #endif
     steps[BS_AXIS_IND(axis)] += distance;
   #endif
+  #if ENABLED(BABYSTEP_ALWAYS_AVAILABLE)
+    gcode.reset_stepper_timeout();
+  #endif
 
-  TERN_(BABYSTEP_ALWAYS_AVAILABLE, gcode.reset_stepper_timeout());
-
-  TERN_(INTEGRATED_BABYSTEPPING, if (has_steps()) stepper.initiateBabystepping());
+  #if ENABLED(INTEGRATED_BABYSTEPPING)
+    if (has_steps()) stepper.initiateBabystepping();
+  #endif
 }
 
 #endif // BABYSTEPPING
