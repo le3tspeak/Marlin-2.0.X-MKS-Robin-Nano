@@ -119,7 +119,7 @@
 //
 // Servos
 //
-#define SERVO0_PIN                          PA8   // BLTOUCH
+#define SERVO0_PIN                          PA8   // Enable BLTOUCH support ROBIN NANO v1.2 ONLY
 
 //
 // Temperature Sensors
