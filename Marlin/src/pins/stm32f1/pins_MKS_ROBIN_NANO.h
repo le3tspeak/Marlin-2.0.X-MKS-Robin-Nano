@@ -81,9 +81,43 @@
 #define E0_STEP_PIN                         PD6
 #define E0_DIR_PIN                          PD3
 
-#define E1_ENABLE_PIN                       PA3
-#define E1_STEP_PIN                         PA6
-#define E1_DIR_PIN                          PA1
+//#define E1_ENABLE_PIN                       PA3
+//#define E1_STEP_PIN                         PA6
+//#define E1_DIR_PIN                          PA1
+
+//
+//TMC UART RX / TX Pins
+//
+#if HAS_TMC220x
+  /**
+   * TMC2208/TMC2209 stepper drivers
+   *
+   * Hardware serial communication ports.
+   * If undefined software serial is used according to the pins below
+   */
+  //#define X_HARDWARE_SERIAL  Serial1
+  //#define Y_HARDWARE_SERIAL  Serial1
+  //#define Z_HARDWARE_SERIAL  Serial1
+  //#define E0_HARDWARE_SERIAL Serial1
+
+  //
+  // Software serial
+  //
+  #define X_SERIAL_TX_PIN                   PA3
+  #define X_SERIAL_RX_PIN                   PA3
+
+  #define Y_SERIAL_TX_PIN                   PA6
+  #define Y_SERIAL_RX_PIN                   PA6
+
+  #define Z_SERIAL_TX_PIN                   PA1
+  #define Z_SERIAL_RX_PIN                   PA1
+
+  #define E0_SERIAL_TX_PIN                  PE5
+  #define E0_SERIAL_RX_PIN                  PE5
+
+  // Reduce baud rate to improve software serial reliability
+  #define TMC_BAUD_RATE 19200
+#endif
 
 //
 // Temperature Sensors
@@ -100,6 +134,7 @@
 #define HEATER_BED_PIN                      PA0   // HOT BED
 
 #define FAN_PIN                             PB1   // FAN
+//#define E0_AUTO_FAN                       PB0
 
 //
 // Thermocouples
@@ -121,7 +156,20 @@
 
 //#define SERVO0_PIN                          PA8   // Enable BLTOUCH support ROBIN NANO v1.2 ONLY
 
-//#define LED_PIN                             PB2
+//
+// LED / NEOPixel
+//
+//#define LED_PIN            PB2
+//#define NEO_PIXEL_1        PA10  // USED WIFI RX PIN
+//#define NEO_PIXEL_2        PA9   // USED WIFI TX PIN
+
+//
+// WIFI ESP8266   (Not working in the version coming in the following updates)
+//
+//#define WIFI_TX_PIN    PA10
+//#define WIFI_RX_PIN    PA9
+//#define WIFI_IO0_PIN   PC13
+//#define WIFI_IO1_PIN   PC7
 
 //
 // SD Card
