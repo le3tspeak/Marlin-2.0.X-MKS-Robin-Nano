@@ -173,7 +173,7 @@
 
 #define SDIO_SUPPORT
 #define SD_DETECT_PIN                       PD12
-#define ONBOARD_SD_CS_PIN                   PD2
+#define ONBOARD_SD_CS_PIN                   PC11
 
 //
 // LCD / Controller
