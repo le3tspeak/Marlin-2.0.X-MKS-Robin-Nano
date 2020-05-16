@@ -15,7 +15,7 @@ for i, flag in enumerate(env["LINKFLAGS"]):
         env["LINKFLAGS"][i + 1] = custom_ld_script
 
 
-# Encrypt ${PROGNAME}.bin and save it as 'Robin_nano.bin'
+# Encrypt ${PROGNAME}.bin and save it as 'Robin_nano35.bin'
 def encrypt(source, target, env):
     import sys
 
