@@ -28,25 +28,24 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
   [MKS Robin Nano](https://makerbase.com.cn/en/)|ARM® Cortex-M3 / STM32F103VET6| MKS Robin Nano 1.1 
   [MKS Robin Nano](https://makerbase.com.cn/en/)|ARM® Cortex-M3 / STM32F103VET6| MKS Robin Nano 1.2
   
-  
+### Features of the Configuration of Branch 2.0.5.3-EEPROM
 
-### Features
-
-Features|Active|Value
---------|------|-----
-UI Type|-|Classic Marlin
-Linear Advance|True|0
-Classic Jerk|False|-
-Junction Deviation|True|0.05
-Filament sensor|True|-
-TMC UART|-|Ready
-TMC SPI|-|in progress
-Neopixel|-|Ready
+  Features|Active|Value
+  --------|------|-----
+  UI Type|-|Classic Marlin
+  EEPROM|True|SPI Flash
+  Linear Advance|True|0
+  Classic Jerk|False|-
+  Junction Deviation|True|0.05
+  Filament sensor|True|-
+  TMC UART|-|Ready
+  TMC SPI|-|in progress
+  Neopixel|-|Ready
 
   
 ## Submitting Changes
 
-- Submit **Bug Fixes** as Pull Requests to the ([bugfix-2.0.x](https://github.com/le3tspeak/Marlin-2.0.X-Sapphire-PRO/tree/2.0.X-bugfix) branch.
+- Submit **Bug Fixes** as Pull Requests to the [bugfix-2.0.x](https://github.com/le3tspeak/Marlin-2.0.X-Sapphire-PRO/tree/2.0.X-bugfix) branch.
 - Please submit your questions and concerns to the [Issue Queue](https://github.com/le3tspeak/Marlin-2.0.X-Sapphire-PRO/issues).
 
 
