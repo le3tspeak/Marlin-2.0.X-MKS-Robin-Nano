@@ -34,6 +34,7 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
   --------|------|-----
   UI Type|-|Classic Marlin
   EEPROM|True|SPI Flash
+  M575 to change the baud rate|True|250000
   Linear Advance|True|0
   Classic Jerk|False|-
   Junction Deviation|True|0.05
