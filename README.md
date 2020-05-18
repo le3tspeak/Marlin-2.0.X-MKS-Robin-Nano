@@ -1,9 +1,6 @@
 # Marlin Firmware adapted for the MKS Robin Nano 1.1/1.2
 
 
-
-
-
 ## Marlin 2.0<img align="right" width=175 src="buildroot/share/pixmaps/logo/marlin-250.png" />
 
 
