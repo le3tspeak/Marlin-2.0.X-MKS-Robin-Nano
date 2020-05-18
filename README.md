@@ -44,7 +44,7 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
   Z|A4988
   E|A4988
 
-  Type|Value
+  Memory consumption|Value
   --------------------|-------------------------------------------
   RAM:    |57.3% (used 37568 bytes from 65536 bytes)
   Flash:  |42.3% (used 221676 bytes from 524288 bytes)
