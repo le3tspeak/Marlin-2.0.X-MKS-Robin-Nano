@@ -42,6 +42,16 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
   TMC SPI|-|in progress
   Neopixel|-|Ready
 
+  #### Stepper motor driver of the Configuration of Branch 2.0.5.3-EEPROM
+
+  Axes|Type
+  ----|----
+  X|TMC2208 Standalone
+  Y|TMC2208 Standalone
+  Z|A4988
+  E|A4988
+
+
   
 ## Submitting Changes
 
