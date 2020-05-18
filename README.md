@@ -22,7 +22,7 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
   [MKS Robin Nano](https://makerbase.com.cn/en/)|ARM® Cortex-M3 / STM32F103VET6| MKS Robin Nano 1.1 
   [MKS Robin Nano](https://makerbase.com.cn/en/)|ARM® Cortex-M3 / STM32F103VET6| MKS Robin Nano 1.2
   
-### Features of the Configuration of Branch 2.0.5.3-EEPROM
+### Features of the Configuration of Branch 2.0.X-bugfix
 
   Features|Active|Value
   --------|------|-----
