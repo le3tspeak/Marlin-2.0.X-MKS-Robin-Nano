@@ -43,6 +43,7 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
   Y|TMC2208 Standalone
   Z|A4988
   E|A4988
+  
  Type|Value
  --------------------|-------------------------------------------
  RAM:   [==========] |98.7% (used 64704 bytes from 65536 bytes)
