@@ -20,7 +20,6 @@
  *
  */
 #pragma once
-#include "Version.h"
 
 /**
  * Configuration.h
