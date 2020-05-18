@@ -21,10 +21,6 @@
  */
 #pragma once
 
-////////////////////////////
-// VENDOR VERSION EXAMPLE //
-////////////////////////////
-
 /**
  * Marlin release version identifier
  */
@@ -34,14 +30,14 @@
  * Verbose version identifier which should contain a reference to the location
  * from where the binary was downloaded or the source code was compiled.
  */
-//#define DETAILED_BUILD_VERSION SHORT_BUILD_VERSION
+#define DETAILED_BUILD_VERSION SHORT_BUILD_VERSION "https://github.com/le3tspeak/Marlin-2.0.X-Sapphire-PRO/tree/2.0.X-bugfix"
 
 /**
  * The STRING_DISTRIBUTION_DATE represents when the binary file was built,
  * here we define this default string as the date where the latest release
  * version was tagged.
  */
-#define STRING_DISTRIBUTION_DATE "14.05.2020"
+#define STRING_DISTRIBUTION_DATE "18.05.2020"
 
 /**
  * Defines a generic printer name to be output to the LCD after booting Marlin.
