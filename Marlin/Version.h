@@ -24,25 +24,25 @@
 /**
  * Marlin release version identifier
  */
-#define SHORT_BUILD_VERSION "bugfix-2.0.x"
+#define SHORT_BUILD_VERSION "bugfix-2.0.X"
 
 /**
  * Verbose version identifier which should contain a reference to the location
  * from where the binary was downloaded or the source code was compiled.
  */
-#define DETAILED_BUILD_VERSION SHORT_BUILD_VERSION "https://github.com/le3tspeak/Marlin-2.0.X-Sapphire-PRO/tree/2.0.X-bugfix"
+#define DETAILED_BUILD_VERSION SHORT_BUILD_VERSION "https://github.com/le3tspeak/Marlin-2.0.X-MKS-Robin-Nano"
 
 /**
  * The STRING_DISTRIBUTION_DATE represents when the binary file was built,
  * here we define this default string as the date where the latest release
  * version was tagged.
  */
-#define STRING_DISTRIBUTION_DATE "18.05.2020"
+#define STRING_DISTRIBUTION_DATE "26.05.2020"
 
 /**
  * Defines a generic printer name to be output to the LCD after booting Marlin.
  */
-#define MACHINE_NAME "Sapphire Pro"
+//#define MACHINE_NAME "Sapphire Pro"
 
 /**
  * The SOURCE_CODE_URL is the location where users will find the Marlin Source
@@ -50,18 +50,18 @@
  * has a distinct Github fork— the Source Code URL should just be the main
  * Marlin repository.
  */
-#define SOURCE_CODE_URL "https://github.com/le3tspeak/Marlin-2.0.X-Sapphire-PRO/tree/2.0.X-bugfix"
+#define SOURCE_CODE_URL "https://github.com/le3tspeak/Marlin-2.0.X-MKS-Robin-Nano"
 
 /**
  * Default generic printer UUID.
  */
-//#define DEFAULT_MACHINE_UUID "cede2a2f-41a2-4748-9b12-c55c62f367ff"
+#define DEFAULT_MACHINE_UUID "Lede2a2f-e1a2-3748-tb12-c55c62f367ff"
 
 /**
  * The WEBSITE_URL is the location where users can get more information such as
  * documentation about a specific Marlin release.
  */
-#define WEBSITE_URL "http://marlinfw.org"
+#define WEBSITE_URL "by Le3tspeak"
 
 /**
  * Set the vendor info the serial USB interface, if changable
