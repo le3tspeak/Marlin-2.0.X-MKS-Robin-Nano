@@ -30,7 +30,7 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
   UI Type|-|Classic Marlin
   EEPROM|True|SDCARD EEPROM EMULATION
   M575 to change the baud rate|True|250000
-    G0 Support|True|-
+  G0 Support|True|-
   G2/G3 Arc Support|True|-
   Linear Advance|True|0
   Classic Jerk|False|-
