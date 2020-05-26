@@ -720,42 +720,42 @@
  *          TMC5130, TMC5130_STANDALONE, TMC5160, TMC5160_STANDALONE
  * :['A4988', 'A5984', 'DRV8825', 'LV8729', 'L6470', 'L6474', 'POWERSTEP01', 'TB6560', 'TB6600', 'TMC2100', 'TMC2130', 'TMC2130_STANDALONE', 'TMC2160', 'TMC2160_STANDALONE', 'TMC2208', 'TMC2208_STANDALONE', 'TMC2209', 'TMC2209_STANDALONE', 'TMC26X', 'TMC26X_STANDALONE', 'TMC2660', 'TMC2660_STANDALONE', 'TMC5130', 'TMC5130_STANDALONE', 'TMC5160', 'TMC5160_STANDALONE']
  */
- #if ENABLED (Sapphire_Pro)
- #define X_DRIVER_TYPE  TMC2208_STANDALONE
- #define Y_DRIVER_TYPE  TMC2208_STANDALONE
- #define Z_DRIVER_TYPE  A4988
- //#define X2_DRIVER_TYPE A4988
- //#define Y2_DRIVER_TYPE A4988
- //#define Z2_DRIVER_TYPE A4988
- //#define Z3_DRIVER_TYPE A4988
- //#define Z4_DRIVER_TYPE A4988
- #define E0_DRIVER_TYPE A4988
- //#define E1_DRIVER_TYPE A4988
- //#define E2_DRIVER_TYPE A4988
- //#define E3_DRIVER_TYPE A4988
- //#define E4_DRIVER_TYPE A4988
- //#define E5_DRIVER_TYPE A4988
- //#define E6_DRIVER_TYPE A4988
- //#define E7_DRIVER_TYPE A4988
- #endif
- #if ENABLED (Sapphire_Plus)
- #define X_DRIVER_TYPE  TMC2208_STANDALONE
- #define Y_DRIVER_TYPE  TMC2208_STANDALONE
- #define Z_DRIVER_TYPE  A4988
- //#define X2_DRIVER_TYPE A4988
- //#define Y2_DRIVER_TYPE A4988
- //#define Z2_DRIVER_TYPE A4988
- //#define Z3_DRIVER_TYPE A4988
- //#define Z4_DRIVER_TYPE A4988
- #define E0_DRIVER_TYPE TMC2208_STANDALONE
- //#define E1_DRIVER_TYPE A4988
- //#define E2_DRIVER_TYPE A4988
- //#define E3_DRIVER_TYPE A4988
- //#define E4_DRIVER_TYPE A4988
- //#define E5_DRIVER_TYPE A4988
- //#define E6_DRIVER_TYPE A4988
- //#define E7_DRIVER_TYPE A4988
- #endif
+#if ENABLED (Sapphire_Pro)
+#define X_DRIVER_TYPE  TMC2208_STANDALONE
+#define Y_DRIVER_TYPE  TMC2208_STANDALONE
+#define Z_DRIVER_TYPE  A4988
+//#define X2_DRIVER_TYPE A4988
+//#define Y2_DRIVER_TYPE A4988
+//#define Z2_DRIVER_TYPE A4988
+//#define Z3_DRIVER_TYPE A4988
+//#define Z4_DRIVER_TYPE A4988
+#define E0_DRIVER_TYPE A4988
+//#define E1_DRIVER_TYPE A4988
+//#define E2_DRIVER_TYPE A4988
+//#define E3_DRIVER_TYPE A4988
+//#define E4_DRIVER_TYPE A4988
+//#define E5_DRIVER_TYPE A4988
+//#define E6_DRIVER_TYPE A4988
+//#define E7_DRIVER_TYPE A4988
+#endif
+#if ENABLED (Sapphire_Plus)
+#define X_DRIVER_TYPE  TMC2208_STANDALONE
+#define Y_DRIVER_TYPE  TMC2208_STANDALONE
+#define Z_DRIVER_TYPE  A4988
+//#define X2_DRIVER_TYPE A4988
+//#define Y2_DRIVER_TYPE A4988
+//#define Z2_DRIVER_TYPE A4988
+//#define Z3_DRIVER_TYPE A4988
+//#define Z4_DRIVER_TYPE A4988
+#define E0_DRIVER_TYPE TMC2208_STANDALONE
+//#define E1_DRIVER_TYPE A4988
+//#define E2_DRIVER_TYPE A4988
+//#define E3_DRIVER_TYPE A4988
+//#define E4_DRIVER_TYPE A4988
+//#define E5_DRIVER_TYPE A4988
+//#define E6_DRIVER_TYPE A4988
+//#define E7_DRIVER_TYPE A4988
+#endif
 
 // Enable this feature if all enabled endstop pins are interrupt-capable.
 // This will remove the need to poll the interrupt pins, saving many CPU cycles.
@@ -800,7 +800,13 @@
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 1608, 415 }
+#if ENABLED (Sapphire_Pro)
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 1600, 415 }
+#endif
+#if ENABLED (Sapphire_Plus)
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 415 }
+#endif
+
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -1136,6 +1142,7 @@
 // @section extruder
 
 // For direct drive extruder v9 set to true, for geared extruder set to false.
+#if ENABLED (Sapphire_Pro)
 #define INVERT_E0_DIR false
 #define INVERT_E1_DIR false
 #define INVERT_E2_DIR false
@@ -1144,6 +1151,18 @@
 #define INVERT_E5_DIR false
 #define INVERT_E6_DIR false
 #define INVERT_E7_DIR false
+#endif
+#if ENABLED (Sapphire_Plus)
+#define INVERT_E0_DIR true
+#define INVERT_E1_DIR false
+#define INVERT_E2_DIR false
+#define INVERT_E3_DIR false
+#define INVERT_E4_DIR false
+#define INVERT_E5_DIR false
+#define INVERT_E6_DIR false
+#define INVERT_E7_DIR false
+#endif
+
 
 // @section homing
 
