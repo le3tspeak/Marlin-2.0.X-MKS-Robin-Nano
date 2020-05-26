@@ -26,16 +26,22 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
 
   Features|Active|Value
   --------|------|-----
+  Fast Config Switch Sapphire Pro/Plus|True|Pro
   UI Type|-|Classic Marlin
   EEPROM|True|SDCARD EEPROM EMULATION
   M575 to change the baud rate|True|250000
+    G0 Support|True|-
+  G2/G3 Arc Support|True|-
   Linear Advance|True|0
   Classic Jerk|False|-
+  Bézier curve acceleration|True|-
   Junction Deviation|True|0.05
+  Mesh Bed Leveling|True|-
   Filament sensor|True|-
   TMC UART|-|Ready
   TMC SPI|-|in progress
   Neopixel|-|Ready
+  BINARY File Transfer|True|-
 
   Axes|Type
   ----|----
@@ -46,8 +52,8 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
 
   Memory consumption|Value
   --------------------|-------------------------------------------
-  RAM:    |57.3% (used 37568 bytes from 65536 bytes)
-  Flash:  |42.3% (used 221676 bytes from 524288 bytes)
+  RAM:    |57.3% (used 37584 bytes from 65536 bytes)
+  Flash:  |43.2% (used 226332 bytes from 524288 bytes)
 
   
 ## Submitting Changes
