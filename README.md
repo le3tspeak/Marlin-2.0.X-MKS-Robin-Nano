@@ -39,6 +39,7 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
   TMC UART|-|Ready
   TMC SPI|-|in progress
   Neopixel|-|Ready
+  Cancel Objects|True|-
 
 
   Axes|Pro|Plus
