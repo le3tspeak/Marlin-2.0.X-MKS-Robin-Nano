@@ -150,7 +150,7 @@ x ||^24    ^136   ^248   ^360   ||/___ y = 301 px
 #endif
 #ifndef TFT_BTOKMENU_COLOR
   //#define TFT_BTOKMENU_COLOR COLOR_WHITE
-  #define TFT_BTOKMENU_COLOR COLOR_LIME
+  #define TFT_BTOKMENU_COLOR COLOR_GREEN
 #endif
 
 static uint32_t lcd_id = 0;
