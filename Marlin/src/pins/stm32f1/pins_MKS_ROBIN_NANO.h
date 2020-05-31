@@ -77,48 +77,135 @@
 #define E0_STEP_PIN                         PD6
 #define E0_DIR_PIN                          PD3
 
-//#define E1_ENABLE_PIN                     PA3  // USED BY UART X
-//#define E1_STEP_PIN                       PA6  // USED BY UART Y
-//#define E1_DIR_PIN                        PA1  // USED BY UART Z
+#if HAS_TMC220x
+  #if ENABLED (SOFTWARE_SERIAL)
+  	//#define E1_ENABLE_PIN                     PA3  // USED BY UART X Don't change
+    //#define E1_STEP_PIN                       PA6  // USED BY UART Y Don't change
+    //#define E1_DIR_PIN                        PA1  // USED BY UART Z Don't change
+  #endif
+#else
+  #define E1_ENABLE_PIN                     PA3
+  #define E1_STEP_PIN                       PA6 
+  #define E1_DIR_PIN                        PA1  
+#endif
 
 //
-//TMC UART RX / TX Pins
+//TMC UART RX / TX Pins Hardware/Software Serial
 //
 #if HAS_TMC220x
   /**
-   * TMC2208/TMC2209 stepper drivers
-   *
-   * Hardware serial communication ports.
-   * If undefined software serial is used according to the pins below
-   */
-  //#define X_HARDWARE_SERIAL  Serial1
-  //#define Y_HARDWARE_SERIAL  Serial1
-  //#define Z_HARDWARE_SERIAL  Serial1
-  //#define E0_HARDWARE_SERIAL Serial1
+  * TMC2209 stepper drivers
+  * 
+  * Hardware serial communication ports.
+  * If undefined software serial is used according to the pins below
+  * 
+  * Four TMC2209 drivers can use the same HW/SW serial port with hardware configured addresses.
+  * Set the address using jumpers on pins MS1 and MS2.
+  * Address | MS1  | MS2
+  *       0 | LOW  | LOW
+  *       1 | HIGH | LOW
+  *       2 | LOW  | HIGH
+  *       3 | HIGH | HIGH
+  */
 
-  //
-  // Software serial
-  //
-  #define X_SERIAL_TX_PIN                   PA3
-  #define X_SERIAL_RX_PIN                   PA3
+  // Set Hardware Serial UART only für TCM 2209
+  #define HARDWARE_SERIAL
+  // Set Software Serial UART for TMC 2208 / TMC 2209
+  //#define SOFTWARE_SERIAL
 
-  #define Y_SERIAL_TX_PIN                   PA6
-  #define Y_SERIAL_RX_PIN                   PA6
+  #if ENABLED (HARDWARE_SERIAL)
+    //#define X_HARDWARE_SERIAL  Serial1
+    //#define Y_HARDWARE_SERIAL  Serial1
+    //#define Z_HARDWARE_SERIAL  Serial1
+    //#define E0_HARDWARE_SERIAL Serial1
 
-  #define Z_SERIAL_TX_PIN                   PA1
-  #define Z_SERIAL_RX_PIN                   PA1
+    //Set *_SERIAL_TX_PIN and *_SERIAL_RX_PIN to match for all drivers on the same PIN to the same Slave Address.
+    // | = add jumper
+    // : = remove jumper
+    // M1 is always closest to 12/24v
+    // <- board power M1 M2 M3 -> endstops
+    // See: https://github.com/le3tspeak/Marlin-2.0.X-MKS-Robin-Nano/blob/MKS-Robin-Nano/docs/TMC2209HWSERIAL.jpg
+    #define  X_SLAVE_ADDRESS 3    // |  |  :
+    #define  Y_SLAVE_ADDRESS 2    // :  |  :
+    #define  Z_SLAVE_ADDRESS 1    // |  :  :
+    #define E0_SLAVE_ADDRESS 0    // :  :  :
 
-  #define E0_SERIAL_TX_PIN                  PE5
-  #define E0_SERIAL_RX_PIN                  PE5
+    #ifdef E1_DRIVER_TYPE
+      #define E1_SLAVE_ADDRESS 0  // :  :  : 
+    #endif
+    #ifdef Z2_DRIVER_TYPE
+      #define Z2_SLAVE_ADDRESS 0  // :  :  : 
+    #endif
 
-  // Reduce baud rate to improve software serial reliability
-  #define TMC_BAUD_RATE 19200
+    #define X_SERIAL_TX_PIN                   PA9
+    #define X_SERIAL_RX_PIN                   PA9
+    
+    #define Y_SERIAL_TX_PIN                   PA9
+    #define Y_SERIAL_RX_PIN                   PA9
+    
+    #define Z_SERIAL_TX_PIN                   PA9
+    #define Z_SERIAL_RX_PIN                   PA9
+
+    #define E0_SERIAL_TX_PIN                  PA5
+    #define E0_SERIAL_RX_PIN                  PA5
+
+    #ifdef E1_DRIVER_TYPE
+      #define E1_SERIAL_TX_PIN                PA9
+      #define E1_SERIAL_RX_PIN                PA9
+        #ifdef Z2_DRIVER_TYPE
+          #error "E1 and Z2 cannot both be active, please select the correct one"
+        #endif
+    #endif
+
+    #ifdef Z2_DRIVER_TYPE
+      #define E1_SERIAL_TX_PIN                PA9
+      #define E1_SERIAL_RX_PIN                PA9
+        #ifdef E1_DRIVER_TYPE
+          #error "Z2 and E1 cannot both be active, please select the correct one"
+        #endif
+    #endif
+
+  #elif ENABLED (SOFTWARE_SERIAL)
+    //#define X_HARDWARE_SERIAL  Serial1
+    //#define Y_HARDWARE_SERIAL  Serial1
+    //#define Z_HARDWARE_SERIAL  Serial1
+    //#define E0_HARDWARE_SERIAL Serial1
+
+    //Set *_SERIAL_TX_PIN and *_SERIAL_RX_PIN to match for all drivers on the same PIN to the same Slave Address.
+    #define  X_SLAVE_ADDRESS 0
+    #define  Y_SLAVE_ADDRESS 0
+    #define  Z_SLAVE_ADDRESS 0
+    #define E0_SLAVE_ADDRESS 0
+    #ifdef E1_DRIVER_TYPE
+      #define E1_SLAVE_ADDRESS 0  
+    #endif
+    #ifdef Z2_DRIVER_TYPE
+      #define Z2_SLAVE_ADDRESS 0
+    #endif
+
+    #define X_SERIAL_TX_PIN                   PA3
+    #define X_SERIAL_RX_PIN                   PA3
+    
+    #define Y_SERIAL_TX_PIN                   PA6
+    #define Y_SERIAL_RX_PIN                   PA6
+    
+    #define Z_SERIAL_TX_PIN                   PA1
+    #define Z_SERIAL_RX_PIN                   PA1
+
+    #define E0_SERIAL_TX_PIN                  PE5
+    #define E0_SERIAL_RX_PIN                  PE5
+
+    // Reduce baud rate to improve software serial reliability
+    #define TMC_BAUD_RATE 19200
+  #endif
 #endif
 
 //
 // Servos
 //
-#define SERVO0_PIN                          PA8   // Enable BLTOUCH support ROBIN NANO v1.2 ONLY
+#if ENABLED (BLTOUCH)
+  #define SERVO0_PIN                          PA8   // Enable BLTOUCH support ROBIN NANO v1.2 ONLY
+#endif
 
 //
 // Temperature Sensors
@@ -135,7 +222,7 @@
 #define HEATER_BED_PIN                      PA0   // HOT BED
 
 #define FAN_PIN                             PB1   // FAN
-
+//#define E0_AUTO_FAN                         PB0   //E0 AUTO FAN
 //
 // Thermocouples
 //
@@ -168,16 +255,25 @@
 // LED / NEOPixel
 //
 #define LED_PIN            PB2
-#define NEO_PIXEL_1        PA10  // USED WIFI RX PIN
-#define NEO_PIXEL_2        PA9   // USED WIFI TX PIN
+
+#if BOTH(NEOPIXEL_LED, WIFISUPPORT)
+  #error "NEOPIXEL and WIFISUPPORT do not go at the same time please decide for one"
+  #elif BOTH(NEOPIXEL_LED, ESP3D_WIFISUPPORT)
+  #error "NEOPIXEL and ESP3D_WIFISUPPORT do not go at the same time please decide for one"
+  #elif ENABLED(NEOPIXEL_LED)
+    #define NEO_PIXEL_1        PA10  // USED WIFI RX PIN
+    #define NEO_PIXEL_2        PA9   // USED WIFI TX PIN
+#endif
 
 //
 // WIFI ESP8266 
 //
-//#define WIFI_TX_PIN    PA10
-//#define WIFI_RX_PIN    PA9
-//#define WIFI_IO0_PIN   PC13
-//#define WIFI_IO1_PIN   PC7
+#if ANY (WIFISUPPORT, ESP3D_WIFISUPPORT)
+  #define WIFI_TX_PIN    PA10
+  #define WIFI_RX_PIN    PA9
+  #define WIFI_IO0_PIN   PC13
+  #define WIFI_IO1_PIN   PC7
+#endif
 
 /**
  * Note: MKS Robin TFT screens use various TFT controllers.
