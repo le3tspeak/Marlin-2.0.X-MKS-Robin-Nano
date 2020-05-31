@@ -109,7 +109,7 @@
   */
 
   // Set Hardware Serial UART only für TCM 2209
-  #define HARDWARE_SERIAL
+  //#define HARDWARE_SERIAL
   // Set Software Serial UART for TMC 2208 / TMC 2209
   //#define SOFTWARE_SERIAL
 
@@ -152,17 +152,11 @@
     #ifdef E1_DRIVER_TYPE
       #define E1_SERIAL_TX_PIN                PA9
       #define E1_SERIAL_RX_PIN                PA9
-        #ifdef Z2_DRIVER_TYPE
-          #error "E1 and Z2 cannot both be active, please select the correct one"
-        #endif
     #endif
 
     #ifdef Z2_DRIVER_TYPE
       #define E1_SERIAL_TX_PIN                PA9
       #define E1_SERIAL_RX_PIN                PA9
-        #ifdef E1_DRIVER_TYPE
-          #error "Z2 and E1 cannot both be active, please select the correct one"
-        #endif
     #endif
 
   #elif ENABLED (SOFTWARE_SERIAL)
@@ -254,17 +248,14 @@
 //
 // LED / NEOPixel
 //
-#define LED_PIN            PB2
-
-#if BOTH(NEOPIXEL_LED, WIFISUPPORT)
-  #error "NEOPIXEL and WIFISUPPORT do not go at the same time please decide for one"
-  #elif BOTH(NEOPIXEL_LED, ESP3D_WIFISUPPORT)
-  #error "NEOPIXEL and ESP3D_WIFISUPPORT do not go at the same time please decide for one"
-  #elif ENABLED(NEOPIXEL_LED)
-    #define NEO_PIXEL_1        PA10  // USED WIFI RX PIN
-    #define NEO_PIXEL_2        PA9   // USED WIFI TX PIN
+#define LED_PIN                  PB2
+#if ENABLED(NEOPIXEL_LED)
+  #define NEO_PIXEL_1            PA10  // USED WIFI RX PIN
+    #ifdef NEOPIXEL2_PIN
+      #define NEO_PIXEL_2        PA9   // USED WIFI TX PIN
+    #endif
 #endif
-
+      
 //
 // WIFI ESP8266 
 //
@@ -299,5 +290,37 @@
     #define TOUCH_SCK_PIN    PB13 // SPI2_SCK
     #define TOUCH_MISO_PIN   PB14 // SPI2_MISO
     #define TOUCH_MOSI_PIN   PB15 // SPI2_MOSI
+  #endif
+#endif
+
+
+
+//
+//ERROR Section
+//
+
+#if BOTH(NEOPIXEL_LED, WIFISUPPORT)
+  #error "NEOPIXEL and WIFISUPPORT do not go at the same time please decide for one"
+#endif
+
+#if BOTH(NEOPIXEL_LED, ESP3D_WIFISUPPORT)
+  #error "NEOPIXEL and ESP3D_WIFISUPPORT do not go at the same time please decide for one"
+#endif
+
+#if ENABLED (HARDWARE_SERIAL)
+  #ifdef NEOPIXEL2_PIN
+    #error "Uncomment NEO_PIXEL_2 PIN in "CONFIGURATION.h" if you want to use Hardware Serial with NeoPixel Support"
+  #endif
+#endif
+
+#ifdef E1_DRIVER_TYPE
+  #ifdef Z2_DRIVER_TYPE
+    #error "E1 and Z2 cannot both be active, please select the correct one"
+  #endif
+#endif
+
+#ifdef Z2_DRIVER_TYPE
+  #ifdef E1_DRIVER_TYPE
+   #error "Z2 and E1 cannot both be active, please select the correct one"
   #endif
 #endif
