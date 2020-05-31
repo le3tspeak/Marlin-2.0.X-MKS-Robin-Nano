@@ -38,6 +38,7 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
   Filament sensor|True|-
   TMC UART|-|Ready
   TMC SPI|-|in progress
+  TMC 2209 HW Serial|-|Ready
   Neopixel|-|Ready
   Cancel Objects|True|-
 
