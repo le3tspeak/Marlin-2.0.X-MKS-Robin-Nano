@@ -59,37 +59,6 @@
 #endif
 
 //
-// Steppers
-//
-#define X_ENABLE_PIN                        PE4
-#define X_STEP_PIN                          PE3
-#define X_DIR_PIN                           PE2
-
-#define Y_ENABLE_PIN                        PE1
-#define Y_STEP_PIN                          PE0
-#define Y_DIR_PIN                           PB9
-
-#define Z_ENABLE_PIN                        PB8
-#define Z_STEP_PIN                          PB5
-#define Z_DIR_PIN                           PB4
-
-#define E0_ENABLE_PIN                       PB3
-#define E0_STEP_PIN                         PD6
-#define E0_DIR_PIN                          PD3
-
-#if HAS_TMC220x
-  #if ENABLED (SOFTWARE_SERIAL)
-  	//#define E1_ENABLE_PIN                     PA3  // USED BY UART X Don't change
-    //#define E1_STEP_PIN                       PA6  // USED BY UART Y Don't change
-    //#define E1_DIR_PIN                        PA1  // USED BY UART Z Don't change
-  #endif
-#else
-  #define E1_ENABLE_PIN                     PA3
-  #define E1_STEP_PIN                       PA6 
-  #define E1_DIR_PIN                        PA1  
-#endif
-
-//
 //TMC UART RX / TX Pins Hardware/Software Serial
 //
 #if HAS_TMC220x
@@ -193,6 +162,35 @@
     #define TMC_BAUD_RATE 19200
   #endif
 #endif
+
+  //
+  // Steppers
+  //
+  #define X_ENABLE_PIN                        PE4
+  #define X_STEP_PIN                          PE3
+  #define X_DIR_PIN                           PE2
+
+  #define Y_ENABLE_PIN                        PE1
+  #define Y_STEP_PIN                          PE0
+  #define Y_DIR_PIN                           PB9
+
+  #define Z_ENABLE_PIN                        PB8
+  #define Z_STEP_PIN                          PB5
+  #define Z_DIR_PIN                           PB4
+
+  #define E0_ENABLE_PIN                       PB3
+  #define E0_STEP_PIN                         PD6
+  #define E0_DIR_PIN                          PD3
+
+ #if ENABLED (SOFTWARE_SERIAL)
+  	//#define E1_ENABLE_PIN                     PA3  // USED BY UART X Don't change
+    //#define E1_STEP_PIN                       PA6  // USED BY UART Y Don't change
+    //#define E1_DIR_PIN                        PA1  // USED BY UART Z Don't change
+   #else
+    #define E1_ENABLE_PIN                     PA3
+    #define E1_STEP_PIN                       PA6 
+    #define E1_DIR_PIN                        PA1  
+  #endif
 
 //
 // Servos
@@ -323,4 +321,8 @@
   #ifdef E1_DRIVER_TYPE
    #error "Z2 and E1 cannot both be active, please select the correct one"
   #endif
+#endif
+
+#if BOTH (HARDWARE_SERIAL, SOFTWARE_SERIAL)
+  #error "Please only select Software Serial or Hardware Serial, both do not work together"
 #endif
