@@ -61,6 +61,38 @@
 //#define SAPPHIRE_PLUS
 
 //===========================================================================
+//============================= Display Color Section========================
+//===========================================================================
+
+// Choose the display colors that suit you or set your own.
+// Black, White and Colored Buttons (DEFAULT)
+
+// Classic Marlin Style blue and white.
+//#define SAPPHIRE_GRAPHICAL_TFT_CLASSIC
+
+// Black and White
+//#define SAPPHIRE_GRAPHICAL_TFT_BW
+
+// White and Black
+//#define SAPPHIRE_GRAPHICAL_TFT_WB
+
+// White, Black and Colored Buttons
+//#define SAPPHIRE_GRAPHICAL_TFT_WBC
+
+
+// Choose your own colors:
+// see https://ee-programming-notepad.blogspot.com/2016/10/16-bit-color-generator-picker.html
+
+//#define SAPPHIRE_GRAPHICAL_TFT_CUSTOM
+#if ENABLED (SAPPHIRE_GRAPHICAL_TFT_CUSTOM)
+#define COLOR_CUSTOM_0 0xFFFF // UI
+#define COLOR_CUSTOM_1 0xFFFF // BACKGROUND
+#define COLOR_CUSTOM_2 0xFFFF // CANCEL 
+#define COLOR_CUSTOM_3 0xFFFF // ARROWS
+#define COLOR_CUSTOM_4 0xFFFF // OK/MENU
+#endif
+
+//===========================================================================
 //============================= DELTA Printer ===============================
 //===========================================================================
 // For a Delta printer start with one of the configuration files in the
