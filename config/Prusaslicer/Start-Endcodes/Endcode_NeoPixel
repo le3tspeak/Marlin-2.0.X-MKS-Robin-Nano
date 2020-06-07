@@ -1,0 +1,12 @@
+M150 P U255    ; Set NeoPixel Green
+G91         ; Relative positioning
+G1 E-1 F400     ; Retract a bit
+G1 Z1 F500         ; Raise Z
+G1 E-3 F400     ; Retract a bit
+G90         ; Absolute positionning
+G0 X10 Y210        ; Present print
+M106 S0         ; Turn-off fan
+M104 S0          ; Turn-off hotend
+M140 S0         ; Turn-off bed
+G4 S1        ; Wait a Second
+M500        ; Save Params. & Printtime

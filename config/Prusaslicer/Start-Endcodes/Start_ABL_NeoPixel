@@ -1,0 +1,59 @@
+//DE
+
+G92 E0                 ; Reset Extruder
+M150 P R255 B255 U255            ; Set NeoPixel White
+M117 Home XYZ...            ; Display: Home XYZ...
+M140 S[first_layer_bed_temperature]   ; Set Bed Temp.
+G28 ; Home all axes            ; Home XYZ
+M150 P R255                ; Set NeoPixel Red
+M190 S[first_layer_bed_temperature]    ; Wait for Bed to reach temp before proceeding
+M104 S[first_layer_temperature]    ; Start heating extruder
+M150 P R255 B255 U255                ; Set NeoPixel White
+G29 ; ABL                ; Start ABL
+G1 X1 Y20 F6000            ; Move to..
+M117 Nozzle Vorbereiten...        ; Display: Nozzle Vorbereiten...
+M150 P R255                ; Set NeoPixel Red
+M109 S[first_layer_temperature]     ; Wait for extruder to reach temp before proceeding
+M150 P R255 B255 U255               ; Set NeoPixel White
+G1 X1 Y20 Z20 F6000            ; Move to..
+G1 Z2.0 F3000             ; Move Z Axis up little to prevent scratching of Heat Bed
+G1 X1 Y20 Z0.3 F5000.0         ; Move to start position
+G1 X1 Y200.0 Z0.3 F1500.0 E15         ; Draw the first line
+G1 X1.4 Y200.0 Z0.3 F5000.0         ; Move to side a little
+G1 X1.4 Y20 Z0.3 F1500.0 E30         ; Draw the second line
+G92 E0                 ; Reset Extruder
+G1 Z2.0 F3000            ; Move Z Axis up little to prevent scratching of Heat Bed
+G1 X2 Y20 Z0.3 F5000.0         ; Move over to prevent blob squish
+G1 Z2.0 F3000            ; Move Z Axis up little to prevent scratching of Heat Bed
+G1 X5 Y20 Z0.3 F5000.0         ; Move over to
+M117 Druck gestartet...        ; Display: Druck gestartet...
+
+//EN
+
+G92 E0                 ; Reset Extruder
+M150 P R255 B255 U255            ; Set NeoPixel White
+M117 Home XYZ...            ; Display: Home XYZ...
+M140 S[first_layer_bed_temperature]   ; Set Bed Temp.
+G28 ; Home all axes            ; Home XYZ
+M150 P R255                ; Set NeoPixel Red
+M190 S[first_layer_bed_temperature]    ; Wait for Bed to reach temp before proceeding
+M104 S[first_layer_temperature]    ; Start heating extruder
+M150 P R255 B255 U255                ; Set NeoPixel White
+G29 ; ABL                ; Start ABL
+G1 X1 Y20 F6000            ; Move to..
+M117 Prepare Nozzle...        ; Display: Prepare Nozzle...
+M150 P R255                ; Set NeoPixel Red
+M109 S[first_layer_temperature]     ; Wait for extruder to reach temp before proceeding
+M150 P R255 B255 U255               ; Set NeoPixel White
+G1 X1 Y20 Z20 F6000            ; Move to..
+G1 Z2.0 F3000             ; Move Z Axis up little to prevent scratching of Heat Bed
+G1 X1 Y20 Z0.3 F5000.0         ; Move to start position
+G1 X1 Y200.0 Z0.3 F1500.0 E15         ; Draw the first line
+G1 X1.4 Y200.0 Z0.3 F5000.0         ; Move to side a little
+G1 X1.4 Y20 Z0.3 F1500.0 E30         ; Draw the second line
+G92 E0                 ; Reset Extruder
+G1 Z2.0 F3000            ; Move Z Axis up little to prevent scratching of Heat Bed
+G1 X2 Y20 Z0.3 F5000.0         ; Move over to prevent blob squish
+G1 Z2.0 F3000            ; Move Z Axis up little to prevent scratching of Heat Bed
+G1 X5 Y20 Z0.3 F5000.0         ; Move over to
+M117 Printing started...        ; Display: Printing started...
