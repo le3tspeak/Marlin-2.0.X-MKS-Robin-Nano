@@ -54,11 +54,15 @@
  * http://www.thingiverse.com/thing:298812
  */
 //===========================================================================
-//============================= Sapphire Pro/Plus Preset ====================
+//============================= 3D Printer Preset ===========================
 //===========================================================================
 
-#define SAPPHIRE_PRO
+// Core XY
+//#define SAPPHIRE_PRO
 //#define SAPPHIRE_PLUS
+
+//Cartesian
+//#define BLUER
 
 //===========================================================================
 //============================= Display Color Section========================
@@ -164,7 +168,10 @@
     #define BAUDRATE 115200 
   #elif ENABLED(SAPPHIRE_PLUS)
     //Sapphire Plus
-    #define BAUDRATE 115200    
+    #define BAUDRATE 115200 
+  #elif ENABLED(BLUER)
+    //BLUER
+    #define BAUDRATE 115200 
   #else
     //No Preset
     #define BAUDRATE 250000
@@ -186,6 +193,9 @@
   #elif ENABLED(SAPPHIRE_PLUS)
     //Sapphire Plus
     #define CUSTOM_MACHINE_NAME "Sapphire Plus"
+  #elif ENABLED(BLUER)
+    //Bluer
+    #define CUSTOM_MACHINE_NAME "Bluer"
   #else
     //#define CUSTOM_MACHINE_NAME "3D Printer"
   #endif
@@ -555,6 +565,11 @@
     #define DEFAULT_Kp 15.30
     #define DEFAULT_Ki 0.85
     #define DEFAULT_Kd 56.55
+  #elif ENABLED(BLUER)
+    //Bluer
+    #define DEFAULT_Kp 8.4
+    #define DEFAULT_Ki 0.4
+    #define DEFAULT_Kd 44.0
   #else
     //No Preset
     #define DEFAULT_Kp 22.2
@@ -610,6 +625,11 @@
     #define DEFAULT_bedKp 45.0
     #define DEFAULT_bedKi 7.9
     #define DEFAULT_bedKd 150
+  #elif ENABLED(BLUER)
+    //Bluer
+    #define DEFAULT_bedKp 10.34
+    #define DEFAULT_bedKi 0.25
+    #define DEFAULT_bedKd 300.5
   #else
     //No Preset
     //120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
@@ -695,7 +715,7 @@
     //#define COREZX
     //#define COREZY
   #else
-    //No Preset
+    //No Preset & Bluer
     //#define COREXY
     //#define COREXZ
     //#define COREYZ
@@ -724,9 +744,8 @@
     //#define USE_XMAX_PLUG
     #define USE_YMAX_PLUG
     //#define USE_ZMAX_PLUG
-
   #else
-    //No Preset
+    //No Preset & Bluer
     #define USE_XMIN_PLUG
     #define USE_YMIN_PLUG
     #define USE_ZMIN_PLUG
@@ -765,8 +784,8 @@
 
 // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
 
-#if ANY(SAPPHIRE_PRO, SAPPHIRE_PLUS)
-    //Sapphire Pro & Plus
+#if ANY(SAPPHIRE_PRO, SAPPHIRE_PLUS, BLUER)
+    //Sapphire Pro,Plus & Bluer
     #define X_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
     #define Y_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
     #define Z_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
@@ -774,7 +793,6 @@
     #define Y_MAX_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
     #define Z_MAX_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
     #define Z_MIN_PROBE_ENDSTOP_INVERTING true // Set to true to invert the logic of the probe.
-
   #else
     //No Preset
     #define X_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
@@ -833,6 +851,24 @@
     //#define Z3_DRIVER_TYPE A4988
     //#define Z4_DRIVER_TYPE A4988
     #define E0_DRIVER_TYPE TMC2208_STANDALONE
+    //#define E1_DRIVER_TYPE A4988
+    //#define E2_DRIVER_TYPE A4988
+    //#define E3_DRIVER_TYPE A4988
+    //#define E4_DRIVER_TYPE A4988
+    //#define E5_DRIVER_TYPE A4988
+    //#define E6_DRIVER_TYPE A4988
+    //#define E7_DRIVER_TYPE A4988
+  #elif ENABLED(BLUER)
+    //Bluer
+    #define X_DRIVER_TYPE  TMC2208_STANDALONE
+    #define Y_DRIVER_TYPE  TMC2208_STANDALONE
+    #define Z_DRIVER_TYPE  A4988
+    //#define X2_DRIVER_TYPE A4988
+    //#define Y2_DRIVER_TYPE A4988
+    //#define Z2_DRIVER_TYPE A4988
+    //#define Z3_DRIVER_TYPE A4988
+    //#define Z4_DRIVER_TYPE A4988
+    #define E0_DRIVER_TYPE A4988
     //#define E1_DRIVER_TYPE A4988
     //#define E2_DRIVER_TYPE A4988
     //#define E3_DRIVER_TYPE A4988
@@ -911,10 +947,13 @@
   #elif ENABLED(SAPPHIRE_PLUS)
     //Sapphire Plus
     #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 415 }
+  #elif ENABLED(BLUER)
+    //Bluer
+    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 90 }
   #else
     //No Preset
     #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 4000, 500 }
-  #endif
+#endif
 
 
 /**
@@ -922,7 +961,17 @@
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 300, 300, 10, 50 }
+
+#if ANY (SAPPHIRE_PRO, SAPPHIRE_PLUS)
+    //Sapphire Pro
+    #define DEFAULT_MAX_FEEDRATE          { 300, 300, 10, 50 }
+  #elif ENABLED(BLUER)
+    //Bluer
+    #define DEFAULT_MAX_FEEDRATE          { 250, 250, 10, 50 }
+  #else
+    //No Preset
+    #define DEFAULT_MAX_FEEDRATE          { 300, 300, 10, 50 }
+#endif
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
@@ -950,9 +999,21 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#define DEFAULT_ACCELERATION          1000    // X, Y, Z and E acceleration for printing moves
-#define DEFAULT_RETRACT_ACCELERATION  2000    // E acceleration for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   1500    // X, Y, Z acceleration for travel (non printing) moves
+#if ANY (SAPPHIRE_PRO, SAPPHIRE_PLUS)
+  //Sapphire Pro & Plus
+  #define DEFAULT_ACCELERATION          1000    // X, Y, Z and E acceleration for printing moves
+  #define DEFAULT_RETRACT_ACCELERATION  2000    // E acceleration for retracts
+  #define DEFAULT_TRAVEL_ACCELERATION   1500    // X, Y, Z acceleration for travel (non printing) moves
+#elif ENABLED (BLUER)
+  //Bluer
+  #define DEFAULT_ACCELERATION          750    // X, Y, Z and E acceleration for printing moves
+  #define DEFAULT_RETRACT_ACCELERATION  2000    // E acceleration for retracts
+  #define DEFAULT_TRAVEL_ACCELERATION   1000    // X, Y, Z acceleration for travel (non printing) moves
+#else
+  #define DEFAULT_ACCELERATION          2000    // X, Y, Z and E acceleration for printing moves
+  #define DEFAULT_RETRACT_ACCELERATION  2000    // E acceleration for retracts
+  #define DEFAULT_TRAVEL_ACCELERATION   2000    // X, Y, Z acceleration for travel (non printing) moves
+#endif
 
 /**
  * Default Jerk limits (mm/s)
@@ -1279,6 +1340,24 @@
     #define INVERT_E5_DIR false
     #define INVERT_E6_DIR false
     #define INVERT_E7_DIR false
+  #elif ENABLED(BLUER)
+    //Bluer
+    // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
+    #define INVERT_X_DIR true
+    #define INVERT_Y_DIR true
+    #define INVERT_Z_DIR false
+
+    // @section extruder
+
+    // For direct drive extruder v9 set to true, for geared extruder set to false.
+    #define INVERT_E0_DIR false
+    #define INVERT_E1_DIR false
+    #define INVERT_E2_DIR false
+    #define INVERT_E3_DIR false
+    #define INVERT_E4_DIR false
+    #define INVERT_E5_DIR false
+    #define INVERT_E6_DIR false
+    #define INVERT_E7_DIR false
   #else
     //No Preset
     // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
@@ -1356,6 +1435,28 @@
     #define X_MAX_POS X_BED_SIZE
     #define Y_MAX_POS Y_BED_SIZE
     #define Z_MAX_POS 350
+  #elif ENABLED(BLUER)
+    //Bluer
+    //No Preset
+    // Direction of endstops when homing; 1=MAX, -1=MIN
+    // :[-1,1]
+    #define X_HOME_DIR -1
+    #define Y_HOME_DIR -1
+    #define Z_HOME_DIR -1
+
+    // @section machine
+
+    // The size of the print bed
+    #define X_BED_SIZE 235
+    #define Y_BED_SIZE 235
+
+    // Travel limits (mm) after homing, corresponding to endstop positions.
+    #define X_MIN_POS 0
+    #define Y_MIN_POS 0
+    #define Z_MIN_POS 0
+    #define X_MAX_POS X_BED_SIZE
+    #define Y_MAX_POS Y_BED_SIZE
+    #define Z_MAX_POS 280
   #else
     //No Preset
     // Direction of endstops when homing; 1=MAX, -1=MIN
@@ -1490,7 +1591,7 @@
  * Normally G28 leaves leveling disabled on completion. Enable
  * this option to have G28 restore the prior leveling state.
  */
-//#define RESTORE_LEVELING_AFTER_G28
+#define RESTORE_LEVELING_AFTER_G28
 
 /**
  * Enable detailed logging of G28, G29, M48, etc.
@@ -1641,8 +1742,13 @@
 #endif
 
 // Homing speeds (mm/m)
-#define HOMING_FEEDRATE_XY (50*60)
-#define HOMING_FEEDRATE_Z  (5*60)
+#if ANY(SAPPHIRE_PRO, SAPPHIRE_PLUS)
+  #define HOMING_FEEDRATE_XY (50*60)
+  #define HOMING_FEEDRATE_Z  (5*60)
+#elif ENABLED(BLUER)
+  #define HOMING_FEEDRATE_XY (30*60)
+  #define HOMING_FEEDRATE_Z  (4*60)
+#endif
 
 // Validate that endstops are triggered on homing moves
 #define VALIDATE_HOMING_ENDSTOPS
@@ -1724,7 +1830,7 @@
 #define EEPROM_CHITCHAT       // Give feedback on EEPROM commands. Disable to save PROGMEM.
 #define EEPROM_BOOT_SILENT    // Keep M503 quiet and only give errors during first load
 #if ENABLED(EEPROM_SETTINGS)
-  //#define EEPROM_AUTO_INIT  // Init EEPROM automatically on any errors.
+ //#define EEPROM_AUTO_INIT  // Init EEPROM automatically on any errors.
 #endif
 
 //
@@ -1751,7 +1857,7 @@
 
 // Preheat Constants
 #define PREHEAT_1_LABEL       "PLA"
-#define PREHEAT_1_TEMP_HOTEND 180
+#define PREHEAT_1_TEMP_HOTEND 200
 #define PREHEAT_1_TEMP_BED     60
 #define PREHEAT_1_FAN_SPEED     0 // Value from 0 to 255
 
@@ -2374,7 +2480,7 @@
 //
 // FSMC display (MKS Robin, Alfawise U20, JGAurora A5S, REXYZ A1, etc.)
 //
-#if ANY(SAPPHIRE_PRO, SAPPHIRE_PLUS)
+#if ANY(SAPPHIRE_PRO, SAPPHIRE_PLUS, BLUER)
     //Sapphire Pro & Plus
     #define SAPPHIRE_GRAPHICAL_TFT
   #else
@@ -2391,7 +2497,7 @@
 //
 // ADS7843/XPT2046 ADC Touchscreen such as ILI9341 2.8
 //
-#if ANY(SAPPHIRE_PRO, SAPPHIRE_PLUS)
+#if ANY(SAPPHIRE_PRO, SAPPHIRE_PLUS, BLUER)
     //Sapphire Pro & Plus
     #define TOUCH_BUTTONS
     #if ENABLED(TOUCH_BUTTONS)
