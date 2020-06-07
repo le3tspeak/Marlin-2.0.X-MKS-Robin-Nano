@@ -1,3 +1,1 @@
-# Where have all the configurations gone?
-
-## https://github.com/MarlinFirmware/Configurations/archive/bugfix-2.0.x.zip
+# Start and end codes for Cura and Prusaslicer as well as suitable Profiles
