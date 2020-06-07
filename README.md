@@ -26,8 +26,9 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
 
   Features|Active|Value
   --------|------|-----
-  Fast Config Switch Sapphire Pro/Plus|True|Pro
+  Fast Config Switch Sapphire Pro/Plus/Bluer|True|-
   UI Type|-|Classic Marlin
+  TFT Color Selection|True|-
   EEPROM|True|SDCARD EEPROM EMULATION
   G0 Support|True|-
   G2/G3 Arc Support|True|-
@@ -43,12 +44,12 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
   Cancel Objects|True|-
 
 
-  Axes|Pro|Plus
-  ----|----|----
-  X|TMC2208 Standalone|TMC2208 Standalone
-  Y|TMC2208 Standalone|TMC2208 Standalone
-  Z|A4988|A4988
-  E|A4988|TMC2208 Standalone
+  Axes|Pro|Plus|Bluer
+  ----|----|----|----
+  X|TMC2208 Standalone|TMC2208 Standalone|TMC2208 Standalone
+  Y|TMC2208 Standalone|TMC2208 Standalone|TMC2208 Standalone
+  Z|A4988|A4988|A4988
+  E|A4988|TMC2208 Standalone|A4988
 
   Memory consumption|Value
   --------------------|-------------------------------------------
@@ -61,7 +62,18 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
 - Please submit your questions and concerns to the [Issue Queue](https://github.com/le3tspeak/Marlin-2.0.X-MKS-Robin-Nano/issues).
 
 
+## Changelog
 
+Version|Changes & Fixes
+-------|-------
+1.0.3|Add Bluer Fast Config Switch Preset 
+-|Error messages separated
+1.0.2|Add TMC HW Serial
+  -|Add documentation TMC HW Serial
+  -|Add TFT Color Selection
+  -|Fix SD Read Errors
+1.0.1a|Initial commit
+  
 
 ## License
 
