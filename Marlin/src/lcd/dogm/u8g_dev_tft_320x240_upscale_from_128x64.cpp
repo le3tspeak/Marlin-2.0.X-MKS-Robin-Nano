@@ -21,24 +21,17 @@
  */
 
 /*
-
   u8g_dev_tft_320x240_upscale_from_128x64.cpp
-
   Universal 8bit Graphics Library
-
   Copyright (c) 2011, olikraus@gmail.com
   All rights reserved.
-
   Redistribution and use in source and binary forms, with or without modification,
   are permitted provided that the following conditions are met:
-
   * Redistributions of source code must retain the above copyright notice, this list
     of conditions and the following disclaimer.
-
   * Redistributions in binary form must reproduce the above copyright notice, this
     list of conditions and the following disclaimer in the documentation and/or other
     materials provided with the distribution.
-
   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
   CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -52,7 +45,6 @@
   STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
 */
 
 #include "../../inc/MarlinConfig.h"
@@ -73,14 +65,18 @@
   extern void LCD_IO_WriteMultiple(uint16_t color, uint32_t count);
 #endif
 
+#ifndef FSMC_UPSCALE
+  #define FSMC_UPSCALE 2
+#endif
+
 #define WIDTH LCD_PIXEL_WIDTH
 #define HEIGHT LCD_PIXEL_HEIGHT
 #define PAGE_HEIGHT 8
 
 #define X_LO LCD_PIXEL_OFFSET_X
 #define Y_LO LCD_PIXEL_OFFSET_Y
-#define X_HI (X_LO + 2 * WIDTH  - 1)
-#define Y_HI (Y_LO + 2 * HEIGHT - 1)
+#define X_HI (X_LO + (FSMC_UPSCALE) * WIDTH  - 1)
+#define Y_HI (Y_LO + (FSMC_UPSCALE) * HEIGHT - 1)
 
 // see https://ee-programming-notepad.blogspot.com/2016/10/16-bit-color-generator-picker.html
 
@@ -102,31 +98,56 @@
 #define COLOR_AQUA        0x07FF  // #00FFFF
 
 #define COLOR_MAROON      0x7800  // #800000
-#define COLOR_GREEN       0x03E0  // #008000
+#define COLOR_GREEN       0x27E0  // #008000
 #define COLOR_NAVY        0x000F  // #000080
 #define COLOR_OLIVE       0x8400  // #808000
 #define COLOR_PURPLE      0x8010  // #800080
 #define COLOR_TEAL        0x0410  // #008080
-
 #define COLOR_ORANGE      0xFC00  // #FF7F00
 
-#ifndef TFT_MARLINUI_COLOR
+#define TFT_DISABLED_COLOR COLOR_DARK
+
+//Classic
+#if ENABLED (SAPPHIRE_GRAPHICAL_TFT_CLASSIC)
   #define TFT_MARLINUI_COLOR COLOR_WHITE
-#endif
-#ifndef TFT_MARLINBG_COLOR
+  #define TFT_MARLINBG_COLOR COLOR_NAVY
+  #define TFT_BTCANCEL_COLOR COLOR_WHITE
+  #define TFT_BTARROWS_COLOR COLOR_WHITE
+  #define TFT_BTOKMENU_COLOR COLOR_WHITE
+#elif ENABLED (SAPPHIRE_GRAPHICAL_TFT_BW)
+  // Black and White
+  #define TFT_MARLINUI_COLOR COLOR_WHITE
   #define TFT_MARLINBG_COLOR COLOR_BLACK
-#endif
-#ifndef TFT_DISABLED_COLOR
-  #define TFT_DISABLED_COLOR COLOR_DARK
-#endif
-#ifndef TFT_BTCANCEL_COLOR
+  #define TFT_BTCANCEL_COLOR COLOR_WHITE
+  #define TFT_BTARROWS_COLOR COLOR_WHITE
+  #define TFT_BTOKMENU_COLOR COLOR_WHITE
+#elif ENABLED (SAPPHIRE_GRAPHICAL_TFT_WB)
+  // White and Black
+  #define TFT_MARLINUI_COLOR COLOR_BLACK
+  #define TFT_MARLINBG_COLOR COLOR_WHITE
+  #define TFT_BTCANCEL_COLOR COLOR_BLACK
+  #define TFT_BTARROWS_COLOR COLOR_BLACK
+  #define TFT_BTOKMENU_COLOR COLOR_BLACK
+#elif ENABLED (SAPPHIRE_GRAPHICAL_TFT_WBC)
+  // White, Black and Colored Buttons
+  #define TFT_MARLINUI_COLOR COLOR_BLACK
+  #define TFT_MARLINBG_COLOR COLOR_WHITE
   #define TFT_BTCANCEL_COLOR COLOR_RED
-#endif
-#ifndef TFT_BTARROWS_COLOR
   #define TFT_BTARROWS_COLOR COLOR_BLUE
-#endif
-#ifndef TFT_BTOKMENU_COLOR
-  #define TFT_BTOKMENU_COLOR COLOR_RED
+  #define TFT_BTOKMENU_COLOR COLOR_GREEN
+#elif ENABLED (SAPPHIRE_GRAPHICAL_TFT_CUSTOM)
+  #define TFT_MARLINUI_COLOR COLOR_CUSTOM_0
+  #define TFT_MARLINBG_COLOR COLOR_CUSTOM_1
+  #define TFT_BTCANCEL_COLOR COLOR_CUSTOM_2
+  #define TFT_BTARROWS_COLOR COLOR_CUSTOM_3
+  #define TFT_BTOKMENU_COLOR COLOR_CUSTOM_4
+#else //SAPPHIRE_GRAPHICAL_TFT_BWC
+  // Black, White and Colored Buttons (DEFAULT)
+  #define TFT_MARLINUI_COLOR COLOR_WHITE
+  #define TFT_MARLINBG_COLOR COLOR_BLACK
+  #define TFT_BTCANCEL_COLOR COLOR_RED
+  #define TFT_BTARROWS_COLOR COLOR_BLUE
+  #define TFT_BTOKMENU_COLOR COLOR_GREEN
 #endif
 
 static uint32_t lcd_id = 0;
@@ -526,8 +547,27 @@ static const uint16_t ili9341_init[] = {
     B01111111,B11111111,B11111111,B11111110,
   };
 
+  #define BUTTON_SIZE_X 32
+  #define BUTTON_SIZE_Y 20
+
+  // 14, 90, 166, 242, 185 are the original values upscaled 2x.
+  #define BUTTOND_X_LO (14 / 2) * (FSMC_UPSCALE)
+  #define BUTTOND_X_HI (BUTTOND_X_LO + (FSMC_UPSCALE) * BUTTON_SIZE_X - 1)
+
+  #define BUTTONA_X_LO (90 / 2) * (FSMC_UPSCALE)
+  #define BUTTONA_X_HI (BUTTONA_X_LO + (FSMC_UPSCALE) * BUTTON_SIZE_X - 1)
+
+  #define BUTTONB_X_LO (166 / 2) * (FSMC_UPSCALE)
+  #define BUTTONB_X_HI (BUTTONB_X_LO + (FSMC_UPSCALE) * BUTTON_SIZE_X - 1)
+
+  #define BUTTONC_X_LO (242 / 2) * (FSMC_UPSCALE)
+  #define BUTTONC_X_HI (BUTTONC_X_LO + (FSMC_UPSCALE) * BUTTON_SIZE_X - 1)
+
+  #define BUTTON_Y_LO (170 / 2) * (FSMC_UPSCALE)
+  #define BUTTON_Y_HI (BUTTON_Y_LO + (FSMC_UPSCALE) * BUTTON_SIZE_Y - 1)
+
   void drawImage(const uint8_t *data, u8g_t *u8g, u8g_dev_t *dev, uint16_t length, uint16_t height, uint16_t color) {
-    uint16_t buffer[128];
+    uint16_t buffer[BUTTON_SIZE_X * sq(FSMC_UPSCALE)];
 
     for (uint16_t i = 0; i < height; i++) {
       uint16_t k = 0;
@@ -537,20 +577,17 @@ static const uint16_t ili9341_init[] = {
           v = color;
         else
           v = TFT_MARLINBG_COLOR;
-        buffer[k++] = v; buffer[k++] = v;
+        LOOP_L_N(n, FSMC_UPSCALE) buffer[k++] = v;
       }
       #ifdef LCD_USE_DMA_FSMC
-        if (k <= 80) { // generally is... for our buttons
-          memcpy(&buffer[k], &buffer[0], k * sizeof(uint16_t));
-          LCD_IO_WriteSequence(buffer, k * sizeof(uint16_t));
-        }
-        else {
-          LCD_IO_WriteSequence(buffer, k);
-          LCD_IO_WriteSequence(buffer, k);
-        }
+        LOOP_S_L_N(n, 1, FSMC_UPSCALE)
+          for (uint16_t l = 0; l < length * (FSMC_UPSCALE); l++)
+            buffer[l + (length * (FSMC_UPSCALE) * n)] = buffer[l];
+
+        LCD_IO_WriteSequence(buffer, COUNT(buffer));
       #else
-        u8g_WriteSequence(u8g, dev, k << 1, (uint8_t *)buffer);
-        u8g_WriteSequence(u8g, dev, k << 1, (uint8_t *)buffer);
+        u8g_WriteSequence(u8g, dev, k << 1, (uint8_t*)buffer);
+        u8g_WriteSequence(u8g, dev, k << 1, (uint8_t*)buffer);
       #endif
     }
   }
@@ -569,7 +606,7 @@ static uint8_t page;
 uint8_t u8g_dev_tft_320x240_upscale_from_128x64_fn(u8g_t *u8g, u8g_dev_t *dev, uint8_t msg, void *arg) {
   u8g_pb_t *pb = (u8g_pb_t *)(dev->dev_mem);
   #ifdef LCD_USE_DMA_FSMC
-    static uint16_t bufferA[512], bufferB[512];
+    static uint16_t bufferA[WIDTH * sq(FSMC_UPSCALE)], bufferB[WIDTH * sq(FSMC_UPSCALE)];
     uint16_t* buffer = &bufferA[0];
     bool allow_async = true;
   #else
@@ -597,6 +634,7 @@ uint8_t u8g_dev_tft_320x240_upscale_from_128x64_fn(u8g_t *u8g, u8g_dev_t *dev, u
           setWindow = setWindow_ili9328;
           break;
         case 0x9341:   // ILI9341
+        case 0x8066:   // ILI9341 Anycubic / TronXY TFTs      
           #ifdef LCD_USE_DMA_FSMC
             writeEscSequence(ili9341_init);
           #else
@@ -645,16 +683,16 @@ uint8_t u8g_dev_tft_320x240_upscale_from_128x64_fn(u8g_t *u8g, u8g_dev_t *dev, u
             u8g_WriteSequence(u8g, dev, 150, (uint8_t *)buffer);
         #endif
 
-        setWindow(u8g, dev, 14, 185,  77, 224);
+        setWindow(u8g, dev, BUTTOND_X_LO, BUTTON_Y_LO,  BUTTOND_X_HI, BUTTON_Y_HI);
         drawImage(buttonD, u8g, dev, 32, 20, TFT_BTCANCEL_COLOR);
 
-        setWindow(u8g, dev, 90, 185, 153, 224);
+        setWindow(u8g, dev, BUTTONA_X_LO, BUTTON_Y_LO,  BUTTONA_X_HI, BUTTON_Y_HI);
         drawImage(buttonA, u8g, dev, 32, 20, TFT_BTARROWS_COLOR);
 
-        setWindow(u8g, dev, 166, 185, 229, 224);
+        setWindow(u8g, dev, BUTTONB_X_LO, BUTTON_Y_LO,  BUTTONB_X_HI, BUTTON_Y_HI);
         drawImage(buttonB, u8g, dev, 32, 20, TFT_BTARROWS_COLOR);
 
-        setWindow(u8g, dev, 242, 185, 305, 224);
+        setWindow(u8g, dev, BUTTONC_X_LO, BUTTON_Y_LO,  BUTTONC_X_HI, BUTTON_Y_HI);
         drawImage(buttonC, u8g, dev, 32, 20, TFT_BTOKMENU_COLOR);
       #endif // TOUCH_BUTTONS
 
@@ -678,19 +716,22 @@ uint8_t u8g_dev_tft_320x240_upscale_from_128x64_fn(u8g_t *u8g, u8g_dev_t *dev, u
         for (uint16_t i = 0; i < (uint32_t)pb->width; i++) {
           const uint8_t b = *(((uint8_t *)pb->buf) + i);
           const uint16_t c = TEST(b, y) ? TFT_MARLINUI_COLOR : TFT_MARLINBG_COLOR;
-          buffer[k++] = c; buffer[k++] = c;
+          LOOP_L_N(n, FSMC_UPSCALE) buffer[k++] = c;
         }
         #ifdef LCD_USE_DMA_FSMC
-          memcpy(&buffer[256], &buffer[0], 512);
+          LOOP_S_L_N(n, 1, FSMC_UPSCALE)
+            for (uint16_t l = 0; l < WIDTH * (FSMC_UPSCALE); l++)
+              buffer[l + WIDTH * (FSMC_UPSCALE) * n] = buffer[l];
+
           if (allow_async) {
             if (y > 0 || page > 1) LCD_IO_WaitSequence_Async();
             if (y == 7 && page == 8)
-              LCD_IO_WriteSequence(buffer, 512); // last line of last page
+              LCD_IO_WriteSequence(buffer, COUNT(bufferA)); // last line of last page
             else
-              LCD_IO_WriteSequence_Async(buffer, 512);
+              LCD_IO_WriteSequence_Async(buffer, COUNT(bufferA));
           }
           else
-            LCD_IO_WriteSequence(buffer, 512);
+            LCD_IO_WriteSequence(buffer, COUNT(bufferA));
         #else
           uint8_t* bufptr = (uint8_t*) buffer;
           for (uint8_t i = 2; i--;) {

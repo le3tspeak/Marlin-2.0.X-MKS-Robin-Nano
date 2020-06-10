@@ -179,7 +179,7 @@
 
 #elif ENABLED(SAPPHIRE_GRAPHICAL_TFT)
 
-  #define U8G_CLASS U8GLIB_TFT_480X320_UPSCALE_FROM_128X64
+  #define U8G_CLASS U8GLIB_TFT_320X240_UPSCALE_FROM_128X64
   #define U8G_PARAM FSMC_CS_PIN, FSMC_RS_PIN
 
 #else
@@ -209,10 +209,18 @@
   #define LCD_FULL_PIXEL_HEIGHT 240
   #define LCD_PIXEL_OFFSET_Y    32
 #elif ENABLED(SAPPHIRE_GRAPHICAL_TFT)
-  #define LCD_FULL_PIXEL_WIDTH  480
-  #define LCD_PIXEL_OFFSET_X    48
-  #define LCD_FULL_PIXEL_HEIGHT 320
-  #define LCD_PIXEL_OFFSET_Y    32
+  #ifndef LCD_FULL_PIXEL_WIDTH
+    #define LCD_FULL_PIXEL_WIDTH  480
+  #endif
+  #ifndef LCD_PIXEL_OFFSET_X
+    #define LCD_PIXEL_OFFSET_X    48
+  #endif
+  #ifndef LCD_FULL_PIXEL_HEIGHT
+    #define LCD_FULL_PIXEL_HEIGHT 320
+  #endif
+  #ifndef LCD_PIXEL_OFFSET_Y
+    #define LCD_PIXEL_OFFSET_Y    32
+  #endif
 #endif
 
 // For selective rendering within a Y range

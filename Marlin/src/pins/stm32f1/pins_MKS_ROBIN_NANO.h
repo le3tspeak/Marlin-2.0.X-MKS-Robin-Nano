@@ -289,40 +289,10 @@
     #define TOUCH_MISO_PIN   PB14 // SPI2_MISO
     #define TOUCH_MOSI_PIN   PB15 // SPI2_MOSI
   #endif
-#endif
 
-
-
-//
-//ERROR Section
-//
-
-#if BOTH(NEOPIXEL_LED, WIFISUPPORT)
-  #error "NEOPIXEL and WIFISUPPORT do not go at the same time please decide for one"
-#endif
-
-#if BOTH(NEOPIXEL_LED, ESP3D_WIFISUPPORT)
-  #error "NEOPIXEL and ESP3D_WIFISUPPORT do not go at the same time please decide for one"
-#endif
-
-#if ENABLED (HARDWARE_SERIAL)
-  #ifdef NEOPIXEL2_PIN
-    #error "Uncomment NEO_PIXEL_2 PIN in "CONFIGURATION.h" if you want to use Hardware Serial with NeoPixel Support"
-  #endif
-#endif
-
-#ifdef E1_DRIVER_TYPE
-  #ifdef Z2_DRIVER_TYPE
-    #error "E1 and Z2 cannot both be active, please select the correct one"
-  #endif
-#endif
-
-#ifdef Z2_DRIVER_TYPE
-  #ifdef E1_DRIVER_TYPE
-   #error "Z2 and E1 cannot both be active, please select the correct one"
-  #endif
-#endif
-
-#if BOTH (HARDWARE_SERIAL, SOFTWARE_SERIAL)
-  #error "Please only select Software Serial or Hardware Serial, both do not work together"
+  #define FSMC_UPSCALE 3
+  #define LCD_FULL_PIXEL_WIDTH  480
+  #define LCD_PIXEL_OFFSET_X    48
+  #define LCD_FULL_PIXEL_HEIGHT 320
+  #define LCD_PIXEL_OFFSET_Y    32
 #endif
