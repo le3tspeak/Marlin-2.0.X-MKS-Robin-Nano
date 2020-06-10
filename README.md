@@ -53,8 +53,8 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
 
   Memory consumption|Value
   --------------------|-------------------------------------------
-  RAM:    |56.4% (used 36944 bytes from 65536 bytes)
-  Flash:  |42.6% (used 223380 bytes from 524288 bytes)
+  RAM:    |55.6% (used 36944 bytes from 65536 bytes)
+  Flash:  |43.4% (used 223380 bytes from 524288 bytes)
 
   
 ## Submitting Changes
@@ -66,8 +66,16 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
 
 Version|Changes & Fixes
 -------|-------
+1.0.4|Touch support for Marlin Menus
+  -|errors moved in Sanity Check
+  -|new TFT scale up
+  -|improve G2/3 movement buffer
+  -|STM32F1: Fix SDIO read errors
+  -|Improve SD Card Read Speed
+  -|Add Cura/Prusa Start/End Codes
+  -|Add Cura/Prusa Profiles
 1.0.3|Add Bluer Fast Config Switch Preset 
--|Error messages separated
+  -|Error messages separated
 1.0.2|Add TMC HW Serial
   -|Add documentation TMC HW Serial
   -|Add TFT Color Selection

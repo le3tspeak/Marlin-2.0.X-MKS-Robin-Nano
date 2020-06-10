@@ -58,7 +58,7 @@
 //===========================================================================
 
 // Core XY
-#define SAPPHIRE_PRO
+//#define SAPPHIRE_PRO
 //#define SAPPHIRE_PLUS
 
 //Cartesian
@@ -2501,7 +2501,7 @@
     //Sapphire Pro & Plus
     #define TOUCH_BUTTONS
     #if ENABLED(TOUCH_BUTTONS)
-    #define BUTTON_DELAY_EDIT  50 // (ms) Button repeat delay for edit screens
+    #define BUTTON_DELAY_EDIT  100 // (ms) Button repeat delay for edit screens
     #define BUTTON_DELAY_MENU 250 // (ms) Button repeat delay for menus
 
     #define XPT2046_X_CALIBRATION    12013
@@ -2513,7 +2513,7 @@
     //No Preset
     //#define TOUCH_BUTTONS
     #if ENABLED(TOUCH_BUTTONS)
-    #define BUTTON_DELAY_EDIT  50 // (ms) Button repeat delay for edit screens
+    #define BUTTON_DELAY_EDIT 100 // (ms) Button repeat delay for edit screens
     #define BUTTON_DELAY_MENU 250 // (ms) Button repeat delay for menus
 
     #define XPT2046_X_CALIBRATION   12316
