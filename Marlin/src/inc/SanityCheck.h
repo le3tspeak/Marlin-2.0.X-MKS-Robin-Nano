@@ -82,6 +82,58 @@
 #undef HEXIFY
 
 /**
+ * Warnings for MKS Robin Nano
+ */
+//
+//Error Section Display Color
+//
+#if ENABLED (SAPPHIRE_GRAPHICAL_TFT_CLASSIC)
+  #if ANY (SAPPHIRE_GRAPHICAL_TFT_BW, SAPPHIRE_GRAPHICAL_TFT_WB, SAPPHIRE_GRAPHICAL_TFT_WBC,SAPPHIRE_GRAPHICAL_TFT_CUSTOM)
+    #error "Only 1 display color scheme can be selected"
+  #endif
+#elif ENABLED (SAPPHIRE_GRAPHICAL_TFT_BW)
+  #if ANY (SAPPHIRE_GRAPHICAL_TFT_WB, SAPPHIRE_GRAPHICAL_TFT_WBC,SAPPHIRE_GRAPHICAL_TFT_CUSTOM, SAPPHIRE_GRAPHICAL_TFT_CLASSIC)
+    #error "Only 1 display color scheme can be selected"
+  #endif
+#elif ENABLED (SAPPHIRE_GRAPHICAL_TFT_WB)
+  #if ANY (SAPPHIRE_GRAPHICAL_TFT_BW, SAPPHIRE_GRAPHICAL_TFT_WBC, SAPPHIRE_GRAPHICAL_TFT_CUSTOM, SAPPHIRE_GRAPHICAL_TFT_CLASSIC)
+    #error "Only 1 display color scheme can be selected"
+  #endif
+#elif ENABLED (SAPPHIRE_GRAPHICAL_TFT_WBC)
+  #if ANY (SAPPHIRE_GRAPHICAL_TFT_BW, SAPPHIRE_GRAPHICAL_TFT_WB, SAPPHIRE_GRAPHICAL_TFT_CUSTOM, SAPPHIRE_GRAPHICAL_TFT_CLASSIC)
+    #error "Only 1 display color scheme can be selected"
+  #endif
+#elif ENABLED (SAPPHIRE_GRAPHICAL_TFT_CUSTOM)
+  #if ANY (SAPPHIRE_GRAPHICAL_TFT_BW, SAPPHIRE_GRAPHICAL_TFT_WB, SAPPHIRE_GRAPHICAL_TFT_WBC, SAPPHIRE_GRAPHICAL_TFT_CLASSIC)
+    #error "Only 1 display color scheme can be selected"
+  #endif
+#endif
+
+//
+//ERROR Section Pins
+//
+
+#if BOTH(NEOPIXEL_LED, WIFISUPPORT)
+  #error "NEOPIXEL and WIFISUPPORT do not go at the same time please decide for one"
+#elif BOTH(NEOPIXEL_LED, ESP3D_WIFISUPPORT)
+  #error "NEOPIXEL and ESP3D_WIFISUPPORT do not go at the same time please decide for one"
+#elif ENABLED (HARDWARE_SERIAL)
+  #ifdef NEOPIXEL2_PIN
+    #error "Uncomment NEO_PIXEL_2 PIN in "CONFIGURATION.h" if you want to use Hardware Serial with NeoPixel Support"
+  #endif
+#elif E1_DRIVER_TYPE
+  #ifdef Z2_DRIVER_TYPE
+    #error "E1 and Z2 cannot both be active, please select the correct one"
+  #endif
+#elif Z2_DRIVER_TYPE
+  #ifdef E1_DRIVER_TYPE
+   #error "Z2 and E1 cannot both be active, please select the correct one"
+  #endif
+#elif BOTH (HARDWARE_SERIAL, SOFTWARE_SERIAL)
+  #error "Please only select Software Serial or Hardware Serial, both do not work together"
+#endif
+
+/**
  * Warnings for old configurations
  */
 #ifndef MOTHERBOARD
