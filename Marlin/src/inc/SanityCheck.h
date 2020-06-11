@@ -84,6 +84,16 @@
 /**
  * Warnings for MKS Robin Nano
  */
+
+//
+// Presets
+//
+#if ANY (SAPPHIRE_PRO, SAPPHIRE_PLUS, BLUER)
+  // All OK!
+#else
+  #error "3D Printer Preset not Set properly see Configuration.h or delete the line here for a printer without a preset."
+#endif
+
 //
 //Error Section Display Color
 //
@@ -132,6 +142,15 @@
 #elif BOTH (HARDWARE_SERIAL, SOFTWARE_SERIAL)
   #error "Please only select Software Serial or Hardware Serial, both do not work together"
 #endif
+
+
+//
+// Probe Section
+//
+#if BOTH (HI_RES, LOW_RES)
+  #error "Only 1 Resolution can be selected"
+#endif
+
 
 /**
  * Warnings for old configurations
