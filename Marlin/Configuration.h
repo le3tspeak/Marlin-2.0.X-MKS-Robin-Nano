@@ -58,7 +58,7 @@
 //===========================================================================
 
 // Core XY
-#define SAPPHIRE_PRO
+//#define SAPPHIRE_PRO
 //#define SAPPHIRE_PLUS
 
 // Cartesian
@@ -69,7 +69,7 @@
 //===========================================================================
 
 // Probe Settings
-#define BL_TOUCH               // Enable BLTouch Settings
+//#define BL_TOUCH               // Enable BLTouch Settings
 
 #if ENABLED (BL_TOUCH)
   //#define LOW_RES                  // 3x3 Grid 
@@ -81,6 +81,14 @@
   #define OFFSET_Y 0              // - Front  |   Back +
   #define OFFSET_Z 0              // - Nozzle ist Higher as the Probe 0 Point |  + Really? you did somthing wrong.
 #endif
+
+// Motion Control Settings
+
+// New Motion Control (Default Recommended)  - Classic Jerk [OFF] | S-Curve Acceleration [ON]  | Junction Deviation Factor [ON]
+#define MOTION_NEW
+// Classic Motion Control                    - Classic Jerk [ON]  | S-Curve Acceleration [OFF] | Junction Deviation Factor [OFF]
+//#define MOTION_CLASSIC
+
 
 
 //===========================================================================
@@ -1042,17 +1050,24 @@
  * When changing speed and direction, if the difference is less than the
  * value set here, it may happen instantaneously.
  */
-//#define CLASSIC_JERK
+#if ENABLED (MOTION_CLASSIC)
+  // No Preset Classic Motion
+  #define CLASSIC_JERK
+#else
+  // Motion NEW
+  //#define CLASSIC_JERK
+#endif
+
 #if ENABLED(CLASSIC_JERK)
-  #define DEFAULT_XJERK 10.0
-  #define DEFAULT_YJERK 10.0
+  #define DEFAULT_XJERK 15.0
+  #define DEFAULT_YJERK 15.0
   #define DEFAULT_ZJERK  0.3
 
   //#define TRAVEL_EXTRA_XYJERK 0.0     // Additional jerk allowance for all travel moves
 
-  //#define LIMITED_JERK_EDITING        // Limit edit via M205 or LCD to DEFAULT_aJERK * 2
+  #define LIMITED_JERK_EDITING        // Limit edit via M205 or LCD to DEFAULT_aJERK * 2
   #if ENABLED(LIMITED_JERK_EDITING)
-    #define MAX_JERK_EDIT_VALUES { 20, 20, 0.6, 10 } // ...or, set your own edit limits
+    #define MAX_JERK_EDIT_VALUES { 25, 25, 0.6, 7 } // ...or, set your own edit limits
   #endif
 #endif
 
@@ -1077,7 +1092,13 @@
  *
  * See https://github.com/synthetos/TinyG/wiki/Jerk-Controlled-Motion-Explained
  */
-#define S_CURVE_ACCELERATION
+#if ENABLED (MOTION_NEW)
+  // Motion NEW
+  #define S_CURVE_ACCELERATION
+#else
+  // No Preset Classic Motion
+  //#define S_CURVE_ACCELERATION
+#endif
 
 //===========================================================================
 //============================= Z Probe Options =============================
