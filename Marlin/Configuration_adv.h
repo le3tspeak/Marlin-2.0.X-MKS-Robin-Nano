@@ -699,7 +699,11 @@
    * This feature was designed for Delta's with very fast Z moves however higher speed cartesians may function
    * If the machine cannot raise the probe fast enough after a trigger, it may enter a fault state.
    */
-  //#define BLTOUCH_HS_MODE
+  #if ENABLED (BL_TOUCH_HIGH_SPEED)
+    #define BLTOUCH_HS_MODE
+  #else
+    //#define BLTOUCH_HS_MODE
+  #endif
 
   // Safety: Enable voltage mode settings in the LCD menu.
   //#define BLTOUCH_LCD_VOLTAGE_MENU
