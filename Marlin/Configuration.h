@@ -68,7 +68,10 @@
 //============================= Advanced presets ============================
 //===========================================================================
 
-// Probe Settings
+/**
+* Probe Settings
+*/
+
 //#define BL_TOUCH               // Enable BLTouch Settings
 
 #if ENABLED (BL_TOUCH)
@@ -82,13 +85,27 @@
   #define OFFSET_Z 0              // - Nozzle ist Higher as the Probe 0 Point |  + Really? you did somthing wrong.
 #endif
 
-// Motion Control Settings
+/**
+* Motion Control Settings
+*/
 
 // New Motion Control (Default Recommended)  - Classic Jerk [OFF] | S-Curve Acceleration [ON]  | Junction Deviation Factor [ON]
 #define MOTION_NEW
+
 // Classic Motion Control                    - Classic Jerk [ON]  | S-Curve Acceleration [OFF] | Junction Deviation Factor [OFF]
 //#define MOTION_CLASSIC
 
+/**
+ * Linear Pressure Control
+ * 
+ * Use at your own risk! It can cause extruder errors...
+ */  
+
+//#define Linear_Pressure_Control
+
+#if ENABLED (Linear_Pressure_Control)
+  #define Linear_Pressure_Control_Value   0
+#endif
 
 
 //===========================================================================

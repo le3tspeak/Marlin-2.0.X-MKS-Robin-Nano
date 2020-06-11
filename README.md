@@ -66,6 +66,7 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
 
 Version|Changes & Fixes
 -------|-------
+  -| Add Adv. Preset Linear Pressure Control
   -| Add Adv. Preset Motion Modes
   -| Add Adv. Preset BLTouch
   -| Move SD Settings to Pins

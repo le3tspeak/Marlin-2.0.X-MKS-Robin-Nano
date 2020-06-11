@@ -94,6 +94,12 @@
   #error "3D Printer Preset not Set properly see Configuration.h or delete the line here for a printer without a preset."
 #endif
 
+#if NONE (MOTION_NEW, MOTION_CLASSIC)
+  #error "Please select Motion NEW or Classic"
+#elif BOTH (MOTION_NEW, MOTION_CLASSIC)
+  #error "Only 1 Motion scheme can be selected"
+#endif
+
 //
 //Error Section Display Color
 //
