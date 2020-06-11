@@ -238,6 +238,9 @@
 #define SDIO_SUPPORT
 #define SD_DETECT_PIN                       PD12
 
+#define SDIO_CLOCK                           18000000       /* 18 MHz or 4.5MHz */ 
+#define SD_READ_RETRY 16
+
 //
 // LCD / Controller
 //
