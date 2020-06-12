@@ -82,7 +82,7 @@
   // Set Software Serial UART for TMC 2208 / TMC 2209
   //#define SOFTWARE_SERIAL
 
-  #if ENABLED (HARDWARE_SERIAL)
+  #if ENABLED(HARDWARE_SERIAL)
     //#define X_HARDWARE_SERIAL  Serial1
     //#define Y_HARDWARE_SERIAL  Serial1
     //#define Z_HARDWARE_SERIAL  Serial1
@@ -182,10 +182,10 @@
   #define E0_STEP_PIN                         PD6
   #define E0_DIR_PIN                          PD3
 
- #if ENABLED (SOFTWARE_SERIAL)
-  	//#define E1_ENABLE_PIN                     PA3  // USED BY UART X Don't change
-    //#define E1_STEP_PIN                       PA6  // USED BY UART Y Don't change
-    //#define E1_DIR_PIN                        PA1  // USED BY UART Z Don't change
+ #if ENABLED(SOFTWARE_SERIAL)
+  	//#define E1_ENABLE_PIN                   PA3  // USED BY UART X Don't change
+    //#define E1_STEP_PIN                     PA6  // USED BY UART Y Don't change
+    //#define E1_DIR_PIN                      PA1  // USED BY UART Z Don't change
    #else
     #define E1_ENABLE_PIN                     PA3
     #define E1_STEP_PIN                       PA6 
@@ -195,26 +195,33 @@
 //
 // Servos
 //
-#if ENABLED (BLTOUCH)
+#if ENABLED(BLTOUCH)
   #define SERVO0_PIN                          PA8   // Enable BLTOUCH support ROBIN NANO v1.2 ONLY
 #endif
 
 //
 // Temperature Sensors
 //
-#define TEMP_0_PIN                          PC1   // TH1
-#define TEMP_1_PIN                          PC2   // TH2
-#define TEMP_BED_PIN                        PC0   // TB1
+#define TEMP_0_PIN                           PC1   // TH1
+#define TEMP_1_PIN                           PC2   // TH2
+#define TEMP_BED_PIN                         PC0   // TB1
 
 //
 // Heaters / Fans
 //
-#define HEATER_0_PIN                        PC3   // HEATER1
-#define HEATER_1_PIN                        PB0   // HEATER2
-#define HEATER_BED_PIN                      PA0   // HOT BED
+#define HEATER_0_PIN                         PC3   // HEATER1
+#if ENABLED(HOTEND_AUTO_FAN)
+  #define HEATER_1_PIN                       PC3   // HEATER2 now Used by Hotend FAN
+#else
+  #define HEATER_1_PIN                       PB0   // HEATER2
+#endif
+#define HEATER_BED_PIN                       PA0   // HOT BED
 
-#define FAN_PIN                             PB1   // FAN
-//#define E0_AUTO_FAN                         PB0   //E0 AUTO FAN
+#define FAN_PIN                              PB1   // FAN
+
+#if ENABLED(HOTEND_AUTO_FAN)
+  #define E0_AUTO_FAN                        PB0   //E0 AUTO FAN
+#endif
 //
 // Thermocouples
 //
@@ -231,15 +238,15 @@
 // SD Card
 //
 #ifndef SDCARD_CONNECTION
-  #define SDCARD_CONNECTION              ONBOARD
+  #define SDCARD_CONNECTION                 ONBOARD
   #define ONBOARD_SD_CS_PIN                 PC11
 #endif
 
 #define SDIO_SUPPORT
 #define SD_DETECT_PIN                       PD12
 
-#define SDIO_CLOCK                           18000000       /* 18 MHz or 4.5MHz */ 
-#define SD_READ_RETRY 16
+#define SDIO_CLOCK                          18000000       /* 18 MHz or 4.5MHz */ 
+#define SDIO_READ_RETRIES                   16
 
 //
 // LCD / Controller
@@ -249,18 +256,18 @@
 //
 // LED / NEOPixel
 //
-#define LED_PIN                  PB2
+#define LED_PIN                             PB2
 #if ENABLED(NEOPIXEL_LED)
-  #define NEO_PIXEL_1            PA10  // USED WIFI RX PIN
+  #define NEO_PIXEL_1                       PA10  // USED WIFI RX PIN
     #ifdef NEOPIXEL2_PIN
-      #define NEO_PIXEL_2        PA9   // USED WIFI TX PIN
+      #define NEO_PIXEL_2                   PA9   // USED WIFI TX PIN
     #endif
 #endif
       
 //
 // WIFI ESP8266 
 //
-#if ANY (WIFISUPPORT, ESP3D_WIFISUPPORT)
+#if ANY(WIFISUPPORT, ESP3D_WIFISUPPORT)
   #define WIFI_TX_PIN    PA10
   #define WIFI_RX_PIN    PA9
   #define WIFI_IO0_PIN   PC13
@@ -272,7 +279,7 @@
  * If the screen stays white, disable 'LCD_RESET_PIN'
  * to let the bootloader init the screen.
  */
-#if ENABLED(FSMC_GRAPHICAL_TFT) || ENABLED(SAPPHIRE_GRAPHICAL_TFT)
+#if ENABLED(FSMC_GRAPHICAL_TFT)
   #define DOGLCD_MOSI -1 // prevent redefine Conditionals_post.h
   #define DOGLCD_SCK -1
   #define FSMC_CS_PIN        PD7    // NE4
@@ -297,5 +304,5 @@
   #define LCD_FULL_PIXEL_WIDTH  480
   #define LCD_PIXEL_OFFSET_X    48
   #define LCD_FULL_PIXEL_HEIGHT 320
-  #define LCD_PIXEL_OFFSET_Y    32
+  #define LCD_PIXEL_OFFSET_Y    48
 #endif

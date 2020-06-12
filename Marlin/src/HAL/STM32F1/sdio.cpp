@@ -30,10 +30,6 @@
 
 #include "sdio.h"
 
-#ifndef SD_READ_RETRY
-  #define SD_READ_RETRY 16
-#endif
-
 SDIO_CardInfoTypeDef SdCard;
 
 bool SDIO_Init() {
@@ -105,8 +101,8 @@ bool SDIO_ReadBlock_DMA(uint32_t blockAddress, uint8_t *data) {
     return false;
   }
 
-   while (!SDIO_GET_FLAG(SDIO_STA_DATAEND | SDIO_STA_TRX_ERROR_FLAGS)) { /* wait */ }
-
+  while (!SDIO_GET_FLAG(SDIO_STA_DATAEND | SDIO_STA_TRX_ERROR_FLAGS)) { /* wait */ }
+  
   //If there were SDIO errors, do not wait DMA.
   if (SDIO->STA & SDIO_STA_TRX_ERROR_FLAGS) {
     SDIO_CLEAR_FLAG(SDIO_ICR_CMD_FLAGS | SDIO_ICR_DATA_FLAGS);
@@ -122,8 +118,7 @@ bool SDIO_ReadBlock_DMA(uint32_t blockAddress, uint8_t *data) {
     SDIO_CLEAR_FLAG(SDIO_ICR_CMD_FLAGS | SDIO_ICR_DATA_FLAGS);
     return false;
   }
-
-
+  
   dma_disable(SDIO_DMA_DEV, SDIO_DMA_CHANNEL);
 
   if (SDIO->STA & SDIO_STA_RXDAVL) {
@@ -141,7 +136,7 @@ bool SDIO_ReadBlock_DMA(uint32_t blockAddress, uint8_t *data) {
 }
 
 bool SDIO_ReadBlock(uint32_t blockAddress, uint8_t *data) {
-  uint32_t retries = SD_READ_RETRY;
+  uint32_t retries = SDIO_READ_RETRIES;
   while (retries--) if (SDIO_ReadBlock_DMA(blockAddress, data)) return true;
   return false;
 }
@@ -167,7 +162,7 @@ bool SDIO_WriteBlock(uint32_t blockAddress, const uint8_t *data) {
 
   sdio_setup_transfer(SDIO_DATA_TIMEOUT * (F_CPU / 1000U), 512U, SDIO_BLOCKSIZE_512 | SDIO_DCTRL_DMAEN | SDIO_DCTRL_DTEN);
 
-  while (!SDIO_GET_FLAG(SDIO_STA_DATAEND | SDIO_STA_TRX_ERROR_FLAGS)) {}
+  while (!SDIO_GET_FLAG(SDIO_STA_DATAEND | SDIO_STA_TRX_ERROR_FLAGS)) { /* wait */ }
 
   dma_disable(SDIO_DMA_DEV, SDIO_DMA_CHANNEL);
 

@@ -85,7 +85,6 @@ public:
 //
 // Very basic support for 320x240 TFT screen
 // Tested on MKS Robin TFT_V2.0 with ST7789V controller
-// MKS Robin Nano
 //
 extern u8g_dev_t u8g_dev_tft_320x240_upscale_from_128x64;
 
@@ -95,6 +94,7 @@ public:
   : U8GLIB(&u8g_dev_tft_320x240_upscale_from_128x64, cs, rs, reset)
   { }
 };
+
 
 extern u8g_dev_t u8g_dev_uc1701_mini12864_HAL_2x_sw_spi, u8g_dev_uc1701_mini12864_HAL_2x_hw_spi;
 
