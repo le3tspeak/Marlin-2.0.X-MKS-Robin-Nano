@@ -66,6 +66,83 @@
 #undef TEST4
 
 /**
+ * Warnings for MKS Robin Nano
+ */
+
+//
+// Presets
+//
+#if ANY (SAPPHIRE_PRO, SAPPHIRE_PLUS, BLUER)
+  // All OK!
+#else
+  #error "3D Printer Preset not Set properly see Configuration.h or delete the line here for a printer without a preset."
+#endif
+
+//
+// Optical Endstops
+//
+#if BOTH(BL_TOUCH, OPTICAL_ENDSTOP_Z)
+  #error "BLTouch are Used to Home ZMIN, Disable OPTICAL ENDSTOP Z"
+#endif
+
+//
+//Error Section Display Color
+//
+#if ENABLED (SAPPHIRE_GRAPHICAL_TFT_CLASSIC)
+  #if ANY (SAPPHIRE_GRAPHICAL_TFT_BW, SAPPHIRE_GRAPHICAL_TFT_WB, SAPPHIRE_GRAPHICAL_TFT_WBC,SAPPHIRE_GRAPHICAL_TFT_CUSTOM)
+    #error "Only 1 display color scheme can be selected"
+  #endif
+#elif ENABLED (SAPPHIRE_GRAPHICAL_TFT_BW)
+  #if ANY (SAPPHIRE_GRAPHICAL_TFT_WB, SAPPHIRE_GRAPHICAL_TFT_WBC,SAPPHIRE_GRAPHICAL_TFT_CUSTOM, SAPPHIRE_GRAPHICAL_TFT_CLASSIC)
+    #error "Only 1 display color scheme can be selected"
+  #endif
+#elif ENABLED (SAPPHIRE_GRAPHICAL_TFT_WB)
+  #if ANY (SAPPHIRE_GRAPHICAL_TFT_BW, SAPPHIRE_GRAPHICAL_TFT_WBC, SAPPHIRE_GRAPHICAL_TFT_CUSTOM, SAPPHIRE_GRAPHICAL_TFT_CLASSIC)
+    #error "Only 1 display color scheme can be selected"
+  #endif
+#elif ENABLED (SAPPHIRE_GRAPHICAL_TFT_WBC)
+  #if ANY (SAPPHIRE_GRAPHICAL_TFT_BW, SAPPHIRE_GRAPHICAL_TFT_WB, SAPPHIRE_GRAPHICAL_TFT_CUSTOM, SAPPHIRE_GRAPHICAL_TFT_CLASSIC)
+    #error "Only 1 display color scheme can be selected"
+  #endif
+#elif ENABLED (SAPPHIRE_GRAPHICAL_TFT_CUSTOM)
+  #if ANY (SAPPHIRE_GRAPHICAL_TFT_BW, SAPPHIRE_GRAPHICAL_TFT_WB, SAPPHIRE_GRAPHICAL_TFT_WBC, SAPPHIRE_GRAPHICAL_TFT_CLASSIC)
+    #error "Only 1 display color scheme can be selected"
+  #endif
+#endif
+
+//
+//ERROR Section Pins
+//
+
+#if BOTH(NEOPIXEL_LED, WIFISUPPORT)
+  #error "NEOPIXEL and WIFISUPPORT do not go at the same time please decide for one"
+#elif BOTH(NEOPIXEL_LED, ESP3D_WIFISUPPORT)
+  #error "NEOPIXEL and ESP3D_WIFISUPPORT do not go at the same time please decide for one"
+#elif ENABLED (HARDWARE_SERIAL)
+  #ifdef NEOPIXEL2_PIN
+    #error "Uncomment NEO_PIXEL_2 PIN in "CONFIGURATION.h" if you want to use Hardware Serial with NeoPixel Support"
+  #endif
+#elif E1_DRIVER_TYPE
+  #ifdef Z2_DRIVER_TYPE
+    #error "E1 and Z2 cannot both be active, please select the correct one"
+  #endif
+#elif Z2_DRIVER_TYPE
+  #ifdef E1_DRIVER_TYPE
+   #error "Z2 and E1 cannot both be active, please select the correct one"
+  #endif
+#elif BOTH (HARDWARE_SERIAL, SOFTWARE_SERIAL)
+  #error "Please only select Software Serial or Hardware Serial, both do not work together"
+#endif
+
+
+//
+// Probe Section
+//
+#if BOTH (HI_RES, LOW_RES)
+  #error "Only 1 Resolution can be selected"
+#endif
+
+/**
  * We try our best to include sanity checks for all changed configuration
  * directives because users have a tendency to use outdated config files with
  * the bleeding-edge source code, but sometimes this is not enough. This check

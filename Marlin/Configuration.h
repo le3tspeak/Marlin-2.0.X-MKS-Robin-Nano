@@ -59,7 +59,7 @@
 //===========================================================================
 
 // Core XY
-//#define SAPPHIRE_PRO
+#define SAPPHIRE_PRO
 //#define SAPPHIRE_PLUS
 
 // Cartesian
@@ -73,7 +73,7 @@
 
 
 //#define BL_TOUCH                 // Enable BLTouch Settings
-#if ENABLED (BL_TOUCH)
+#if ENABLED(BL_TOUCH)
   //#define LOW_RES                  // 3x3 Grid 
   //#define HI_RES                   // 5x5 Grid
   //#define BL_TOUCH_HIGH_SPEED      // Probe Pin does not pull in when moving in XY. Use at your own risk!
@@ -96,14 +96,18 @@
 // Linear Pressure Control
 //Use at your own risk! It can cause extruder errors...
  
-//#define Linear_Pressure_Control
-#if ENABLED (Linear_Pressure_Control)
-  //#define Linear_Pressure_Control_Value   0
+//#define LINEAR_PRESSURE_CONTROL
+#if ENABLED(LINEAR_PRESSURE_CONTROL)
+  //#define LINEAR_PRESSURE_CONTROL_VALUE   0
 #endif
 
 // Hotend Fan Auto ON
 // Use Hotend 2 pins to control Hotend fan
 //#define HOTEND_AUTO_FAN
+
+// Optical Endstops
+//#define OPTICAL_ENDSTOPS_XY
+//#define OPTICAL_ENDSTOP_Z
 
 //===========================================================================
 //============================= Display language selection===================
@@ -817,15 +821,24 @@
 
 // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
 #if ANY(SAPPHIRE_PRO, SAPPHIRE_PLUS, BLUER)
-    //Sapphire Pro,Plus & Bluer
+  #if ENABLED(OPTICAL_ENDSTOPS_XY)
+    //Sapphire Pro,Plus & Bluer & Optical Endstops
+    #define X_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
+    #define Y_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
+    #define X_MAX_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
+    #define Y_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
+    #define Z_MAX_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
+    #define Z_MIN_PROBE_ENDSTOP_INVERTING true // Set to true to invert the logic of the probe.
+  #else 
+    //Sapphire Pro,Plus & Bluer & Mechanical Endstops
     #define X_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
     #define Y_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
-    #define Z_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
     #define X_MAX_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
     #define Y_MAX_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
     #define Z_MAX_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
     #define Z_MIN_PROBE_ENDSTOP_INVERTING true // Set to true to invert the logic of the probe.
-  #else
+  #endif
+#else
     //No Preset
     #define X_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
     #define Y_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
@@ -834,7 +847,15 @@
     #define Y_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
     #define Z_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
     #define Z_MIN_PROBE_ENDSTOP_INVERTING false // Set to true to invert the logic of the probe.
-  #endif
+#endif
+
+#if ENABLED(OPTICAL_ENDSTOP_Z)
+  //Sapphire Pro,Plus & Bluer & Optical Endstops on Z
+  #define Z_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
+#else
+  //No Preset
+  #define Z_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
+#endif
 
 /**
  * Stepper Drivers
