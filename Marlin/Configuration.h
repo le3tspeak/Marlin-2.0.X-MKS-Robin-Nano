@@ -195,7 +195,11 @@
 //#define SHOW_CUSTOM_BOOTSCREEN
 
 // Show the bitmap in Marlin/_Statusscreen.h on the status screen.
-//#define CUSTOM_STATUS_SCREEN_IMAGE
+#if ANY(SAPPHIRE_PRO, SAPPHIRE_PLUS, BLUER)
+  #define CUSTOM_STATUS_SCREEN_IMAGE
+#else
+  //#define CUSTOM_STATUS_SCREEN_IMAGE
+#endif
 
 // @section machine
 
