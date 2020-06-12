@@ -22,7 +22,7 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
   [MKS Robin Nano](https://makerbase.com.cn/en/)|ARM® Cortex-M3 / STM32F103VET6| MKS Robin Nano 1.1 
   [MKS Robin Nano](https://makerbase.com.cn/en/)|ARM® Cortex-M3 / STM32F103VET6| MKS Robin Nano 1.2
   
-### Features of the Configuration of Branch MKS Robin Nano
+### Features of the Preset Configuration of Branch MKS Robin Nano
 
   Features|Active|Value
   --------|------|-----
@@ -32,9 +32,9 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
   EEPROM|True|SDCARD EEPROM EMULATION
   G0 Support|True|-
   G2/G3 Arc Support|True|-
-  Classic Jerk|False|-
-  Bézier curve acceleration|True|-
-  Junction Deviation|True|0.05
+  Classic Jerk|True|15
+  Bézier curve acceleration|False|-
+  Junction Deviation|False|0.019
   Mesh Bed Leveling|True|-
   Filament sensor|True|-
   TMC UART|-|Ready
@@ -44,7 +44,7 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
   Cancel Objects|True|-
 
 
-  Axes|Pro|Plus|Bluer
+  Axes|Sapphire Pro|Sapphire Plus|Bluer
   ----|----|----|----
   X|TMC2208 Standalone|TMC2208 Standalone|TMC2208 Standalone
   Y|TMC2208 Standalone|TMC2208 Standalone|TMC2208 Standalone
@@ -53,8 +53,8 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
 
   Memory consumption|Value
   --------------------|-------------------------------------------
-  RAM:    |55.6% (used 36944 bytes from 65536 bytes)
-  Flash:  |43.4% (used 223380 bytes from 524288 bytes)
+  RAM:    |47.8% (used 36944 bytes from 65536 bytes)
+  Flash:  |43.2% (used 223380 bytes from 524288 bytes)
 
   
 ## Submitting Changes
