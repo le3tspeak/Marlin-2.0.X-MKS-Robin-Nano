@@ -68,6 +68,8 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
 
 Version|Changes & Fixes
 -------|-------
+  -|Add Status Logo TT
+  -|Add Adv. Preset Optical Endstops XY
 1.0.5| Major Update & Reworking
   -| Add Adv. Preset Linear Pressure Control
   -| Add Adv. Preset Motion Modes
