@@ -127,6 +127,13 @@
   #define DRIVER_E0 TMC2209_STANDALONE
   //#define DRIVER_E1 TMC2209_STANDALONE
   //#define DRIVER_Z2 TMC2209_STANDALONE
+
+  //#define INVERT_X
+  //#define INVERT_Y
+  #define INVERT_Z 
+  #define INVERT_E0 
+  //#define INVERT_Z2
+  //#define INVERT_E1
 #endif
 
 //===========================================================================
@@ -1399,15 +1406,47 @@
 #if ENABLED(SAPPHIRE_PRO)
     //Sapphire Pro
     // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-    #define INVERT_X_DIR true
-    #define INVERT_Y_DIR true
-    #define INVERT_Z_DIR false
+    #if ENABLED(INVERT_X)
+      #define INVERT_X_DIR false
+    #else
+      #define INVERT_X_DIR true
+    #endif
 
+        #if ENABLED(INVERT_Y)
+      #define INVERT_Y_DIR false
+    #else
+      #define INVERT_Y_DIR true
+    #endif
+
+    #if ENABLED(INVERT_Z)
+      #define INVERT_Z_DIR true
+    #else
+      #define INVERT_Z_DIR false
+    #endif
+
+    #if ENABLED(INVERT_Z2)
+      #define INVERT_Z2_DIR true
+    #else
+      #define INVERT_Z2_DIR false
+    #endif
+
+    
     // @section extruder
 
     // For direct drive extruder v9 set to true, for geared extruder set to false.
-    #define INVERT_E0_DIR false
-    #define INVERT_E1_DIR false
+
+    #if ENABLED(INVERT_E0)
+      #define INVERT_E0_DIR true
+    #else
+      #define INVERT_E0_DIR false
+    #endif
+    
+    #if ENABLED(INVERT_E1)
+      #define INVERT_E0_DIR true
+    #else
+      #define INVERT_E1_DIR false
+    #endif
+
     #define INVERT_E2_DIR false
     #define INVERT_E3_DIR false
     #define INVERT_E4_DIR false
@@ -1417,15 +1456,43 @@
   #elif ENABLED(SAPPHIRE_PLUS)
     //Sapphire Plus
     // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-    #define INVERT_X_DIR true
-    #define INVERT_Y_DIR true
-    #define INVERT_Z_DIR false
+    #if ENABLED(INVERT_X)
+      #define INVERT_X_DIR false
+    #else
+      #define INVERT_X_DIR true
+    #endif
+
+        #if ENABLED(INVERT_Y)
+      #define INVERT_Y_DIR false
+    #else
+      #define INVERT_Y_DIR true
+    #endif
+
+    #if ENABLED(INVERT_Z)
+      #define INVERT_Z_DIR true
+    #else
+      #define INVERT_Z_DIR false
+    #endif
+    #if ENABLED(INVERT_Z2)
+      #define INVERT_Z2_DIR true
+    #else
+      #define INVERT_Z2_DIR false
+    #endif
 
     // @section extruder
 
     // For direct drive extruder v9 set to true, for geared extruder set to false.
-    #define INVERT_E0_DIR true
-    #define INVERT_E1_DIR false
+    #if ENABLED(INVERT_E0)
+      #define INVERT_E0_DIR true
+    #else
+      #define INVERT_E0_DIR false
+    #endif
+    #if ENABLED(INVERT_E1)
+      #define INVERT_E0_DIR true
+    #else
+      #define INVERT_E1_DIR false
+    #endif
+
     #define INVERT_E2_DIR false
     #define INVERT_E3_DIR false
     #define INVERT_E4_DIR false
@@ -1435,9 +1502,23 @@
   #elif ENABLED(BLUER)
     //Bluer
     // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-    #define INVERT_X_DIR false
-    #define INVERT_Y_DIR false
-    #define INVERT_Z_DIR false
+    #if ENABLED(INVERT_X)
+      #define INVERT_X_DIR true
+    #else
+      #define INVERT_X_DIR false
+    #endif
+
+        #if ENABLED(INVERT_Y)
+      #define INVERT_Y_DIR true
+    #else
+      #define INVERT_Y_DIR false
+    #endif
+
+    #if ENABLED(INVERT_Z)
+      #define INVERT_Z_DIR true
+    #else
+      #define INVERT_Z_DIR false
+    #endif
 
     // @section extruder
 
