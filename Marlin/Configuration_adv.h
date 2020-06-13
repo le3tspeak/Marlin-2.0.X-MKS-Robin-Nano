@@ -712,7 +712,7 @@
     #define BLTOUCH_HS_MODE
   #else
     //#define BLTOUCH_HS_MODE
-
+  #endif
   // Safety: Enable voltage mode settings in the LCD menu.
   //#define BLTOUCH_LCD_VOLTAGE_MENU
 

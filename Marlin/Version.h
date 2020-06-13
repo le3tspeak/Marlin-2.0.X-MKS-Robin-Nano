@@ -28,7 +28,7 @@
 /**
  * Marlin release version identifier
  */
-#define SHORT_BUILD_VERSION "MKS Robin Nano 1.0.5"
+#define SHORT_BUILD_VERSION "MKS Robin Nano 1.0.5a"
 
 /**
  * Verbose version identifier which should contain a reference to the location
@@ -41,7 +41,7 @@
  * here we define this default string as the date where the latest release
  * version was tagged.
  */
-#define STRING_DISTRIBUTION_DATE "12.06.2020"
+#define STRING_DISTRIBUTION_DATE "13.06.2020"
 
 /**
  * Defines a generic printer name to be output to the LCD after booting Marlin.
