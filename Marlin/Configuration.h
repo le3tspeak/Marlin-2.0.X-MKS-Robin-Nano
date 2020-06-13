@@ -59,7 +59,7 @@
 //===========================================================================
 
 // Core XY
-//#define SAPPHIRE_PRO
+#define SAPPHIRE_PRO
 //#define SAPPHIRE_PLUS
 
 // Cartesian
@@ -136,6 +136,15 @@
   //#define INVERT_Z2
   //#define INVERT_E1
 #endif
+
+// Custom Axis Steps Per MM
+// If you have calibrated the extruder before, you can enter the steps here, also be specified individually for the other axes.
+
+//#define STEPS_X         0  // Normally no change needed...
+//#define STEPS_Y         0  // Normally no change needed...
+//#define STEPS_Z         0  // Normally no change needed...
+//#define STEPS_E0        0
+
 
 //===========================================================================
 //============================= Display language selection===================
@@ -1007,19 +1016,65 @@
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
 
-#if ENABLED(SAPPHIRE_PRO)
+#if ENABLED(SAPPHIRE_PRO) 
     //Sapphire Pro
-    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 1600, 415 }
+    #ifndef STEPS_X
+      #define STEPS_X     80
+    #endif
+    #ifndef STEPS_Y
+      #define STEPS_Y     80
+    #endif
+    #ifndef STEPS_Z
+      #define STEPS_Z     1600
+    #endif
+    #ifndef STEPS_E0
+      #define STEPS_E0    415
+    #endif
   #elif ENABLED(SAPPHIRE_PLUS)
     //Sapphire Plus
-    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 415 }
+    #ifndef STEPS_X
+      #define STEPS_X     80
+    #endif
+    #ifndef STEPS_Y
+      #define STEPS_Y     80
+    #endif
+    #ifndef STEPS_Z
+      #define STEPS_Z     400
+    #endif
+    #ifndef STEPS_E0
+      #define STEPS_E0    415
+    #endif
   #elif ENABLED(BLUER)
     //Bluer
-    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 90 }
-  #else
+    #ifndef STEPS_X
+      #define STEPS_X     80
+    #endif
+    #ifndef STEPS_Y
+      #define STEPS_Y     80
+    #endif
+    #ifndef STEPS_Z
+      #define STEPS_Z     400
+    #endif
+    #ifndef STEPS_E0
+      #define STEPS_E0    90
+    #endif
+ #else
     //No Preset
-    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 4000, 500 }
+    #ifndef STEPS_X
+      #define STEPS_X     80
+    #endif
+    #ifndef STEPS_Y
+      #define STEPS_Y     80
+    #endif
+    #ifndef STEPS_Z
+      #define STEPS_Z     4000
+    #endif
+    #ifndef STEPS_E0
+      #define STEPS_E0    500
+    #endif
 #endif
+
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { STEPS_X, STEPS_Y, STEPS_Z, STEPS_E0 }
 
 /**
  * Default Max Feed Rate (mm/s)
