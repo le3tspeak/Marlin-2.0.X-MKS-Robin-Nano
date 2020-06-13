@@ -76,7 +76,8 @@
 #if ENABLED(BL_TOUCH)
   //#define LOW_RES                  // 3x3 Grid 
   //#define HI_RES                   // 5x5 Grid
-  //#define BL_TOUCH_HIGH_SPEED      // Probe Pin does not pull in when moving in XY. Use at your own risk!
+  //#define MAX_RES                  // 7x7 Grid
+  //#define BL_TOUCH_HIGH_SPEED      // Only for BLTouch 3.0 and 3.1 Probe Pin does not pull in when moving in XY. Use at your own risk!
 #endif
   
 
@@ -1814,6 +1815,9 @@
     #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
   #elif ENABLED (HI_RES)
     #define GRID_MAX_POINTS_X 5
+    #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
+  #elif ENABLED (MAX_RES)
+    #define GRID_MAX_POINTS_X 7
     #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
   #else
     #define GRID_MAX_POINTS_X 3
