@@ -79,6 +79,15 @@
 #endif
 
 //
+// Driver Section
+//
+#ifdef DRIVER_E1
+  #ifdef DRIVER_Z2
+    #error "Only 1 Driver can be selected for slot 5"
+  #endif
+#endif
+
+//
 // Optical Endstops
 //
 #if BOTH(BL_TOUCH, OPTICAL_ENDSTOP_Z)

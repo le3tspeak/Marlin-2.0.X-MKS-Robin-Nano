@@ -59,7 +59,7 @@
 //===========================================================================
 
 // Core XY
-#define SAPPHIRE_PRO
+//#define SAPPHIRE_PRO
 //#define SAPPHIRE_PLUS
 
 // Cartesian
@@ -98,7 +98,7 @@
  
 //#define LINEAR_PRESSURE_CONTROL
 #if ENABLED(LINEAR_PRESSURE_CONTROL)
-  //#define LINEAR_PRESSURE_CONTROL_VALUE   0
+  #define LINEAR_PRESSURE_CONTROL_VALUE   0
 #endif
 
 // Hotend Fan Auto ON
@@ -108,6 +108,26 @@
 // Optical Endstops
 //#define OPTICAL_ENDSTOPS_XY
 //#define OPTICAL_ENDSTOP_Z
+
+// Custom Stepper Motor Drivers
+// Here you can change the Stepper Motor Drivers if they differ from the delivery state or if you have changed them...
+// If your printer is still without changes, it is not necessary to activate the function...
+// A4988 is assumed for unspecified drivers.
+// Options: A4988, A5984, DRV8825, LV8729, L6470, L6474, POWERSTEP01,
+//          TB6560, TB6600, TMC2100,
+//          TMC2130, TMC2130_STANDALONE, TMC2160, TMC2160_STANDALONE,
+//          TMC2208, TMC2208_STANDALONE, TMC2209, TMC2209_STANDALONE,
+//          TMC26X,  TMC26X_STANDALONE,  TMC2660, TMC2660_STANDALONE,
+//          TMC5130, TMC5130_STANDALONE, TMC5160, TMC5160_STANDALONE
+//#define Custom_Stepper_Drivers
+#if ENABLED(Custom_Stepper_Drivers)
+  #define DRIVER_X TMC2209_STANDALONE
+  #define DRIVER_Y TMC2209_STANDALONE
+  #define DRIVER_Z TMC2209_STANDALONE
+  #define DRIVER_E0 TMC2209_STANDALONE
+  //#define DRIVER_E1 TMC2209_STANDALONE
+  //#define DRIVER_Z2 TMC2209_STANDALONE
+#endif
 
 //===========================================================================
 //============================= Display language selection===================
@@ -877,60 +897,43 @@
  *          TMC5130, TMC5130_STANDALONE, TMC5160, TMC5160_STANDALONE
  * :['A4988', 'A5984', 'DRV8825', 'LV8729', 'L6470', 'L6474', 'POWERSTEP01', 'TB6560', 'TB6600', 'TMC2100', 'TMC2130', 'TMC2130_STANDALONE', 'TMC2160', 'TMC2160_STANDALONE', 'TMC2208', 'TMC2208_STANDALONE', 'TMC2209', 'TMC2209_STANDALONE', 'TMC26X', 'TMC26X_STANDALONE', 'TMC2660', 'TMC2660_STANDALONE', 'TMC5130', 'TMC5130_STANDALONE', 'TMC5160', 'TMC5160_STANDALONE']
  */
-#if ENABLED(SAPPHIRE_PRO)
+#if ENABLED(SAPPHIRE_PRO) && NONE(Custom_Stepper_Drivers)
     //Sapphire Pro
     #define X_DRIVER_TYPE  TMC2208_STANDALONE
     #define Y_DRIVER_TYPE  TMC2208_STANDALONE
     #define Z_DRIVER_TYPE  A4988
-    //#define X2_DRIVER_TYPE A4988
-    //#define Y2_DRIVER_TYPE A4988
     //#define Z2_DRIVER_TYPE A4988
-    //#define Z3_DRIVER_TYPE A4988
-    //#define Z4_DRIVER_TYPE A4988
     #define E0_DRIVER_TYPE A4988
     //#define E1_DRIVER_TYPE A4988
-    //#define E2_DRIVER_TYPE A4988
-    //#define E3_DRIVER_TYPE A4988
-    //#define E4_DRIVER_TYPE A4988
-    //#define E5_DRIVER_TYPE A4988
-    //#define E6_DRIVER_TYPE A4988
-    //#define E7_DRIVER_TYPE A4988
-  #elif ENABLED(SAPPHIRE_PLUS)
+  #elif ENABLED(SAPPHIRE_PLUS) && NONE(Custom_Stepper_Drivers)
     //Sapphire Plus
     #define X_DRIVER_TYPE  TMC2208_STANDALONE
     #define Y_DRIVER_TYPE  TMC2208_STANDALONE
     #define Z_DRIVER_TYPE  A4988
-    //#define X2_DRIVER_TYPE A4988
-    //#define Y2_DRIVER_TYPE A4988
     //#define Z2_DRIVER_TYPE A4988
-    //#define Z3_DRIVER_TYPE A4988
-    //#define Z4_DRIVER_TYPE A4988
     #define E0_DRIVER_TYPE TMC2208_STANDALONE
     //#define E1_DRIVER_TYPE A4988
-    //#define E2_DRIVER_TYPE A4988
-    //#define E3_DRIVER_TYPE A4988
-    //#define E4_DRIVER_TYPE A4988
-    //#define E5_DRIVER_TYPE A4988
-    //#define E6_DRIVER_TYPE A4988
-    //#define E7_DRIVER_TYPE A4988
-  #elif ENABLED(BLUER)
+
+  #elif ENABLED(BLUER) && NONE(Custom_Stepper_Drivers)
     //Bluer
     #define X_DRIVER_TYPE  TMC2208_STANDALONE
     #define Y_DRIVER_TYPE  TMC2208_STANDALONE
     #define Z_DRIVER_TYPE  A4988
-    //#define X2_DRIVER_TYPE A4988
-    //#define Y2_DRIVER_TYPE A4988
     //#define Z2_DRIVER_TYPE A4988
-    //#define Z3_DRIVER_TYPE A4988
-    //#define Z4_DRIVER_TYPE A4988
     #define E0_DRIVER_TYPE A4988
     //#define E1_DRIVER_TYPE A4988
-    //#define E2_DRIVER_TYPE A4988
-    //#define E3_DRIVER_TYPE A4988
-    //#define E4_DRIVER_TYPE A4988
-    //#define E5_DRIVER_TYPE A4988
-    //#define E6_DRIVER_TYPE A4988
-    //#define E7_DRIVER_TYPE A4988
+  #elif ENABLED(Custom_Stepper_Drivers)
+    //Custom_Stepper_Drivers
+    #define X_DRIVER_TYPE  DRIVER_X
+    #define Y_DRIVER_TYPE  DRIVER_Y
+    #define Z_DRIVER_TYPE  DRIVER_Z
+    #define E0_DRIVER_TYPE DRIVER_E0
+    #ifdef DRIVER_Z2
+      #define Z2_DRIVER_TYPE DRIVER_Z2
+    #endif
+    #ifdef DRIVER_E1
+      #define E1_DRIVER_TYPE DRIVER_E1
+    #endif
   #else
     //No Preset
     //#define X_DRIVER_TYPE  A4988
