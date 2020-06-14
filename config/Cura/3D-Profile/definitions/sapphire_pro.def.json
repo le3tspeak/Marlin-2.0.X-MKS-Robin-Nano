@@ -1,0 +1,49 @@
+{
+    "name": "Sapphire PRO",
+    "version": 2,
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Skolzyashiy",
+        "manufacturer": "Two Trees",
+        "file_formats": "text/x-gcode",
+        "machine_extruder_trains": {
+            "0": "sapphire_pro_extruder_0"
+        },
+        "supports_usb_connection": true,
+        "has_machine_materials": true,
+        "platform": "sapphire_pro.stl",
+        "has_variants": false,
+        "platform_offset": [
+            -100,
+            0,
+            100
+          ]
+    },
+    "overrides":
+    {
+        "machine_name":        {            "default_value": "Sapphire PRO"        },
+        "machine_shape":        {            "default_value": "rectangular"        },
+        "machine_width":        {            "default_value": 220        },
+        "machine_depth":        {            "default_value": 220        },
+        "machine_height":        {            "default_value": 220        },
+        "gantry_height": {"default_value":0},
+        "machine_extruder_count": {"value":1},
+        "machine_heated_bed":        {            "default_value": true        },
+        "machine_center_is_zero": {"default_value": false},
+        "machine_gcode_flavor": {"default_value": "RepRap (Marlin/Sprinter)"},
+
+
+        "machine_buildplate_type":        {            "default_value": "glass"        },
+
+        "machine_start_gcode":
+        {
+            "default_value": "G28 ;Home all axes\nG1 Z15.0 F6000 ;Move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0"
+        },
+        "machine_end_gcode":
+        {
+            "default_value": "M104 S0\nM140 S0\n;Retract the filament\nG92 E1\nG1 E-1 F300\nG28 X0 Y0\nM84"
+        }
+
+    }
+}
