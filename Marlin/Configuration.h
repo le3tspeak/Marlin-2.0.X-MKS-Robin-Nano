@@ -149,7 +149,6 @@
 //===========================================================================
 //============================= Display language selection===================
 //===========================================================================
-
 /**
  * LCD LANGUAGE
  *
@@ -157,10 +156,13 @@
  *
  *   en, an, bg, ca, cz, da, de, el, el_gr, es, eu, fi, fr, gl, hr, hu, it,
  *   jp_kana, ko_KR, nl, pl, pt, pt_br, ru, sk, tr, uk, vi, zh_CN, zh_TW, test
- *
+ * 
  * :{ 'en':'English', 'an':'Aragonese', 'bg':'Bulgarian', 'ca':'Catalan', 'cz':'Czech', 'da':'Danish', 'de':'German', 'el':'Greek', 'el_gr':'Greek (Greece)', 'es':'Spanish', 'eu':'Basque-Euskera', 'fi':'Finnish', 'fr':'French', 'gl':'Galician', 'hr':'Croatian', 'hu':'Hungarian', 'it':'Italian', 'jp_kana':'Japanese', 'ko_KR':'Korean (South Korea)', 'nl':'Dutch', 'pl':'Polish', 'pt':'Portuguese', 'pt_br':'Portuguese (Brazilian)', 'ru':'Russian', 'sk':'Slovak', 'tr':'Turkish', 'uk':'Ukrainian', 'vi':'Vietnamese', 'zh_CN':'Chinese (Simplified)', 'zh_TW':'Chinese (Traditional)', 'test':'TEST' }
  */
-#define LCD_LANGUAGE en
+
+#define LCD_LANGUAGE ru
+#define RU_EXTENSION // Only activate with Russian language
+
 
 //===========================================================================
 //============================= Display Color Section========================
@@ -2239,27 +2241,19 @@
 
 /**
  * LCD Character Set
- *
- * Note: This option is NOT applicable to Graphical Displays.
- *
- * All character-based LCDs provide ASCII plus one of these
- * language extensions:
- *
+ * 
  *  - JAPANESE ... the most common
  *  - WESTERN  ... with more accented characters
  *  - CYRILLIC ... for the Russian language
- *
- * To determine the language extension installed on your controller:
- *
- *  - Compile and upload with LCD_LANGUAGE set to 'test'
- *  - Click the controller to view the LCD menu
- *  - The LCD will display Japanese, Western, or Cyrillic text
- *
- * See https://marlinfw.org/docs/development/lcd_language.html
- *
+ * 
  * :['JAPANESE', 'WESTERN', 'CYRILLIC']
  */
-#define DISPLAY_CHARSET_HD44780 JAPANESE
+#ifdef RU_EXTENSION
+  #define DISPLAY_CHARSET_HD44780 CYRILLIC
+  #define LCD_LANGUAGE_2 en
+#else
+  #define DISPLAY_CHARSET_HD44780 JAPANESE
+#endif
 
 /**
  * Info Screen Style (0:Classic, 1:Prusa)

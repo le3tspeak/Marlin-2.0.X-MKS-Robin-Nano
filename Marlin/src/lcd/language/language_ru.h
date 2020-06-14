@@ -75,6 +75,7 @@ namespace Language_ru {
   PROGMEM Language_Str MSG_PREHEAT_2_ALL                   = _UxGT("Нагрев ") PREHEAT_2_LABEL _UxGT(" всё");
   PROGMEM Language_Str MSG_PREHEAT_2_BEDONLY               = _UxGT("Нагрев ") PREHEAT_2_LABEL _UxGT(" стол");
   PROGMEM Language_Str MSG_PREHEAT_2_SETTINGS              = _UxGT("Нагрев ") PREHEAT_2_LABEL _UxGT(" правка");
+  PROGMEM Language_Str MSG_PREHEAT_CUSTOM                  = _UxGT("Preheat Custom");
   PROGMEM Language_Str MSG_COOLDOWN                        = _UxGT("Охлаждение");
   PROGMEM Language_Str MSG_LASER_MENU                      = _UxGT("Управление лазером");
   PROGMEM Language_Str MSG_LASER_OFF                       = _UxGT("Выключить лазер");
@@ -282,6 +283,10 @@ namespace Language_ru {
   PROGMEM Language_Str MSG_LOAD_EEPROM                     = _UxGT("Загрузить настройки");
   PROGMEM Language_Str MSG_RESTORE_DEFAULTS                = _UxGT("Вернуть настройки");
   PROGMEM Language_Str MSG_INIT_EEPROM                     = _UxGT("Изначальный EEPROM");
+  PROGMEM Language_Str MSG_ERR_EEPROM_CRC                  = _UxGT("EEPROM CRC ошибка"); //ADD
+  PROGMEM Language_Str MSG_ERR_EEPROM_INDEX                = _UxGT("EEPROM Index ошибка"); //ADD
+  PROGMEM Language_Str MSG_ERR_EEPROM_VERSION              = _UxGT("EEPROM Version ошибка"); //ADD
+  PROGMEM Language_Str MSG_SETTINGS_STORED                 = _UxGT("Настройки сохранены"); // ADD
   PROGMEM Language_Str MSG_MEDIA_UPDATE                    = _UxGT("Обновление прошивки");
   PROGMEM Language_Str MSG_RESET_PRINTER                   = _UxGT("Сброс принтера");
   PROGMEM Language_Str MSG_REFRESH                         = LCD_STR_REFRESH  _UxGT("Обновить");
@@ -294,6 +299,7 @@ namespace Language_ru {
   PROGMEM Language_Str MSG_BUTTON_STOP                     = _UxGT("Остановить");
   PROGMEM Language_Str MSG_BUTTON_PRINT                    = _UxGT("Печать");
   PROGMEM Language_Str MSG_BUTTON_RESET                    = _UxGT("Сброс");
+  PROGMEM Language_Str MSG_BUTTON_IGNORE                   = _UxGT("игнорировать"); //ADD
   PROGMEM Language_Str MSG_BUTTON_CANCEL                   = _UxGT("Отмена");
   PROGMEM Language_Str MSG_BUTTON_DONE                     = _UxGT("Готово");
   PROGMEM Language_Str MSG_PAUSE_PRINT                     = _UxGT("Пауза печати");
@@ -329,6 +335,7 @@ namespace Language_ru {
   PROGMEM Language_Str MSG_FILAMENTCHANGE                  = _UxGT("Смена филамента");
   PROGMEM Language_Str MSG_FILAMENTCHANGE_E                = _UxGT("Смена филамента *");
   PROGMEM Language_Str MSG_FILAMENTLOAD                    = _UxGT("Загрузка филамента");
+  PROGMEM Language_Str MSG_FILAMENTUNLOAD                  = _UxGT("Выгрузка филамента"); //ADD
   PROGMEM Language_Str MSG_FILAMENTLOAD_E                  = _UxGT("Загрузка филамента *");
   PROGMEM Language_Str MSG_FILAMENTUNLOAD_E                = _UxGT("Выгрузка филамента *");
   PROGMEM Language_Str MSG_FILAMENTUNLOAD_ALL              = _UxGT("Выгрузить всё");
@@ -342,6 +349,14 @@ namespace Language_ru {
   PROGMEM Language_Str MSG_BLTOUCH_RESET                   = _UxGT("Сброс BLTouch");
   PROGMEM Language_Str MSG_BLTOUCH_DEPLOY                  = _UxGT("Опустить BLTouch");
   PROGMEM Language_Str MSG_BLTOUCH_STOW                    = _UxGT("Поднять BLTouch");
+  PROGMEM Language_Str MSG_BLTOUCH_SW_MODE                 = _UxGT("Cmd: SW-Mode"); //ADD
+  PROGMEM Language_Str MSG_BLTOUCH_5V_MODE                 = _UxGT("Cmd: 5V-Mode"); //ADD
+  PROGMEM Language_Str MSG_BLTOUCH_OD_MODE                 = _UxGT("Cmd: OD-Mode"); //ADD
+  PROGMEM Language_Str MSG_BLTOUCH_MODE_STORE              = _UxGT("Cmd: Mode-Store"); //ADD
+  PROGMEM Language_Str MSG_BLTOUCH_MODE_STORE_5V           = _UxGT("Набор BLTouch в 5V"); //ADD
+  PROGMEM Language_Str MSG_BLTOUCH_MODE_STORE_OD           = _UxGT("Набор BLTouch в OD"); //ADD
+  PROGMEM Language_Str MSG_BLTOUCH_MODE_ECHO               = _UxGT("Report Drain"); //ADD
+  PROGMEM Language_Str MSG_BLTOUCH_MODE_CHANGE             = _UxGT("DANGER: Bad settings can cause damage! Proceed anyway?"); //ADD
 
   // TODO: TouchMI Probe, Manual deploy/stow
 
@@ -440,7 +455,8 @@ namespace Language_ru {
   PROGMEM Language_Str MSG_KILL_HOMING_FAILED              = _UxGT("Возврат не удался");
   PROGMEM Language_Str MSG_LCD_PROBING_FAILED              = _UxGT("Не удалось прощупать");
   PROGMEM Language_Str MSG_M600_TOO_COLD                   = _UxGT("M600: Низкая Т");
-
+  PROGMEM Language_Str MSG_RUNOUT_SENSOR                   = _UxGT("Датчик биения"); //ADD
+  PROGMEM Language_Str MSG_RUNOUT_DISTANCE_MM              = _UxGT("Закончиться расстояние mm"); //ADD
   // TODO: MMU2
 
   // TODO: Mixing
