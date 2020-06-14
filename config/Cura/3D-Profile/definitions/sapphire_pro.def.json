@@ -19,30 +19,37 @@
             0,
             100
           ]
+        
     },
     "overrides":
     {
         "machine_name":        {            "default_value": "Sapphire PRO"        },
         "machine_shape":        {            "default_value": "rectangular"        },
-        "machine_width":        {            "default_value": 220        },
-        "machine_depth":        {            "default_value": 220        },
+        "machine_width":        {            "default_value": 225        },
+        "machine_depth":        {            "default_value": 225        },
         "machine_height":        {            "default_value": 220        },
-        "gantry_height": {"default_value":0},
+        "gantry_height": {"default_value":56},
         "machine_extruder_count": {"value":1},
         "machine_heated_bed":        {            "default_value": true        },
         "machine_center_is_zero": {"default_value": false},
         "machine_gcode_flavor": {"default_value": "RepRap (Marlin/Sprinter)"},
-
+        "machine_head_with_fans_polygon": { "default_value": [
+            [-33, 33],
+            [-36, 23],
+            [32, -32],
+            [32, 34]
+        ]
+        },
 
         "machine_buildplate_type":        {            "default_value": "glass"        },
 
         "machine_start_gcode":
         {
-            "default_value": "G28 ;Home all axes\nG1 Z15.0 F6000 ;Move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0"
+            "default_value": "G92 E0\nM117 Home XYZ...\nM140 S{ material_bed_temperature_layer_0 }\nG28 ; Home all axes\nM190 S{material_bed_temperature_layer_0}\nM104 S{material_print_temperature_layer_0}\nM117 Nozzle Vorbereiten...\nG0 X1 Y20\nM109 S{material_print_temperature_layer_0}\nG1 Z2.0 F3000\nG1 X1 Y20 Z0.3 F5000.0\nG1 X1 Y200.0 Z0.3 F1500.0 E15\nG1 X1.4 F5000.0\nG1 X1.4 Y20 Z0.3 F1500.0 E30\nG92 E0\nG1 Z2.0 F3000\nG1 X2 Y20 Z0.3 F5000.0\nM117 Druck gestartet..."
         },
         "machine_end_gcode":
         {
-            "default_value": "M104 S0\nM140 S0\n;Retract the filament\nG92 E1\nG1 E-1 F300\nG28 X0 Y0\nM84"
+            "default_value": "G91\nG1 E-1 F400\nG1 Z1 F500\nG1 E-2 F400\nG90\nG0 X220 Y220\nM400\nM106 S0\nM104 S0\nM140 S0\nM84\nG4 S1\nM500"
         }
 
     }
