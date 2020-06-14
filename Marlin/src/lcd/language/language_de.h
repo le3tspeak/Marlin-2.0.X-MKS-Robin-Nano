@@ -312,6 +312,7 @@ namespace Language_de {
   PROGMEM Language_Str MSG_BUTTON_STOP                     = _UxGT("Stop");
   PROGMEM Language_Str MSG_BUTTON_PRINT                    = _UxGT("Drucken");
   PROGMEM Language_Str MSG_BUTTON_RESET                    = _UxGT("Reseten");
+  PROGMEM Language_Str MSG_BUTTON_IGNORE                   = _UxGT("Ignorieren");
   PROGMEM Language_Str MSG_BUTTON_CANCEL                   = _UxGT("Abbrechen");
   PROGMEM Language_Str MSG_BUTTON_DONE                     = _UxGT("Fertig");
   PROGMEM Language_Str MSG_BUTTON_BACK                     = _UxGT("Zurück");
