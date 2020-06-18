@@ -158,6 +158,16 @@
     #define E0_SERIAL_TX_PIN                  PE5
     #define E0_SERIAL_RX_PIN                  PE5
 
+    #ifdef E1_DRIVER_TYPE
+      #define E1_SERIAL_TX_PIN                PA9
+      #define E1_SERIAL_RX_PIN                PA9
+    #endif
+
+    #ifdef Z2_DRIVER_TYPE
+      #define E1_SERIAL_TX_PIN                PA9
+      #define E1_SERIAL_RX_PIN                PA9
+    #endif
+
     // Reduce baud rate to improve software serial reliability
     #define TMC_BAUD_RATE 19200
   #endif
