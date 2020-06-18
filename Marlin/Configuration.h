@@ -90,6 +90,8 @@
 // Motion Control Settings
 // New Motion Control              - Classic Jerk [OFF] | S-Curve Acceleration [ON]  | Junction Deviation Factor [ON]
 //#define MOTION_NEW
+//#define MOTION_NEW_JD           // If there is a jerky movement during small circular movements, activate the function
+
 // Classic Motion Control          - Classic Jerk [ON]  | S-Curve Acceleration [OFF] | Junction Deviation Factor [OFF]
 #define MOTION_CLASSIC
 
@@ -120,8 +122,8 @@
 //          TMC2208, TMC2208_STANDALONE, TMC2209, TMC2209_STANDALONE,
 //          TMC26X,  TMC26X_STANDALONE,  TMC2660, TMC2660_STANDALONE,
 //          TMC5130, TMC5130_STANDALONE, TMC5160, TMC5160_STANDALONE
-//#define Custom_Stepper_Drivers
-#if ENABLED(Custom_Stepper_Drivers)
+//#define CUSTOM_STEPPER_DRIVERS
+#if ENABLED(CUSTOM_STEPPER_DRIVERS)
   #define DRIVER_X TMC2209_STANDALONE
   #define DRIVER_Y TMC2209_STANDALONE
   #define DRIVER_Z TMC2209_STANDALONE
@@ -145,6 +147,21 @@
 //#define STEPS_Z         0  // Normally no change needed...
 //#define STEPS_E0        0
 
+// Custom PID Settings
+// Normally no change necessary, unless it does not maintain the set temperature + -1 °
+//#define CUSTOM_HOTEND_PID // HOTEND
+  #if ENABLED(CUSTOM_HOTEND_PID)
+    #define CUSTOM_Kp 1
+    #define CUSTOM_Ki 1
+    #define CUSTOM_Kd 1
+  #endif
+
+//#define CUSTOM_BED_PID    // HEATED BED
+  #if ENABLED(CUSTOM_BED_PID)
+    #define CUSTOM_BED_Kp 1
+    #define CUSTOM_BED_Ki 1
+    #define CUSTOM_BED_Kd 1
+  #endif
 
 //===========================================================================
 //============================= Display language selection===================
@@ -651,21 +668,26 @@
 
   // If you are using a pre-configured hotend then you can use one of the value sets by uncommenting it
 
-  #if ENABLED(SAPPHIRE_PRO)
+  #if ENABLED(SAPPHIRE_PRO) && NONE(CUSTOM_HOTEND_PID) 
     //Sapphire Pro
     #define DEFAULT_Kp 14.21
     #define DEFAULT_Ki 0.88
     #define DEFAULT_Kd 57.26
-  #elif ENABLED(SAPPHIRE_PLUS)
+  #elif ENABLED(SAPPHIRE_PLUS) && NONE(CUSTOM_HOTEND_PID) 
     //Sapphire Plus
     #define DEFAULT_Kp 15.30
     #define DEFAULT_Ki 0.85
     #define DEFAULT_Kd 56.55
-  #elif ENABLED(BLUER)
+  #elif ENABLED(BLUER) && NONE(CUSTOM_HOTEND_PID) 
     //Bluer
     #define DEFAULT_Kp 8.4
     #define DEFAULT_Ki 0.4
     #define DEFAULT_Kd 44.0
+  #elif ENABLED(CUSTOM_HOTEND_PID)
+    //Custom PID
+    #define DEFAULT_Kp CUSTOM_Kp
+    #define DEFAULT_Ki CUSTOM_Ki
+    #define DEFAULT_Kd CUSTOM_Kd
   #else
     //No Preset
     #define DEFAULT_Kp 22.2
@@ -710,21 +732,25 @@
 
  // FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
 
-  #if ENABLED(SAPPHIRE_PRO)
+  #if ENABLED(SAPPHIRE_PRO) && NONE(CUSTOM_BED_PID) 
     //Sapphire Pro
     #define DEFAULT_bedKp 21.37
     #define DEFAULT_bedKi 3.29
     #define DEFAULT_bedKd 92.53
-  #elif ENABLED(SAPPHIRE_PLUS)
+  #elif ENABLED(SAPPHIRE_PLUS) && NONE(CUSTOM_BED_PID) 
     //Sapphire Plus
     #define DEFAULT_bedKp 45.0
     #define DEFAULT_bedKi 7.9
     #define DEFAULT_bedKd 150
-  #elif ENABLED(BLUER)
+  #elif ENABLED(BLUER) && NONE(CUSTOM_BED_PID) 
     //Bluer
     #define DEFAULT_bedKp 10.34
     #define DEFAULT_bedKi 0.25
     #define DEFAULT_bedKd 300.5
+  #elif ENABLED(CUSTOM_BED_PID)
+    #define DEFAULT_bedKp CUSTOM_BED_Kp 
+    #define DEFAULT_bedKi CUSTOM_BED_Ki 
+    #define DEFAULT_bedKd CUSTOM_BED_Kd 
   #else
     //No Preset
     #define DEFAULT_bedKp 10.00
@@ -1176,8 +1202,11 @@
  */
 #if DISABLED(CLASSIC_JERK)
   #define JUNCTION_DEVIATION_MM 0.019 // (mm) Distance from real junction edge
+
+  #if ENABLED(MOTION_NEW_JD) 
   #define JD_HANDLE_SMALL_SEGMENTS    // Use curvature estimation instead of just the junction angle
                                       // for small segments (< 1mm) with large junction angles (> 135°).
+  #endif
 #endif
 
 /**
