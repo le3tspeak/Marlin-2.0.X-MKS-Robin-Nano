@@ -68,6 +68,15 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
 
 Version|Changes & Fixes
 -------|-------
+1.0.5b
+  -|TMC SW Serial extension E1 & Z2
+  -|Add Adv. Preset Custom PID
+  -|Add JD_HANDLE_SMALL_SEGMENTS option
+  -|Russian language fix
+1.0.5a
+  -|Add Adv. Preset Custom Axis Steps Per MM
+  -|Extension of BLTouch Preset
+  -|Add Adv. Preset Custom Stepper Motor Drivers
   -|Add Status Logo TT
   -|Add Adv. Preset Optical Endstops XY
 1.0.5| Major Update & Reworking
