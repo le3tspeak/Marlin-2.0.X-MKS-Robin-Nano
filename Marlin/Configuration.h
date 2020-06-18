@@ -147,6 +147,15 @@
 //#define STEPS_Z         0  // Normally no change needed...
 //#define STEPS_E0        0
 
+// Custom Bed Size
+// If you have a different size of a print bed, enter it here
+//#define CUSTOM_BED_SIZE
+#if ENABLED(CUSTOM_BED_SIZE)
+  #define X_BED_SIZE_CUSTOM 200
+  #define Y_BED_SIZE_CUSTOM 200
+  #define Z_BED_SIZE_CUSTOM 200
+#endif
+
 // Custom PID Settings
 // Normally no change necessary, unless it does not maintain the set temperature + -1 °
 //#define CUSTOM_HOTEND_PID // HOTEND
@@ -212,6 +221,12 @@
 #define COLOR_CUSTOM_3 0xFFFF // ARROWS
 #define COLOR_CUSTOM_4 0xFFFF // OK/MENU
 #endif
+
+
+//===========================================================================
+//============ From here, no more settings need to be changed ===============
+//===========================================================================
+
 
 //===========================================================================
 //============================= DELTA Printer ===============================
@@ -1662,16 +1677,29 @@
     // @section machine
 
     // The size of the print bed
-    #define X_BED_SIZE 225
-    #define Y_BED_SIZE 225
+    #if ENABLED(CUSTOM_BED_SIZE)
+      #define X_BED_SIZE X_BED_SIZE_CUSTOM
+      #define Y_BED_SIZE Y_BED_SIZE_CUSTOM
 
-    // Travel limits (mm) after homing, corresponding to endstop positions.
-    #define X_MIN_POS 0
-    #define Y_MIN_POS 0
-    #define Z_MIN_POS 0
-    #define X_MAX_POS X_BED_SIZE
-    #define Y_MAX_POS Y_BED_SIZE
-    #define Z_MAX_POS 230
+      // Travel limits (mm) after homing, corresponding to endstop positions.
+      #define X_MIN_POS 0
+      #define Y_MIN_POS 0
+      #define Z_MIN_POS 0
+      #define X_MAX_POS X_BED_SIZE_CUSTOM
+      #define Y_MAX_POS Y_BED_SIZE_CUSTOM
+      #define Z_MAX_POS Z_BED_SIZE_CUSTOM
+    #else
+      #define X_BED_SIZE 225
+      #define Y_BED_SIZE 225
+
+      // Travel limits (mm) after homing, corresponding to endstop positions.
+      #define X_MIN_POS 0
+      #define Y_MIN_POS 0
+      #define Z_MIN_POS 0
+      #define X_MAX_POS X_BED_SIZE
+      #define Y_MAX_POS Y_BED_SIZE
+      #define Z_MAX_POS 230
+    #endif
   #elif ENABLED(SAPPHIRE_PLUS)
     //Sapphire Plus
     //No Preset
@@ -1684,16 +1712,29 @@
     // @section machine
 
     // The size of the print bed
-    #define X_BED_SIZE 300
-    #define Y_BED_SIZE 300
+    #if ENABLED(CUSTOM_BED_SIZE)
+      #define X_BED_SIZE X_BED_SIZE_CUSTOM
+      #define Y_BED_SIZE Y_BED_SIZE_CUSTOM
 
-    // Travel limits (mm) after homing, corresponding to endstop positions.
-    #define X_MIN_POS 0
-    #define Y_MIN_POS 0
-    #define Z_MIN_POS 0
-    #define X_MAX_POS X_BED_SIZE
-    #define Y_MAX_POS Y_BED_SIZE
-    #define Z_MAX_POS 350
+      // Travel limits (mm) after homing, corresponding to endstop positions.
+      #define X_MIN_POS 0
+      #define Y_MIN_POS 0
+      #define Z_MIN_POS 0
+      #define X_MAX_POS X_BED_SIZE_CUSTOM
+      #define Y_MAX_POS Y_BED_SIZE_CUSTOM
+      #define Z_MAX_POS Z_BED_SIZE_CUSTOM
+    #else
+      #define X_BED_SIZE 300
+      #define Y_BED_SIZE 300
+
+      // Travel limits (mm) after homing, corresponding to endstop positions.
+      #define X_MIN_POS 0
+      #define Y_MIN_POS 0
+      #define Z_MIN_POS 0
+      #define X_MAX_POS X_BED_SIZE
+      #define Y_MAX_POS Y_BED_SIZE
+      #define Z_MAX_POS 350
+    #endif
   #elif ENABLED(BLUER)
     //Bluer
     //No Preset
@@ -1706,16 +1747,29 @@
     // @section machine
 
     // The size of the print bed
-    #define X_BED_SIZE 235
-    #define Y_BED_SIZE 235
+    #if ENABLED(CUSTOM_BED_SIZE)
+      #define X_BED_SIZE X_BED_SIZE_CUSTOM
+      #define Y_BED_SIZE Y_BED_SIZE_CUSTOM
 
-    // Travel limits (mm) after homing, corresponding to endstop positions.
-    #define X_MIN_POS 0
-    #define Y_MIN_POS 0
-    #define Z_MIN_POS 0
-    #define X_MAX_POS X_BED_SIZE
-    #define Y_MAX_POS Y_BED_SIZE
-    #define Z_MAX_POS 280
+      // Travel limits (mm) after homing, corresponding to endstop positions.
+      #define X_MIN_POS 0
+      #define Y_MIN_POS 0
+      #define Z_MIN_POS 0
+      #define X_MAX_POS X_BED_SIZE_CUSTOM
+      #define Y_MAX_POS Y_BED_SIZE_CUSTOM
+      #define Z_MAX_POS Z_BED_SIZE_CUSTOM
+    #else
+      #define X_BED_SIZE 235
+      #define Y_BED_SIZE 235
+
+      // Travel limits (mm) after homing, corresponding to endstop positions.
+      #define X_MIN_POS 0
+      #define Y_MIN_POS 0
+      #define Z_MIN_POS 0
+      #define X_MAX_POS X_BED_SIZE
+      #define Y_MAX_POS Y_BED_SIZE
+      #define Z_MAX_POS 280
+    #endif
   #else
     //No Preset
     // Direction of endstops when homing; 1=MAX, -1=MIN
