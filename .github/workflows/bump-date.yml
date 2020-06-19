@@ -16,15 +16,15 @@ jobs:
 
     steps:
 
-    - name: Check out bugfix-2.0.x
+    - name: Check out MKS-Robin_Nano
       uses: actions/checkout@v2
       with:
-        ref: bugfix-2.0.x
+        ref: MKS-Robin_Nano
 
     - name: Bump Distribution Date
       run: |
         # Inline Bump Script
-        [[ "$GITHUB_REPOSITORY" == "MarlinFirmware/Marlin" ]] || exit 0
+        [[ "$GITHUB_REPOSITORY" == "le3tspeak/Marlin-2.0.X-MKS-Robin-Nano" ]] || exit 0
         DIST=$( date +"%Y-%m-%d" )
         eval "sed -E -i 's/(#define +STRING_DISTRIBUTION_DATE) .*$/\1 \"$DIST\"/g' Marlin/src/inc/Version.h" && \
         git config user.name "${GITHUB_ACTOR}" && \
