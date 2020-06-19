@@ -16,10 +16,10 @@ jobs:
 
     steps:
 
-    - name: Check out MKS-Robin_Nano
+    - name: Check out MKS-Robin-Nano
       uses: actions/checkout@v2
       with:
-        ref: MKS-Robin_Nano
+        ref: MKS-Robin-Nano
 
     - name: Bump Distribution Date
       run: |
