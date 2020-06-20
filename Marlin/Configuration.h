@@ -174,8 +174,9 @@
 
 //#define CUSTOM_TEMP_SENSOR
   #if ENABLED(CUSTOM_TEMP_SENSOR)
-    #define CUSTOM_TEMP_SENSOR_0 5  // 5 : 100K thermistor - ATC Semitec 104GT-2/104NT-4-R025H42G (Used in ParCan, J-Head, and E3D) (4.7k pullup)
-    #define CUSTOM_TEMP_SENSOR_1 5  // 5 : 100K thermistor - ATC Semitec 104GT-2/104NT-4-R025H42G (Used in ParCan, J-Head, and E3D) (4.7k pullup)
+    #define CUSTOM_TEMP_SENSOR_0 5      // 5 : 100K thermistor - ATC Semitec 104GT-2/104NT-4-R025H42G (Used in ParCan, J-Head, and E3D) (4.7k pullup)
+    #define CUSTOM_TEMP_SENSOR_1 5      // 5 : 100K thermistor - ATC Semitec 104GT-2/104NT-4-R025H42G (Used in ParCan, J-Head, and E3D) (4.7k pullup)
+    #define CUSTOM_TEMP_SENSOR_BED 1
 #endif
 
 //===========================================================================
@@ -659,17 +660,19 @@
  */
 #ifdef CUSTOM_TEMP_SENSOR_0
   #define TEMP_SENSOR_0 CUSTOM_TEMP_SENSOR_0
-#endif
-#ifndef CUSTOM_TEMP_SENSOR_0
+#else
   #define TEMP_SENSOR_0 1
 #endif
 #ifdef CUSTOM_TEMP_SENSOR_1
   #define TEMP_SENSOR_1 CUSTOM_TEMP_SENSOR_1
+#else
+  #define TEMP_SENSOR_1 0
 #endif
-#ifndef CUSTOM_TEMP_SENSOR_1
-  #define TEMP_SENSOR_1 1
+#ifdef CUSTOM_TEMP_SENSOR_BED
+  #define TEMP_SENSOR_BED CUSTOM_TEMP_SENSOR_BED
+#else
+  #define TEMP_SENSOR_BED 1
 #endif
-
 
 #define TEMP_SENSOR_2 0
 #define TEMP_SENSOR_3 0
@@ -677,7 +680,6 @@
 #define TEMP_SENSOR_5 0
 #define TEMP_SENSOR_6 0
 #define TEMP_SENSOR_7 0
-#define TEMP_SENSOR_BED 1
 #define TEMP_SENSOR_PROBE 0
 #define TEMP_SENSOR_CHAMBER 0
 
