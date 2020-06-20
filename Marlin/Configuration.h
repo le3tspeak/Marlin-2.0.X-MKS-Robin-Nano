@@ -172,7 +172,11 @@
     #define CUSTOM_BED_Kd 1
   #endif
 
-//#define CUSTOM_TEMP_SENSOR_0 5  // 5 : 100K thermistor - ATC Semitec 104GT-2/104NT-4-R025H42G (Used in ParCan, J-Head, and E3D) (4.7k pullup)
+//#define CUSTOM_TEMP_SENSOR
+  #if ENABLED(CUSTOM_TEMP_SENSOR)
+    #define CUSTOM_TEMP_SENSOR_0 5  // 5 : 100K thermistor - ATC Semitec 104GT-2/104NT-4-R025H42G (Used in ParCan, J-Head, and E3D) (4.7k pullup)
+    #define CUSTOM_TEMP_SENSOR_1 5  // 5 : 100K thermistor - ATC Semitec 104GT-2/104NT-4-R025H42G (Used in ParCan, J-Head, and E3D) (4.7k pullup)
+#endif
 
 //===========================================================================
 //============================= Display language selection===================
@@ -653,14 +657,20 @@
  *   998 : Dummy Table that ALWAYS reads 25°C or the temperature defined below.
  *   999 : Dummy Table that ALWAYS reads 100°C or the temperature defined below.
  */
-#if ENABLED (CUSTOM_TEMP_SENSOR_0)
+#ifdef CUSTOM_TEMP_SENSOR_0
   #define TEMP_SENSOR_0 CUSTOM_TEMP_SENSOR_0
-#else
+#endif
+#ifndef CUSTOM_TEMP_SENSOR_0
   #define TEMP_SENSOR_0 1
 #endif
+#ifdef CUSTOM_TEMP_SENSOR_1
+  #define TEMP_SENSOR_1 CUSTOM_TEMP_SENSOR_1
+#endif
+#ifndef CUSTOM_TEMP_SENSOR_1
+  #define TEMP_SENSOR_1 1
+#endif
 
-#define TEMP_SENSOR_0 1
-#define TEMP_SENSOR_1 0
+
 #define TEMP_SENSOR_2 0
 #define TEMP_SENSOR_3 0
 #define TEMP_SENSOR_4 0
