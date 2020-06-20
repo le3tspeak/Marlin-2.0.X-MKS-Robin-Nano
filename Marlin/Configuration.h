@@ -224,6 +224,47 @@
 #define COLOR_CUSTOM_4 0xFFFF // OK/MENU
 #endif
 
+//===========================================================================
+//============================= NEOPIXEL ====================================
+//===========================================================================
+
+/**
+ * Enable support for an NEOPIXEL Strip connected by digital pins.
+ *
+ * Adds the M150 command to set the LED (or LED strip) color.
+ * For Neopixel LED an overall brightness parameter is also available.
+ * 
+ *                            *** CAUTION ***
+ *
+ *  NOTE: A separate 3V/5V power supply is required! The Neopixel LED needs
+ *  more current than the MKS Robin Nano 5V linear regulator can produce.
+ *  Failure to follow this precaution can destroy your Robin Nano!
+ *  
+ *                           *** CAUTION ***
+ */
+
+//#define NEOPIXEL
+#if ENABLED(NEOPIXEL)
+  #define TYPE NEO_GRB        // GRBW / GRB - four/three channel driver type
+  #define PIXELS 29           // Number of LEDs in the strip, larger of 2 strips if 2 neopixel strips are used
+  #define BRIGHTNESS 255      // Initial brightness (0-255)
+  //#define STARTUP_TEST      // Cycle through colors at startup
+
+
+  /**
+   * Printer Status LEDs
+   *
+   * During printing, the LEDs will reflect the printer status:
+   *
+   *  - Gradually change from blue to violet as the heated bed gets to target temp
+   *  - Gradually change from violet to red as the hotend gets to temperature
+   *  - Change to white to illuminate work surface
+   *  - Change to green once print has finished
+   *  - Turn off after the print has finished and the user has pushed a button
+   */
+  #define PRINTER_STATUS_LEDS
+#endif
+
 
 //===========================================================================
 //============ From here, no more settings need to be changed ===============
@@ -2906,16 +2947,26 @@
 #endif
 
 // Support for Adafruit Neopixel LED driver
-//#define NEOPIXEL_LED
+#if ENABLED(NEOPIXEL)
+  #define NEOPIXEL_LED
+#else
+  //#define NEOPIXEL_LED
+#endif
+
 #if ENABLED(NEOPIXEL_LED)
-  #define NEOPIXEL_TYPE   NEO_GRBW // NEO_GRBW / NEO_GRB - four/three channel driver type (defined in Adafruit_NeoPixel.h)
+  #define NEOPIXEL_TYPE   TYPE // NEO_GRBW / NEO_GRB - four/three channel driver type (defined in Adafruit_NeoPixel.h)
   #define NEOPIXEL_PIN    NEO_PIXEL_1       // LED driving pin
-  //#define NEOPIXEL2_TYPE NEOPIXEL_TYPE
+  //#define NEOPIXEL2_TYPE TYPE
   //#define NEOPIXEL2_PIN    NEO_PIXEL_2
-  #define NEOPIXEL_PIXELS 30       // Number of LEDs in the strip, larger of 2 strips if 2 neopixel strips are used
-  #define NEOPIXEL_IS_SEQUENTIAL   // Sequential display for temperature change - LED by LED. Disable to change all LEDs at once.
-  #define NEOPIXEL_BRIGHTNESS 255  // Initial brightness (0-255)
-  //#define NEOPIXEL_STARTUP_TEST  // Cycle through colors at startup
+  #define NEOPIXEL_PIXELS PIXELS       // Number of LEDs in the strip, larger of 2 strips if 2 neopixel strips are used
+  //#define NEOPIXEL_IS_SEQUENTIAL   // Sequential display for temperature change - LED by LED. Disable to change all LEDs at once.
+  #define NEOPIXEL_BRIGHTNESS BRIGHTNESS  // Initial brightness (0-255)
+
+  #if ENABLED(STARTUP_TEST)
+    #define NEOPIXEL_STARTUP_TEST  // Cycle through colors at startup
+  #else
+    //#define NEOPIXEL_STARTUP_TEST  // Cycle through colors at startup
+  #endif
 
   // Use a single Neopixel LED for static (background) lighting
   //#define NEOPIXEL_BKGD_LED_INDEX  0               // Index of the LED to use
@@ -2933,8 +2984,10 @@
  *  - Change to green once print has finished
  *  - Turn off after the print has finished and the user has pushed a button
  */
-#if ANY(BLINKM, RGB_LED, RGBW_LED, PCA9632, PCA9533, NEOPIXEL_LED)
+#if ENABLED(PRINTER_STATUS_LEDS)
   #define PRINTER_EVENT_LEDS
+#else 
+  //#define PRINTER_EVENT_LEDS
 #endif
 
 /**
