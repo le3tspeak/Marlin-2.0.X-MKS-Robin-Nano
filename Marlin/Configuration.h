@@ -1606,7 +1606,7 @@
     #endif
     
     #if ENABLED(INVERT_E1)
-      #define INVERT_E0_DIR true
+      #define INVERT_E1_DIR true
     #else
       #define INVERT_E1_DIR false
     #endif
@@ -1652,7 +1652,7 @@
       #define INVERT_E0_DIR false
     #endif
     #if ENABLED(INVERT_E1)
-      #define INVERT_E0_DIR true
+      #define INVERT_E1_DIR true
     #else
       #define INVERT_E1_DIR false
     #endif
