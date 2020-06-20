@@ -89,7 +89,9 @@
     //#define X_HARDWARE_SERIAL  Serial1
     //#define Y_HARDWARE_SERIAL  Serial1
     //#define Z_HARDWARE_SERIAL  Serial1
+    //#define Z2_HARDWARE_SERIAL Serial1
     //#define E0_HARDWARE_SERIAL Serial1
+    //#define E1_HARDWARE_SERIAL Serial1
 
     //Set *_SERIAL_TX_PIN and *_SERIAL_RX_PIN to match for all drivers on the same PIN to the same Slave Address.
     // | = add jumper
@@ -135,7 +137,9 @@
     //#define X_HARDWARE_SERIAL  Serial1
     //#define Y_HARDWARE_SERIAL  Serial1
     //#define Z_HARDWARE_SERIAL  Serial1
+    //#define Z2_HARDWARE_SERIAL Serial1
     //#define E0_HARDWARE_SERIAL Serial1
+    //#define E1_HARDWARE_SERIAL Serial1
 
     //Set *_SERIAL_TX_PIN and *_SERIAL_RX_PIN to match for all drivers on the same PIN to the same Slave Address.
     #define  X_SLAVE_ADDRESS 0
