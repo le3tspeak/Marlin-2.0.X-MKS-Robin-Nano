@@ -258,7 +258,7 @@
 #define SDIO_SUPPORT
 #define SD_DETECT_PIN                       PD12
 
-#define SDIO_CLOCK                          18000000       /* 18 MHz or 4.5MHz */ 
+#define SDIO_CLOCK                          18000000       /* 18 MHz (18000000) or 4.5MHz (450000) */ 
 #define SDIO_READ_RETRIES                   16
 
 //
