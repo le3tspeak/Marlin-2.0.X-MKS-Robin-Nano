@@ -222,20 +222,23 @@
 //
 // Heaters / Fans
 //
-#define HEATER_0_PIN                         PC3   // HEATER1
-#if ENABLED(HOTEND_AUTO_FAN)
-  #define HEATER_1_PIN                       PC3   // HEATER2 now Used by Hotend FAN
+#define HEATER_0_PIN                      PC3
+#define HEATER_BED_PIN                    PA0
+
+#if HOTENDS == 1                                  
+  #ifndef FAN1_PIN
+    #define FAN1_PIN                        PB0
+  #endif
 #else
-  #define HEATER_1_PIN                       PB0   // HEATER2
+  #ifndef HEATER_1_PIN
+    #define HEATER_1_PIN                    PB0
+  #endif
 #endif
-#define HEATER_BED_PIN                       PA0   // HOT BED
 
-#define FAN_PIN                              PB1   // FAN
+#define FAN_PIN                           PB1   // FAN
 
-#if ENABLED(HOTEND_AUTO_FAN)
-  #define E0_AUTO_FAN                        PB0   //E0 AUTO FAN
-#endif
-//
+
+
 // Thermocouples
 //
 //#define MAX6675_SS_PIN                    PE5   // TC1 - CS1
