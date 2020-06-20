@@ -68,6 +68,16 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
 
 Version|Changes & Fixes
 -------|-------
+1.0.6
+  -|Add Z2 & E1 HARDWARE_SERIAL
+  -|Add Multi-hotend option
+  -|Add Adv. Preset Custom thermistor
+  -|Add SPI_FLASH
+  -|Save EEPROM on STM32
+  -|FIX UTF char cutoff Y
+  -|TMC Homing stepper phase Z Disable
+  -|Add Adv. Preset Custom Bed Size
+  -|Add PIO MKS Robin Nano -DSS_TIMER=4
 1.0.5b
   -|TMC SW Serial extension E1 & Z2
   -|Add Adv. Preset Custom PID
@@ -79,13 +89,15 @@ Version|Changes & Fixes
   -|Add Adv. Preset Custom Stepper Motor Drivers
   -|Add Status Logo TT
   -|Add Adv. Preset Optical Endstops XY
-1.0.5| Major Update & Reworking
+1.0.5 
+  -|Major Update & Reworking
   -| Add Adv. Preset Linear Pressure Control
   -| Add Adv. Preset Motion Modes
   -| Add Adv. Preset BLTouch
   -| Move SD Settings to Pins
   -| Minor TFT Fixes
-1.0.4|Touch support for Marlin Menus
+1.0.4
+  -|Touch support for Marlin Menus
   -|errors moved in Sanity Check
   -|new TFT scale up
   -|improve G2/3 movement buffer
@@ -93,9 +105,11 @@ Version|Changes & Fixes
   -|Improve SD Card Read Speed
   -|Add Cura/Prusa Start/End Codes
   -|Add Cura/Prusa Profiles
-1.0.3|Add Bluer Fast Config Switch Preset 
+1.0.3
+  -|Add Bluer Fast Config Switch Preset 
   -|Error messages separated
-1.0.2|Add TMC HW Serial
+1.0.2
+  -|Add TMC HW Serial
   -|Add documentation TMC HW Serial
   -|Add TFT Color Selection
   -|Fix SD Read Errors
