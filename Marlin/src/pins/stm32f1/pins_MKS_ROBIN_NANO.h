@@ -257,7 +257,6 @@
 
 #define SDIO_SUPPORT
 #define SD_DETECT_PIN                       PD12
-
 #define SDIO_CLOCK                          18000000       /* 18 MHz (18000000) or 4.5MHz (450000) */ 
 #define SDIO_READ_RETRIES                   16
 
@@ -285,6 +284,18 @@
   #define WIFI_RX_PIN    PA9
   #define WIFI_IO0_PIN   PC13
   #define WIFI_IO1_PIN   PC7
+#endif
+
+//
+// SPI
+//
+#define ENABLE_SPI2
+#define SPI_FLASH
+#if ENABLED(SPI_FLASH)
+  #define W25QXX_CS_PIN                     PB12
+  #define W25QXX_MOSI_PIN                   PB15
+  #define W25QXX_MISO_PIN                   PB14
+  #define W25QXX_SCK_PIN                    PB13
 #endif
 
 /**
