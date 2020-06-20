@@ -27,8 +27,6 @@
 
 #ifndef __STM32F1__
   #error "Oops! Select an STM32F1 board in 'Tools > Board.'"
-#elif HOTENDS > 2 || E_STEPPERS > 2
-  #error "MKS Robin nano supports up to 2 hotends / E-steppers. Comment out this line to continue."
 #endif
 
 #define BOARD_INFO_NAME "MKS Robin nano"
@@ -232,6 +230,7 @@
 #if HOTENDS == 1                                  
   #ifndef FAN1_PIN
     #define FAN1_PIN                        PB0
+    #define HEATER_1_PIN                    PC3
   #endif
 #else
   #ifndef HEATER_1_PIN
