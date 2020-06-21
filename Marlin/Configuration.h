@@ -70,7 +70,7 @@
 //===========================================================================
 
 // Probe Settings
-#define BL_TOUCH                 // Enable BLTouch Settings
+//#define BL_TOUCH                 // Enable BLTouch Settings
 #if ENABLED(BL_TOUCH)
   //#define LOW_RES                  // 3x3 Grid 
   //#define HI_RES                   // 5x5 Grid

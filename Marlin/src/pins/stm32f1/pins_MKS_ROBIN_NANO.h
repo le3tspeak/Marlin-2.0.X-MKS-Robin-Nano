@@ -240,8 +240,6 @@
 
 #define FAN_PIN                           PB1   // FAN
 
-
-
 // Thermocouples
 //
 //#define MAX6675_SS_PIN                    PE5   // TC1 - CS1
@@ -252,6 +250,12 @@
 //
 #define POWER_LOSS_PIN                      PA2   // PW_DET
 #define PS_ON_PIN                           PA3   // PW_OFF
+
+//#define SUICIDE_PIN                       PB2   // Enable MKSPWC support ROBIN NANO v1.2 ONLY
+//#define SUICIDE_PIN_INVERTING false
+
+//#define KILL_PIN                          PA2   // Enable MKSPWC support ROBIN NANO v1.2 ONLY
+//#define KILL_PIN_INVERTING true                 // Enable MKSPWC support ROBIN NANO v1.2 ONLY
 
 //
 // SD Card
