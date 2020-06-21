@@ -280,7 +280,7 @@
 //
 #define LED_PIN                             PB2
 #if ENABLED(NEOPIXEL_LED)
-  #define NEO_PIXEL_1                       PA10  // USED WIFI RX PIN
+  #define NEO_PIXEL_1                       LED_PIN  // USED WIFI RX PIN
     #ifdef NEOPIXEL2_PIN
       #define NEO_PIXEL_2                   PA9   // USED WIFI TX PIN
     #endif
