@@ -59,7 +59,7 @@
 //===========================================================================
 
 // Core XY
-//#define SAPPHIRE_PRO
+#define SAPPHIRE_PRO
 //#define SAPPHIRE_PLUS
 
 // Cartesian
@@ -72,18 +72,20 @@
 // Probe Settings
 
 
-//#define BL_TOUCH                 // Enable BLTouch Settings
+#define BL_TOUCH                 // Enable BLTouch Settings
 #if ENABLED(BL_TOUCH)
-  //#define LOW_RES                  // 3x3 Grid 
+  //#define LOW_RES                  // 3x3 Grid
   //#define HI_RES                   // 5x5 Grid
-  //#define MAX_RES                  // 7x7 Grid
-  //#define BL_TOUCH_HIGH_SPEED      // Only for BLTouch 3.0 and 3.1 Probe Pin does not pull in when moving in XY. Use at your own risk!
+  #define MAX_RES                  // 7x7 Grid
+  #define BL_TOUCH_HIGH_SPEED      // Only for BLTouch 3.0 and 3.1 Probe Pin does not pull in when moving in XY. Use at your own risk!
+  #define Z_CLEARANCE_BL	5
+  #define MULTIPLE_PROBING_BL	3
 #endif
-  
+
 
 // Specify a Probe Offsetposition { X, Y, Z }
 #define OFFSET_X 0              // - Left   |   Right +
-#define OFFSET_Y 0              // - Front  |   Back +
+#define OFFSET_Y -34.5              // - Front  |   Back +
 #define OFFSET_Z 0              // - Nozzle ist Higher as the Probe 0 Point |  + Really? you did somthing wrong.
 
 
@@ -98,7 +100,7 @@
 
 // Linear Pressure Control
 //Use at your own risk! It can cause extruder errors...
- 
+
 //#define LINEAR_PRESSURE_CONTROL
 #if ENABLED(LINEAR_PRESSURE_CONTROL)
   #define LINEAR_PRESSURE_CONTROL_VALUE   0
@@ -133,8 +135,8 @@
 
   //#define INVERT_X
   //#define INVERT_Y
-  #define INVERT_Z 
-  #define INVERT_E0 
+  #define INVERT_Z
+  #define INVERT_E0
   //#define INVERT_Z2
   //#define INVERT_E1
 #endif
@@ -921,7 +923,7 @@
     #define Y_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
     #define Z_MAX_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
     #define Z_MIN_PROBE_ENDSTOP_INVERTING true // Set to true to invert the logic of the probe.
-  #else 
+  #else
     //Sapphire Pro,Plus & Bluer & Mechanical Endstops
     #define X_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
     #define Y_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
@@ -1018,7 +1020,7 @@
     //#define E4_DRIVER_TYPE A4988
     //#define E5_DRIVER_TYPE A4988
     //#define E6_DRIVER_TYPE A4988
-    //#define E7_DRIVER_TYPE A4988 
+    //#define E7_DRIVER_TYPE A4988
   #endif
 
 
