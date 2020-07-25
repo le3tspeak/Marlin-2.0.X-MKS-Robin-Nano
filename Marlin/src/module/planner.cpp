@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 
@@ -89,6 +89,10 @@
 
 #if ENABLED(AUTO_POWER_CONTROL)
   #include "../feature/power.h"
+#endif
+
+#if ENABLED(EXTERNAL_CLOSED_LOOP_CONTROLLER)
+  #include "../feature/closedloop.h"
 #endif
 
 #if ENABLED(BACKLASH_COMPENSATION)
@@ -883,7 +887,9 @@ void Planner::calculate_trapezoid_for_block(block_t* const block, const float &e
                                    |             + <- next->entry_speed (aka exit speed)
                                    +-------------+
                                        time -->
+
   Recalculates the motion plan according to the following basic guidelines:
+
     1. Go over every feasible block sequentially in reverse order and calculate the junction speeds
         (i.e. current->entry_speed) such that:
       a. No junction speed exceeds the pre-computed maximum junction speed limit or nominal speeds of
@@ -894,11 +900,13 @@ void Planner::calculate_trapezoid_for_block(block_t* const block, const float &e
     2. Go over every block in chronological (forward) order and dial down junction speed values if
       a. The exit speed exceeds the one forward-computed from its entry speed with the maximum allowable
          acceleration over the block travel distance.
+
   When these stages are complete, the planner will have maximized the velocity profiles throughout the all
   of the planner blocks, where every block is operating at its maximum allowable acceleration limits. In
   other words, for all of the blocks in the planner, the plan is optimal and no further speed improvements
   are possible. If a new block is added to the buffer, the plan is recomputed according to the said
   guidelines for a new optimal plan.
+
   To increase computational efficiency of these guidelines, a set of planner block pointers have been
   created to indicate stop-compute points for when the planner guidelines cannot logically make any further
   changes or improvements to the plan when in normal operation and new blocks are streamed and added to the
@@ -911,6 +919,7 @@ void Planner::calculate_trapezoid_for_block(block_t* const block, const float &e
   junction velocity is reached. However, if the operational conditions of the plan changes from infrequently
   used feed holds or feedrate overrides, the stop-compute pointers will be reset and the entire plan is
   recomputed as stated in the general guidelines.
+
   Planner buffer index mapping:
   - block_buffer_tail: Points to the beginning of the planner buffer. First to be executed or being executed.
   - block_buffer_head: Points to the buffer block after the last block in the buffer. Used to indicate whether
@@ -920,6 +929,7 @@ void Planner::calculate_trapezoid_for_block(block_t* const block, const float &e
       planner buffer that don't change with the addition of a new block, as describe above. In addition,
       this block can never be less than block_buffer_tail and will always be pushed forward and maintain
       this requirement when encountered by the Planner::release_current_block() routine during a cycle.
+
   NOTE: Since the planner only computes on what's in the planner buffer, some motions with lots of short
   line segments, like G2/3 arcs or complex curves, may seem to move slow. This is because there simply isn't
   enough combined distance traveled in the entire buffer to accelerate up to the nominal speed and then
@@ -1628,11 +1638,8 @@ float Planner::get_axis_position_mm(const AxisEnum axis) {
  * Block until all buffered steps are executed / cleaned
  */
 void Planner::synchronize() {
-  while (
-    has_blocks_queued() || cleaning_buffer_counter
-    #if ENABLED(EXTERNAL_CLOSED_LOOP_CONTROLLER)
-      || (READ(CLOSED_LOOP_ENABLE_PIN) && !READ(CLOSED_LOOP_MOVE_COMPLETE_PIN))
-    #endif
+  while (has_blocks_queued() || cleaning_buffer_counter
+      || TERN0(EXTERNAL_CLOSED_LOOP_CONTROLLER, CLOSED_LOOP_WAITING())
   ) idle();
 }
 
@@ -1647,7 +1654,7 @@ void Planner::synchronize() {
  *  extruder      - target extruder
  *  millimeters   - the length of the movement, if known
  *
- * Returns true if movement was properly queued, false otherwise
+ * Returns true if movement was properly queued, false otherwise (if cleaning)
  */
 bool Planner::_buffer_steps(const xyze_long_t &target
   #if HAS_POSITION_FLOAT
@@ -1826,7 +1833,7 @@ bool Planner::_populate_block(block_t * const block, bool split_move,
   #endif
 
   // Number of steps for each axis
-  // See http://www.corexy.com/theory.html
+  // See https://www.corexy.com/theory.html
   #if CORE_IS_XY
     block->steps.set(ABS(da + db), ABS(da - db), ABS(dc));
   #elif CORE_IS_XZ
@@ -2033,7 +2040,7 @@ bool Planner::_populate_block(block_t * const block, bool split_move,
   const uint8_t moves_queued = nonbusy_movesplanned();
 
   // Slow down when the buffer starts to empty, rather than wait at the corner for a buffer refill
-  #if EITHER(SLOWDOWN, ULTRA_LCD) || defined(XY_FREQUENCY_LIMIT)
+  #if EITHER(SLOWDOWN, HAS_SPI_LCD) || defined(XY_FREQUENCY_LIMIT)
     // Segment time im micro seconds
     int32_t segment_time_us = LROUND(1000000.0f / inverse_secs);
   #endif
@@ -2630,6 +2637,8 @@ void Planner::buffer_sync_block() {
  *  fr_mm_s     - (target) speed of the move
  *  extruder    - target extruder
  *  millimeters - the length of the movement, if known
+ *
+ * Return 'false' if no segment was queued due to cleaning, cold extrusion, full queue, etc.
  */
 bool Planner::buffer_segment(const float &a, const float &b, const float &c, const float &e
   #if HAS_DIST_MM_ARG
@@ -2699,7 +2708,7 @@ bool Planner::buffer_segment(const float &a, const float &b, const float &c, con
     SERIAL_ECHOLNPGM(")");
   //*/
 
-  // Queue the movement
+  // Queue the movement. Return 'false' if the move was not queued.
   if (!_buffer_steps(target
       #if HAS_POSITION_FLOAT
         , target_float
