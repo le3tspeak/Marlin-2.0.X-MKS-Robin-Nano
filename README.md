@@ -29,7 +29,7 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
   Fast Config Switch Sapphire Pro/Plus/Bluer|True|-
   UI Type|-|Classic Marlin
   TFT Color Selection|True|-
-  EEPROM|True|SDCARD EEPROM EMULATION
+  EEPROM|True|-
   G0 Support|True|-
   G2/G3 Arc Support|True|-
   Classic Jerk|True|15
@@ -38,7 +38,7 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
   Mesh Bed Leveling|True|-
   Filament sensor|True|-
   TMC UART|-|Ready
-  TMC SPI|-|in progress
+  TMC SPI|-|Ready
   TMC 2209 HW Serial|-|Ready
   Neopixel|-|Ready
   Cancel Objects|True|-
@@ -53,21 +53,20 @@ To build Marlin 2.0 you'll need [PlatformIO](http://docs.platformio.org/en/lates
 
   Memory consumption|Value
   --------------------|-------------------------------------------
-  RAM:    |47.8% (used 36944 bytes from 65536 bytes)
-  Flash:  |43.2% (used 223380 bytes from 524288 bytes)
+  RAM:   [====      ]  44.8% (used 29368 bytes from 65536 bytes)
+  Flash: [====      ]  44.9% (used 235476 bytes from 524288 bytes)
 
 ## UI Preview
 <img align="center" width=650 src="/docs/UI.png" />
   
-## Submitting Changes
-
-- Please submit your questions and concerns to the [Issue Queue](https://github.com/le3tspeak/Marlin-2.0.X-MKS-Robin-Nano/issues).
 
 
 ## Changelog
 
 Version|Changes & Fixes
 -------|-------
+1.0.7
+  -|Major Update
 1.0.6
   -|Add Z2 & E1 HARDWARE_SERIAL
   -|Add Multi-hotend option

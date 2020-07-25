@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
@@ -28,7 +28,7 @@
 /**
  * Marlin release version identifier
  */
-#define SHORT_BUILD_VERSION "MKS Robin Nano 1.0.6"
+#define SHORT_BUILD_VERSION "MKS Robin Nano 1.0.7"
 
 /**
  * Verbose version identifier which should contain a reference to the location
@@ -41,7 +41,7 @@
  * here we define this default string as the date where the latest release
  * version was tagged.
  */
-#define STRING_DISTRIBUTION_DATE "20.06.2020"
+#define STRING_DISTRIBUTION_DATE "25.07.2020"
 
 /**
  * Defines a generic printer name to be output to the LCD after booting Marlin.
@@ -71,6 +71,6 @@
  * Set the vendor info the serial USB interface, if changable
  * Currently only supported by DUE platform
  */
-//#define  USB_DEVICE_VENDOR_ID           0x0000
-//#define  USB_DEVICE_PRODUCT_ID          0x0000
-//#define  USB_DEVICE_MANUFACTURE_NAME    WEBSITE_URL
+//#define USB_DEVICE_VENDOR_ID           0x0000
+//#define USB_DEVICE_PRODUCT_ID          0x0000
+//#define USB_DEVICE_MANUFACTURE_NAME    WEBSITE_URL
