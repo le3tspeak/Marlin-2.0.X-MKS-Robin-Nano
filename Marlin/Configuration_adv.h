@@ -33,6 +33,12 @@
  */
 #define CONFIGURATION_ADV_H_VERSION 020006
 
+//===========================================================================
+//=============================Special 3D-Printer Preset=====================
+//===========================================================================
+//#define SAPPHIRE_PLUS_DUAL_Z
+
+
 // @section temperature
 
 //===========================================================================
@@ -553,22 +559,45 @@
 //
 // For Z set the number of stepper drivers
 //
-#define NUM_Z_STEPPER_DRIVERS 1   // (1-4) Z options change based on how many
+#if ENABLED(SAPPHIRE_PLUS_DUAL_Z)
+//******************************************************************************
+  #define NUM_Z_STEPPER_DRIVERS 2   // (1-4) Z options change based on how many
 
-#if NUM_Z_STEPPER_DRIVERS > 1
-  //#define Z_MULTI_ENDSTOPS
-  #if ENABLED(Z_MULTI_ENDSTOPS)
-    #define Z2_USE_ENDSTOP          _XMAX_
-    #define Z2_ENDSTOP_ADJUSTMENT   0
-    #if NUM_Z_STEPPER_DRIVERS >= 3
-      #define Z3_USE_ENDSTOP        _YMAX_
-      #define Z3_ENDSTOP_ADJUSTMENT 0
-    #endif
-    #if NUM_Z_STEPPER_DRIVERS >= 4
-      #define Z4_USE_ENDSTOP        _ZMAX_
-      #define Z4_ENDSTOP_ADJUSTMENT 0
+  #if NUM_Z_STEPPER_DRIVERS > 1
+    #define Z_MULTI_ENDSTOPS
+    #if ENABLED(Z_MULTI_ENDSTOPS)
+      #define Z2_USE_ENDSTOP          _ZMAX_
+      #define Z2_ENDSTOP_ADJUSTMENT   0
+      #if NUM_Z_STEPPER_DRIVERS >= 3
+        #define Z3_USE_ENDSTOP        _YMAX_
+        #define Z3_ENDSTOP_ADJUSTMENT 0
+      #endif
+      #if NUM_Z_STEPPER_DRIVERS >= 4
+        #define Z4_USE_ENDSTOP        _ZMAX_
+        #define Z4_ENDSTOP_ADJUSTMENT 0
+      #endif
     #endif
   #endif
+//******************************************************************************
+#else
+  #define NUM_Z_STEPPER_DRIVERS 1   // (1-4) Z options change based on how many
+
+  #if NUM_Z_STEPPER_DRIVERS > 1
+    //#define Z_MULTI_ENDSTOPS
+    #if ENABLED(Z_MULTI_ENDSTOPS)
+      #define Z2_USE_ENDSTOP          _XMAX_
+      #define Z2_ENDSTOP_ADJUSTMENT   0
+      #if NUM_Z_STEPPER_DRIVERS >= 3
+        #define Z3_USE_ENDSTOP        _YMAX_
+        #define Z3_ENDSTOP_ADJUSTMENT 0
+      #endif
+      #if NUM_Z_STEPPER_DRIVERS >= 4
+        #define Z4_USE_ENDSTOP        _ZMAX_
+        #define Z4_ENDSTOP_ADJUSTMENT 0
+      #endif
+    #endif
+  #endif
+//******************************************************************************
 #endif
 
 /**
@@ -1599,8 +1628,8 @@
       #define LIN_ADVANCE_K LINEAR_PRESSURE_CONTROL_VALUE    // Unit: mm compression per 1mm/s extruder speed
       //#define LA_DEBUG            // If enabled, this will generate debug information output over USB.
       //#define EXPERIMENTAL_SCURVE // Enable this option to permit S-Curve Acceleration
-    #endif  
-#else  
+    #endif
+#else
   // No Adv. Preset
   //#define LIN_ADVANCE
     #if ENABLED(LIN_ADVANCE)
@@ -1732,7 +1761,7 @@
     // increasing the height the probe is raised to.
     // #define PTC_PROBE_RAISE 15U
 
-    // If the probe is outside of the defined range, use linear extrapolation using the closest 
+    // If the probe is outside of the defined range, use linear extrapolation using the closest
     // point and the PTC_LINEAR_EXTRAPOLATION'th next point. E.g. if set to 4 it will use data[0]
     // and data[4] to perform linear extrapolation for values below PTC_SAMPLE_START.
     // #define PTC_LINEAR_EXTRAPOLATION 4
