@@ -79,6 +79,7 @@ non-belt-synced drives. In this case, a additional configuration has to be done
 //============================= Hotend-Preset================================
 //===========================================================================
 //#define E3D_HEMERA //Only for Sapphire PLUS yet.
+
 //Modifies Thermistor Types, esteps, homing sequence (Y before X)
 // and min X-position (+8mm)
 //Last two points are necessary for avoding colision with dual Z-Endstopps
@@ -792,9 +793,9 @@ non-belt-synced drives. In this case, a additional configuration has to be done
     #define DEFAULT_Kd 56.55
   #elif ENABLED(E3D_HEMERA) && NONE(CUSTOM_HOTEND_PID) && ANY(SAPPHIRE_PRO, SAPPHIRE_PLUS)
     //Hemera on Sapphire Plus or Pro (not tested yet, but should be the same)
-    #define DEFAULT_Kp 45.0
-    #define DEFAULT_Ki 7.9
-    #define DEFAULT_Kd 150
+    #define DEFAULT_Kp 16.86
+    #define DEFAULT_Ki 3.84
+    #define DEFAULT_Kd 22.68
 
   #elif ENABLED(BLUER) && NONE(CUSTOM_HOTEND_PID)
     //Bluer
