@@ -1,6 +1,9 @@
 # About this Fork
 This fork was created for the implementation of the new TwoTrees Sapphire Plus revision with unsynced Z-Axis drives and dual Endstops. Therefore new precompiler-dirctives have been added to the configuration.h and !configuration_adv.h!
 
+It will also include preconfigurations for the E3D Hemera [mounted with this mount (Seems to work best on dual endstop-revs)](https://www.thingiverse.com/thing:4435761). An remixed Version of this Mount for a EBM-Pabst RLF 35-8 will be uploaded soon.
+
+# Documentation of project, it was forked from:*************************
 # Marlin Firmware adapted for the MKS Robin Nano 1.1/1.2
 
 
