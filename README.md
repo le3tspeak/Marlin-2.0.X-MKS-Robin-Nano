@@ -1,3 +1,6 @@
+# About this Fork
+This fork was created for the implementation of the new TwoTrees Sapphire Plus revision with unsynced Z-Axis drives and dual Endstops. Therefore new precompiler-dirctives have been added to the configuration.h and !configuration_adv.h!
+
 # Marlin Firmware adapted for the MKS Robin Nano 1.1/1.2
 
 
