@@ -2326,6 +2326,62 @@ static_assert(hbm[Z_AXIS] >= 0, "HOMING_BUMP_MM.Z must be greater than or equal 
 #undef INVALID_TMC_UART
 
 /**
+ * Make sure CoolStep settings exist
+ */
+#if HAS_COOLSTEP
+  #define NEEDS_COOLSTEP(A) AXIS_HAS_COOLSTEP(A) && !(defined(A##_COOLSTEP_SPEED_THRESHOLD) && defined(A##_COOLSTEP_LOWER_LOAD_THRESHOLD) && defined(A##_COOLSTEP_UPPER_LOAD_THRESHOLD) && defined(A##_COOLSTEP_SEUP) && defined(A##_COOLSTEP_SEDN) && defined(A##_COOLSTEP_SEIMIN))
+  #if NEEDS_COOLSTEP(X)
+    #error "X COOLSTEP settings must be defined in Configuration_adv.h."
+  #endif
+  #if NEEDS_COOLSTEP(X2)
+    #error "X2 COOLSTEP settings must be defined in Configuration_adv.h."
+  #endif
+  #if NEEDS_COOLSTEP(Y)
+    #error "Y COOLSTEP settings must be defined in Configuration_adv.h."
+  #endif
+  #if NEEDS_COOLSTEP(Y2)
+    #error "Y2 COOLSTEP settings must be defined in Configuration_adv.h."
+  #endif
+  #if NEEDS_COOLSTEP(Z)
+    #error "Z COOLSTEP settings must be defined in Configuration_adv.h."
+  #endif
+  #if NEEDS_COOLSTEP(Z2)
+    #error "Z2 COOLSTEP settings must be defined in Configuration_adv.h."
+  #endif
+  #if NEEDS_COOLSTEP(Z3)
+    #error "Z3 COOLSTEP settings must be defined in Configuration_adv.h."
+  #endif
+  #if NEEDS_COOLSTEP(Z4)
+    #error "Z4 COOLSTEP settings must be defined in Configuration_adv.h."
+  #endif
+  #if NEEDS_COOLSTEP(E0)
+    #error "E0 COOLSTEP settings must be defined in Configuration_adv.h."
+  #endif
+  #if NEEDS_COOLSTEP(E1)
+    #error "E1 COOLSTEP settings must be defined in Configuration_adv.h."
+  #endif
+  #if NEEDS_COOLSTEP(E2)
+    #error "E2 COOLSTEP settings must be defined in Configuration_adv.h."
+  #endif
+  #if NEEDS_COOLSTEP(E3)
+    #error "E3 COOLSTEP settings must be defined in Configuration_adv.h."
+  #endif
+  #if NEEDS_COOLSTEP(E4)
+    #error "E4 COOLSTEP settings must be defined in Configuration_adv.h."
+  #endif
+  #if NEEDS_COOLSTEP(E5)
+    #error "E5 COOLSTEP settings must be defined in Configuration_adv.h."
+  #endif
+  #if NEEDS_COOLSTEP(E6)
+    #error "E6 COOLSTEP settings must be defined in Configuration_adv.h."
+  #endif
+  #if NEEDS_COOLSTEP(E7)
+    #error "E7 COOLSTEP settings must be defined in Configuration_adv.h."
+  #endif
+  #undef NEEDS_COOLSTEP
+#endif
+
+/**
  * TMC2209 slave address values
  */
 #define INVALID_TMC_ADDRESS(ST) static_assert(0 <= ST##_SLAVE_ADDRESS && ST##_SLAVE_ADDRESS <= 3, "TMC2209 slave address must be 0, 1, 2 or 3")
