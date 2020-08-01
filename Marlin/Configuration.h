@@ -177,6 +177,11 @@
     #define CUSTOM_TEMP_SENSOR_BED 1
 #endif
 
+// Reduce installed fans (default to number of defined fan pins).
+// :[1,2,3,4,5,6,7,8]
+//#define FANS 1
+
+
 //===========================================================================
 //============================= Display language selection===================
 //===========================================================================
