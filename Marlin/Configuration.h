@@ -792,10 +792,10 @@ non-belt-synced drives. In this case, a additional configuration has to be done
     #define DEFAULT_Ki 0.85
     #define DEFAULT_Kd 56.55
   #elif ENABLED(E3D_HEMERA) && NONE(CUSTOM_HOTEND_PID) && ANY(SAPPHIRE_PRO, SAPPHIRE_PLUS)
-    //Hemera on Sapphire Plus or Pro (not tested yet, but should be the same)
-    #define DEFAULT_Kp 16.86
-    #define DEFAULT_Ki 3.84
-    #define DEFAULT_Kd 22.68
+    //Hemera on Sapphire Plus (tested) or Pro (not tested yet, but should be the same)
+    #define DEFAULT_Kp 14.67
+    #define DEFAULT_Ki 1.62
+    #define DEFAULT_Kd 33.22
 
   #elif ENABLED(BLUER) && NONE(CUSTOM_HOTEND_PID)
     //Bluer
