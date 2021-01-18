@@ -1257,11 +1257,11 @@ non-belt-synced drives. In this case, a additional configuration has to be done
  */
 #if ANY (SAPPHIRE_PRO, SAPPHIRE_PLUS)
     //Sapphire Pro
-    #define DEFAULT_MAX_FEEDRATE          { 300, 300, 10, 50 }
-  #elif ENABLED(BLUER)
+    #define DEFAULT_MAX_FEEDRATE          { 300, 300, 20, 50 }
+#elif ENABLED(BLUER)
     //Bluer
     #define DEFAULT_MAX_FEEDRATE          { 250, 250, 10, 50 }
-  #else
+ #else
     //No Preset
     #define DEFAULT_MAX_FEEDRATE          { 300, 300, 10, 50 }
 #endif
@@ -1277,7 +1277,7 @@ non-belt-synced drives. In this case, a additional configuration has to be done
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 3000, 3000, 100, 10000 }
+#define DEFAULT_MAX_ACCELERATION      { 5000, 5000, 100, 10000 }
 
 //#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
@@ -1292,7 +1292,14 @@ non-belt-synced drives. In this case, a additional configuration has to be done
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#if ANY (SAPPHIRE_PRO, SAPPHIRE_PLUS)
+&& NONE(CUSTOM_STEPPER_DRIVERS)
+
+#elif ((ANY (SAPPHIRE_PRO, SAPPHIRE_PLUS)) && (ENABLED (E3D_HEMERA))
+  //Sapphire Pro & Plus with E3D Hemera (Tuned)
+  #define DEFAULT_ACCELERATION          1250    // X, Y, Z and E acceleration for printing moves
+  #define DEFAULT_RETRACT_ACCELERATION  2000    // E acceleration for retracts
+  #define DEFAULT_TRAVEL_ACCELERATION   1500    // X, Y, Z acceleration for travel (non printing) moves
+#elif ANY (SAPPHIRE_PRO, SAPPHIRE_PLUS)
   //Sapphire Pro & Plus
   #define DEFAULT_ACCELERATION          1000    // X, Y, Z and E acceleration for printing moves
   #define DEFAULT_RETRACT_ACCELERATION  2000    // E acceleration for retracts
@@ -1324,10 +1331,16 @@ non-belt-synced drives. In this case, a additional configuration has to be done
   //#define CLASSIC_JERK
 #endif
 
-#if ENABLED(CLASSIC_JERK)
+#if ((ENABLED(CLASSIC_JERK)) && (ENABLED (E3D_HEMERA)))
+  #define DEFAULT_XJERK 8.0
+  #define DEFAULT_YJERK 8.0
+  #define DEFAULT_ZJERK 0.3
+
+#elif ENABLED(CLASSIC_JERK)
   #define DEFAULT_XJERK 15.0
   #define DEFAULT_YJERK 15.0
   #define DEFAULT_ZJERK  0.3
+#endif
 
   //#define TRAVEL_EXTRA_XYJERK 0.0     // Additional jerk allowance for all travel moves
 
@@ -1870,13 +1883,13 @@ non-belt-synced drives. In this case, a additional configuration has to be done
       #define Z_MAX_POS Z_BED_SIZE_CUSTOM
     #elif ENABLED(E3D_HEMERA)
       #define X_BED_SIZE 282
-      #define Y_BED_SIZE 300
+      #define Y_BED_SIZE 296
 
       // Travel limits (mm) after homing, corresponding to endstop positions.
       #define X_MIN_POS -8 //mm to avoid colision with Endtopps / Z-Drive
-      #define Y_MIN_POS 0
+      #define Y_MIN_POS 4
       #define Z_MIN_POS 0
-      #define X_MAX_POS 292
+      #define X_MAX_POS 288
       #define Y_MAX_POS 300
       #define Z_MAX_POS 327 //mm | Hemera is positioned a little bit lower.
 
@@ -2345,13 +2358,13 @@ non-belt-synced drives. In this case, a additional configuration has to be done
 
 // Preheat Constants
 #define PREHEAT_1_LABEL       "PLA"
-#define PREHEAT_1_TEMP_HOTEND 200
+#define PREHEAT_1_TEMP_HOTEND 210
 #define PREHEAT_1_TEMP_BED     60
 #define PREHEAT_1_FAN_SPEED     0 // Value from 0 to 255
 
 #define PREHEAT_2_LABEL       "PETG"
-#define PREHEAT_2_TEMP_HOTEND 240
-#define PREHEAT_2_TEMP_BED    70
+#define PREHEAT_2_TEMP_HOTEND 247
+#define PREHEAT_2_TEMP_BED    85
 #define PREHEAT_2_FAN_SPEED     0 // Value from 0 to 255
 
 /**
