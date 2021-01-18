@@ -61,14 +61,14 @@
 // Core XY
 //#define SAPPHIRE_PRO
 //#define SAPPHIRE_PLUS
-//#define SAPPHIRE_PLUS_DUAL_Z //==> Read text since additional config is mandatory
+#define SAPPHIRE_PLUS_DUAL_Z //==> Read text since additional config is mandatory
 /****************************************************************************
 Attention: On newer Sapphire Plus models (Probably manufactured after April 2020)
 the Z-Axis drives and endstopps have been changed to dual Z-Endstopps and
 non-belt-synced drives. In this case, a additional configuration has to be done
 !!!Configuration_adv.h (Uncomment Line 39)!!!
 ****************************************************************************/
-#if ENABLED(SAPPHIRE_PLUS_DUAL_Z)
+#if ENABLED (SAPPHIRE_PLUS_DUAL_Z)
   #define SAPPHIRE_PLUS //All Non-Exlusive-Presets are used for DUAL-Z revisions
 #endif
 
@@ -78,7 +78,7 @@ non-belt-synced drives. In this case, a additional configuration has to be done
 //===========================================================================
 //============================= Hotend-Preset================================
 //===========================================================================
-//#define E3D_HEMERA //Only for Sapphire PLUS yet.
+#define E3D_HEMERA //Only for Sapphire PLUS yet.
 
 //Modifies Thermistor Types, esteps, homing sequence (Y before X)
 // and min X-position (+8mm)
