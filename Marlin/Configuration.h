@@ -61,25 +61,52 @@
 // Core XY
 //#define SAPPHIRE_PRO
 //#define SAPPHIRE_PLUS
+//#define SAPPHIRE_PLUS_DUAL_Z //==> Read text since additional config is mandatory
+/****************************************************************************
+Attention: On newer Sapphire Plus models (Probably manufactured after April 2020)
+the Z-Axis drives and endstopps have been changed to dual Z-Endstopps and
+non-belt-synced drives. In this case, a additional configuration has to be done
+!!!Configuration_adv.h (Uncomment Line 39)!!!
+****************************************************************************/
+#if ENABLED (SAPPHIRE_PLUS_DUAL_Z)
+  #define SAPPHIRE_PLUS //All Non-Exlusive-Presets are used for DUAL-Z revisions
+#endif
 
 // Cartesian
 //#define BLUER
 
 //===========================================================================
+//============================= Hotend-Preset================================
+//===========================================================================
+//#define E3D_HEMERA //Only for Sapphire PLUS yet.
+
+//Modifies Thermistor Types, esteps, homing sequence (Y before X)
+// and min X-position (+8mm)
+//Last two points are necessary for avoding colision with dual Z-Endstopps
+//Used Mount --> (https://www.thingiverse.com/thing:4435761)
+#if ENABLED(E3D_HEMERA)
+  #define INVERT_E0
+  #define CUSTOM_TEMP_SENSOR_0 5
+  #define STEPS_E0    409
+  #define HOME_Y_BEFORE_X //Avoiding colision with endstops
+#endif
+
+//===========================================================================
 //============================= Advanced presets ============================
 //===========================================================================
+//#define FILAMENT_RUNOUT_SENSOR
 
 // Probe Settings
 //#define BL_TOUCH                 // Enable BLTouch Settings
 #if ENABLED(BL_TOUCH)
-  //#define LOW_RES                  // 3x3 Grid 
+  //#define LOW_RES                  // 3x3 Grid
   //#define HI_RES                   // 5x5 Grid
   //#define MAX_RES                  // 7x7 Grid
   //#define BL_TOUCH_HIGH_SPEED      // Only for BLTouch 3.0 and 3.1 Probe Pin does not pull in when moving in XY. Use at your own risk!
   //#define Z_CLEARANCE_BL        5  // Z Clearance between probe points
   //#define MULTIPLE_PROBING_BL   2  // A total of 2 does fast/slow probes with a weighted average.  A total of 3 or more adds more slow probes, taking the average.
 #endif
-  
+
 
 // Specify a Probe Offsetposition { X, Y, Z }
 #define OFFSET_X 0              // - Left   |   Right +
@@ -132,8 +159,8 @@
 
   //#define INVERT_X
   //#define INVERT_Y
-  #define INVERT_Z 
-  #define INVERT_E0 
+  #define INVERT_Z
+  #define INVERT_E0
   //#define INVERT_Z2
   //#define INVERT_E1
 #endif
@@ -160,7 +187,7 @@
   #define Z_BED_SIZE_CUSTOM 200
 #endif
 
-// Custom PID & TEMP SENSOR Settings  
+// Custom PID & TEMP SENSOR Settings
 // Normally no change necessary, unless it does not maintain the set temperature + -1 °
 //#define CUSTOM_HOTEND_PID // HOTEND
   #if ENABLED(CUSTOM_HOTEND_PID)
@@ -198,7 +225,7 @@
  *
  *   en, an, bg, ca, cz, da, de, el, el_gr, es, eu, fi, fr, gl, hr, hu, it,
  *   jp_kana, ko_KR, nl, pl, pt, pt_br, ru, sk, tr, uk, vi, zh_CN, zh_TW, test
- * 
+ *
  * :{ 'en':'English', 'an':'Aragonese', 'bg':'Bulgarian', 'ca':'Catalan', 'cz':'Czech', 'da':'Danish', 'de':'German', 'el':'Greek', 'el_gr':'Greek (Greece)', 'es':'Spanish', 'eu':'Basque-Euskera', 'fi':'Finnish', 'fr':'French', 'gl':'Galician', 'hr':'Croatian', 'hu':'Hungarian', 'it':'Italian', 'jp_kana':'Japanese', 'ko_KR':'Korean (South Korea)', 'nl':'Dutch', 'pl':'Polish', 'pt':'Portuguese', 'pt_br':'Portuguese (Brazilian)', 'ru':'Russian', 'sk':'Slovak', 'tr':'Turkish', 'uk':'Ukrainian', 'vi':'Vietnamese', 'zh_CN':'Chinese (Simplified)', 'zh_TW':'Chinese (Traditional)', 'test':'TEST' }
  */
 
@@ -233,7 +260,7 @@
 #if ENABLED (SAPPHIRE_GRAPHICAL_TFT_CUSTOM)
 #define COLOR_CUSTOM_0 0xFFFF // UI
 #define COLOR_CUSTOM_1 0xFFFF // BACKGROUND
-#define COLOR_CUSTOM_2 0xFFFF // CANCEL 
+#define COLOR_CUSTOM_2 0xFFFF // CANCEL
 #define COLOR_CUSTOM_3 0xFFFF // ARROWS
 #define COLOR_CUSTOM_4 0xFFFF // OK/MENU
 #endif
@@ -247,13 +274,13 @@
  *
  * Adds the M150 command to set the LED (or LED strip) color.
  * For Neopixel LED an overall brightness parameter is also available.
- * 
+ *
  *                            *** CAUTION ***
  *
  *  NOTE: A separate 3V/5V power supply is required! The Neopixel LED needs
  *  more current than the MKS Robin Nano 5V linear regulator can produce.
  *  Failure to follow this precaution can destroy your Robin Nano!
- *  
+ *
  *                           *** CAUTION ***
  */
 
@@ -358,7 +385,7 @@
  */
   #if ANY (SAPPHIRE_PRO, SAPPHIRE_PLUS, BLUER)
     //SAPPHIRE_PRO, SAPPHIRE_PLUS, BLUER
-    #define BAUDRATE 115200 
+    #define BAUDRATE 115200
   #else
     //No Preset
     #define BAUDRATE 250000
@@ -377,8 +404,15 @@
     //Sapphire Pro
     #define CUSTOM_MACHINE_NAME "Sapphire Pro"
   #elif ENABLED(SAPPHIRE_PLUS)
-    //Sapphire Plus
-    #define CUSTOM_MACHINE_NAME "Sapphire Plus"
+    //**************************************************************************
+    #if ENABLED(E3D_HEMERA)
+      //Sapphire Plus + Hemera
+      #define CUSTOM_MACHINE_NAME "Sapphire Plus Hemera"
+    #else
+      //Sapphire Plus + Hemera
+      #define CUSTOM_MACHINE_NAME "Sapphire Plus"
+    #endif
+    //**************************************************************************
   #elif ENABLED(BLUER)
     //Bluer
     #define CUSTOM_MACHINE_NAME "Bluer"
@@ -702,11 +736,11 @@
 #define MAX_REDUNDANT_TEMP_SENSOR_DIFF 10
 
 #define TEMP_RESIDENCY_TIME     10  // (seconds) Time to wait for hotend to "settle" in M109
-#define TEMP_WINDOW              1  // (°C) Temperature proximity for the "temperature reached" timer
+#define TEMP_WINDOW              3  // (°C) Temperature proximity for the "temperature reached" timer
 #define TEMP_HYSTERESIS          3  // (°C) Temperature proximity considered "close enough" to the target
 
-#define TEMP_BED_RESIDENCY_TIME 10  // (seconds) Time to wait for bed to "settle" in M190
-#define TEMP_BED_WINDOW          1  // (°C) Temperature proximity for the "temperature reached" timer
+#define TEMP_BED_RESIDENCY_TIME  5  // (seconds) Time to wait for bed to "settle" in M190
+#define TEMP_BED_WINDOW          3  // (°C) Temperature proximity for the "temperature reached" timer
 #define TEMP_BED_HYSTERESIS      3  // (°C) Temperature proximity considered "close enough" to the target
 
 // Below this temperature the heater will be switched off
@@ -724,7 +758,12 @@
 // Above this temperature the heater will be switched off.
 // This can protect components from overheating, but NOT from shorts and failures.
 // (Use MINTEMP for thermistor short/failure protection.)
-#define HEATER_0_MAXTEMP 275
+#if ENABLED(E3D_HEMERA)
+  #define HEATER_0_MAXTEMP 300
+#else
+  #define HEATER_0_MAXTEMP 275
+#endif
+
 #define HEATER_1_MAXTEMP 275
 #define HEATER_2_MAXTEMP 275
 #define HEATER_3_MAXTEMP 275
@@ -753,17 +792,23 @@
 
   // If you are using a pre-configured hotend then you can use one of the value sets by uncommenting it
 
-  #if ENABLED(SAPPHIRE_PRO) && NONE(CUSTOM_HOTEND_PID) 
+  #if ENABLED(SAPPHIRE_PRO) && NONE(CUSTOM_HOTEND_PID) && NONE(E3D_HEMERA)
     //Sapphire Pro
     #define DEFAULT_Kp 14.21
     #define DEFAULT_Ki 0.88
     #define DEFAULT_Kd 57.26
-  #elif ENABLED(SAPPHIRE_PLUS) && NONE(CUSTOM_HOTEND_PID) 
+  #elif ENABLED(SAPPHIRE_PLUS) && NONE(CUSTOM_HOTEND_PID) && NONE(E3D_HEMERA)
     //Sapphire Plus
     #define DEFAULT_Kp 15.30
     #define DEFAULT_Ki 0.85
     #define DEFAULT_Kd 56.55
-  #elif ENABLED(BLUER) && NONE(CUSTOM_HOTEND_PID) 
+  #elif ENABLED(E3D_HEMERA) && NONE(CUSTOM_HOTEND_PID) && ANY(SAPPHIRE_PRO, SAPPHIRE_PLUS)
+    //Hemera on Sapphire Plus (tested) or Pro (not tested yet, but should be the same)
+    #define DEFAULT_Kp 14.67
+    #define DEFAULT_Ki 1.62
+    #define DEFAULT_Kd 33.22
+
+  #elif ENABLED(BLUER) && NONE(CUSTOM_HOTEND_PID)
     //Bluer
     #define DEFAULT_Kp 8.4
     #define DEFAULT_Ki 0.4
@@ -817,25 +862,25 @@
 
  // FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
 
-  #if ENABLED(SAPPHIRE_PRO) && NONE(CUSTOM_BED_PID) 
+  #if ENABLED(SAPPHIRE_PRO) && NONE(CUSTOM_BED_PID)
     //Sapphire Pro
     #define DEFAULT_bedKp 21.37
     #define DEFAULT_bedKi 3.29
     #define DEFAULT_bedKd 92.53
-  #elif ENABLED(SAPPHIRE_PLUS) && NONE(CUSTOM_BED_PID) 
+  #elif ENABLED(SAPPHIRE_PLUS) && NONE(CUSTOM_BED_PID)
     //Sapphire Plus
     #define DEFAULT_bedKp 45.0
     #define DEFAULT_bedKi 7.9
     #define DEFAULT_bedKd 150
-  #elif ENABLED(BLUER) && NONE(CUSTOM_BED_PID) 
+  #elif ENABLED(BLUER) && NONE(CUSTOM_BED_PID)
     //Bluer
     #define DEFAULT_bedKp 10.34
     #define DEFAULT_bedKi 0.25
     #define DEFAULT_bedKd 300.5
   #elif ENABLED(CUSTOM_BED_PID)
-    #define DEFAULT_bedKp CUSTOM_BED_Kp 
-    #define DEFAULT_bedKi CUSTOM_BED_Ki 
-    #define DEFAULT_bedKd CUSTOM_BED_Kd 
+    #define DEFAULT_bedKp CUSTOM_BED_Kp
+    #define DEFAULT_bedKi CUSTOM_BED_Ki
+    #define DEFAULT_bedKd CUSTOM_BED_Kd
   #else
     //No Preset
     #define DEFAULT_bedKp 10.00
@@ -929,7 +974,7 @@
 // Almost all printers will be using one per axis. Probes will use one or more of the
 // extra connectors. Leave undefined any used for non-endstop and non-probe purposes.
 
-#if ANY(SAPPHIRE_PRO, SAPPHIRE_PLUS)
+#if ANY(SAPPHIRE_PRO, SAPPHIRE_PLUS) && NONE(SAPPHIRE_PLUS_DUAL_Z)
     //Sapphire Pro & Plus
     #define USE_XMIN_PLUG
     //#define USE_YMIN_PLUG
@@ -937,6 +982,14 @@
     //#define USE_XMAX_PLUG
     #define USE_YMAX_PLUG
     //#define USE_ZMAX_PLUG
+#elif ENABLED(SAPPHIRE_PLUS_DUAL_Z)
+    //Sapphire Pro & Plus
+    #define USE_XMIN_PLUG
+    //#define USE_YMIN_PLUG
+    #define USE_ZMIN_PLUG //Z1 Endstop (LEFT)
+    //#define USE_XMAX_PLUG
+    #define USE_YMAX_PLUG
+    #define USE_ZMAX_PLUG //Z2 Endstop (RIGHT)
   #else
     //No Preset & Bluer
     #define USE_XMIN_PLUG
@@ -983,7 +1036,7 @@
     #define Y_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
     #define Z_MAX_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
     #define Z_MIN_PROBE_ENDSTOP_INVERTING true // Set to true to invert the logic of the probe.
-  #else 
+  #else
     //Sapphire Pro,Plus & Bluer & Mechanical Endstops
     #define X_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
     #define Y_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
@@ -1034,12 +1087,21 @@
     //#define Z2_DRIVER_TYPE A4988
     #define E0_DRIVER_TYPE A4988
     //#define E1_DRIVER_TYPE A4988
-  #elif ENABLED(SAPPHIRE_PLUS) && NONE(CUSTOM_STEPPER_DRIVERS)
+  #elif ENABLED(SAPPHIRE_PLUS) && NONE(CUSTOM_STEPPER_DRIVERS) && NONE(SAPPHIRE_PLUS_DUAL_Z)
     //Sapphire Plus
     #define X_DRIVER_TYPE  TMC2208_STANDALONE
     #define Y_DRIVER_TYPE  TMC2208_STANDALONE
     #define Z_DRIVER_TYPE  A4988
     //#define Z2_DRIVER_TYPE A4988
+    #define E0_DRIVER_TYPE TMC2208_STANDALONE
+    //#define E1_DRIVER_TYPE A4988
+
+  #elif ENABLED(SAPPHIRE_PLUS_DUAL_Z) && NONE(CUSTOM_STEPPER_DRIVERS)
+    //Sapphire Plus
+    #define X_DRIVER_TYPE  TMC2208_STANDALONE
+    #define Y_DRIVER_TYPE  TMC2208_STANDALONE
+    #define Z_DRIVER_TYPE  A4988
+    #define Z2_DRIVER_TYPE A4988
     #define E0_DRIVER_TYPE TMC2208_STANDALONE
     //#define E1_DRIVER_TYPE A4988
 
@@ -1080,7 +1142,7 @@
     //#define E4_DRIVER_TYPE A4988
     //#define E5_DRIVER_TYPE A4988
     //#define E6_DRIVER_TYPE A4988
-    //#define E7_DRIVER_TYPE A4988 
+    //#define E7_DRIVER_TYPE A4988
   #endif
 
 
@@ -1128,7 +1190,7 @@
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
 
-#if ENABLED(SAPPHIRE_PRO) 
+#if ENABLED(SAPPHIRE_PRO)
     //Sapphire Pro
     #ifndef STEPS_X
       #define STEPS_X     80
@@ -1195,11 +1257,11 @@
  */
 #if ANY (SAPPHIRE_PRO, SAPPHIRE_PLUS)
     //Sapphire Pro
-    #define DEFAULT_MAX_FEEDRATE          { 300, 300, 10, 50 }
-  #elif ENABLED(BLUER)
+    #define DEFAULT_MAX_FEEDRATE          { 300, 300, 20, 50 }
+#elif ENABLED(BLUER)
     //Bluer
     #define DEFAULT_MAX_FEEDRATE          { 250, 250, 10, 50 }
-  #else
+ #else
     //No Preset
     #define DEFAULT_MAX_FEEDRATE          { 300, 300, 10, 50 }
 #endif
@@ -1215,7 +1277,7 @@
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 3000, 3000, 100, 10000 }
+#define DEFAULT_MAX_ACCELERATION      { 5000, 5000, 100, 10000 }
 
 //#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
@@ -1230,7 +1292,13 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#if ANY (SAPPHIRE_PRO, SAPPHIRE_PLUS)
+
+#if ((ANY (SAPPHIRE_PRO, SAPPHIRE_PLUS)) && (ENABLED (E3D_HEMERA)))
+  //Sapphire Pro & Plus with E3D Hemera (Tuned)
+  #define DEFAULT_ACCELERATION          1250    // X, Y, Z and E acceleration for printing moves
+  #define DEFAULT_RETRACT_ACCELERATION  2000    // E acceleration for retracts
+  #define DEFAULT_TRAVEL_ACCELERATION   1500    // X, Y, Z acceleration for travel (non printing) moves
+#elif ANY (SAPPHIRE_PRO, SAPPHIRE_PLUS)
   //Sapphire Pro & Plus
   #define DEFAULT_ACCELERATION          1000    // X, Y, Z and E acceleration for printing moves
   #define DEFAULT_RETRACT_ACCELERATION  2000    // E acceleration for retracts
@@ -1262,10 +1330,16 @@
   //#define CLASSIC_JERK
 #endif
 
-#if ENABLED(CLASSIC_JERK)
+#if ((ENABLED(CLASSIC_JERK)) && (ENABLED (E3D_HEMERA)))
+  #define DEFAULT_XJERK 8.0
+  #define DEFAULT_YJERK 8.0
+  #define DEFAULT_ZJERK 0.3
+
+#elif ENABLED(CLASSIC_JERK)
   #define DEFAULT_XJERK 15.0
   #define DEFAULT_YJERK 15.0
   #define DEFAULT_ZJERK  0.3
+
 
   //#define TRAVEL_EXTRA_XYJERK 0.0     // Additional jerk allowance for all travel moves
 
@@ -1287,7 +1361,7 @@
 #if DISABLED(CLASSIC_JERK)
   #define JUNCTION_DEVIATION_MM 0.019 // (mm) Distance from real junction edge
 
-  #if ENABLED(MOTION_NEW_JD) 
+  #if ENABLED(MOTION_NEW_JD)
   #define JD_HANDLE_SMALL_SEGMENTS    // Use curvature estimation instead of just the junction angle
                                       // for small segments (< 1mm) with large junction angles (> 135°).
   #endif
@@ -1616,7 +1690,7 @@
       #define INVERT_Z2_DIR false
     #endif
 
-    
+
     // @section extruder
 
     // For direct drive extruder v9 set to true, for geared extruder set to false.
@@ -1626,7 +1700,7 @@
     #else
       #define INVERT_E0_DIR false
     #endif
-    
+
     #if ENABLED(INVERT_E1)
       #define INVERT_E1_DIR true
     #else
@@ -1743,10 +1817,10 @@
 
 #define UNKNOWN_Z_NO_RAISE      // Don't raise Z (lower the bed) if Z is "unknown." For beds that fall when Z is powered off.
 
-//#define Z_HOMING_HEIGHT  4      // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
+#define Z_HOMING_HEIGHT  4      // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
                                   // Be sure to have this much clearance over your Z_MAX_POS to prevent grinding.
 
-//#define Z_AFTER_HOMING  10      // (mm) Height to move to after homing Z
+#define Z_AFTER_HOMING  10      // (mm) Height to move to after homing Z
 
 #if ENABLED(SAPPHIRE_PRO)
     //Sapphire Pro
@@ -1806,6 +1880,18 @@
       #define X_MAX_POS X_BED_SIZE_CUSTOM
       #define Y_MAX_POS Y_BED_SIZE_CUSTOM
       #define Z_MAX_POS Z_BED_SIZE_CUSTOM
+    #elif ENABLED(E3D_HEMERA)
+      #define X_BED_SIZE 282
+      #define Y_BED_SIZE 296
+
+      // Travel limits (mm) after homing, corresponding to endstop positions.
+      #define X_MIN_POS -8 //mm to avoid colision with Endtopps / Z-Drive
+      #define Y_MIN_POS 0
+      #define Z_MIN_POS 0
+      #define X_MAX_POS 288
+      #define Y_MAX_POS 296
+      #define Z_MAX_POS 327 //mm | Hemera is positioned a little bit lower.
+
     #else
       #define X_BED_SIZE 300
       #define Y_BED_SIZE 300
@@ -1913,7 +1999,7 @@
  * For other boards you may need to define FIL_RUNOUT_PIN, FIL_RUNOUT2_PIN, etc.
  * By default the firmware assumes HIGH=FILAMENT PRESENT.
  */
-#define FILAMENT_RUNOUT_SENSOR
+//#define FILAMENT_RUNOUT_SENSOR //Put in definition above since a bulk of people seems not to use this feature.
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
   #define NUM_RUNOUT_SENSORS   1     // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
   #define FIL_RUNOUT_STATE LOW       // Set to true to invert the logic of the sensor.
@@ -2162,7 +2248,7 @@
 
 // Homing speeds (mm/m)
 #define HOMING_FEEDRATE_XY (50*60)
-#define HOMING_FEEDRATE_Z  (5*60)
+#define HOMING_FEEDRATE_Z  (40*60)
 
 // Validate that endstops are triggered on homing moves
 #define VALIDATE_HOMING_ENDSTOPS
@@ -2271,13 +2357,13 @@
 
 // Preheat Constants
 #define PREHEAT_1_LABEL       "PLA"
-#define PREHEAT_1_TEMP_HOTEND 200
+#define PREHEAT_1_TEMP_HOTEND 210
 #define PREHEAT_1_TEMP_BED     60
 #define PREHEAT_1_FAN_SPEED     0 // Value from 0 to 255
 
 #define PREHEAT_2_LABEL       "PETG"
-#define PREHEAT_2_TEMP_HOTEND 235
-#define PREHEAT_2_TEMP_BED    70
+#define PREHEAT_2_TEMP_HOTEND 247
+#define PREHEAT_2_TEMP_BED    85
 #define PREHEAT_2_FAN_SPEED     0 // Value from 0 to 255
 
 /**
@@ -2408,11 +2494,11 @@
 
 /**
  * LCD Character Set
- * 
+ *
  *  - JAPANESE ... the most common
  *  - WESTERN  ... with more accented characters
  *  - CYRILLIC ... for the Russian language
- * 
+ *
  * :['JAPANESE', 'WESTERN', 'CYRILLIC']
  */
 #ifdef RU_EXTENSION
@@ -3020,7 +3106,7 @@
  */
 #if ENABLED(PRINTER_STATUS_LEDS)
   #define PRINTER_EVENT_LEDS
-#else 
+#else
   //#define PRINTER_EVENT_LEDS
 #endif
 
