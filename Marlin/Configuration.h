@@ -165,6 +165,12 @@ non-belt-synced drives. In this case, a additional configuration has to be done
   //#define INVERT_E1
 #endif
 
+// CoolStep. Currently supported for TMC2130, TMC2209, TMC5130 and TMC5160 only.
+// This mode allows for cooler steppers and energy savings.
+// the driver will switch to coolStep when stepper speed is over COOLSTEP_THRESHOLD mm/s.
+// Settings for CoolStep in CONFIGURATION_ADV.h on Line 2499 
+//#define COOLSTEP
+
 // Custom Axis Steps Per MM
 // If you have calibrated the extruder before, you can enter the steps here, also be specified individually for the other axes.
 //#define STEPS_X         0  // Normally no change needed...
@@ -203,6 +209,11 @@ non-belt-synced drives. In this case, a additional configuration has to be done
     #define CUSTOM_TEMP_SENSOR_1 5      // 5 : 100K thermistor - ATC Semitec 104GT-2/104NT-4-R025H42G (Used in ParCan, J-Head, and E3D) (4.7k pullup)
     #define CUSTOM_TEMP_SENSOR_BED 1
 #endif
+
+// Reduce installed fans (default to number of defined fan pins).
+// :[1,2,3,4,5,6,7,8]
+//#define FANS 1
+
 
 //===========================================================================
 //============================= Display language selection===================
