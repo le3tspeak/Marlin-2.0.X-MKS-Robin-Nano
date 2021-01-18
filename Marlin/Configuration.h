@@ -61,7 +61,7 @@
 // Core XY
 //#define SAPPHIRE_PRO
 //#define SAPPHIRE_PLUS
-#define SAPPHIRE_PLUS_DUAL_Z //==> Read text since additional config is mandatory
+//#define SAPPHIRE_PLUS_DUAL_Z //==> Read text since additional config is mandatory
 /****************************************************************************
 Attention: On newer Sapphire Plus models (Probably manufactured after April 2020)
 the Z-Axis drives and endstopps have been changed to dual Z-Endstopps and
@@ -78,7 +78,7 @@ non-belt-synced drives. In this case, a additional configuration has to be done
 //===========================================================================
 //============================= Hotend-Preset================================
 //===========================================================================
-#define E3D_HEMERA //Only for Sapphire PLUS yet.
+//#define E3D_HEMERA //Only for Sapphire PLUS yet.
 
 //Modifies Thermistor Types, esteps, homing sequence (Y before X)
 // and min X-position (+8mm)
@@ -1886,10 +1886,10 @@ non-belt-synced drives. In this case, a additional configuration has to be done
 
       // Travel limits (mm) after homing, corresponding to endstop positions.
       #define X_MIN_POS -8 //mm to avoid colision with Endtopps / Z-Drive
-      #define Y_MIN_POS 4
+      #define Y_MIN_POS 0
       #define Z_MIN_POS 0
       #define X_MAX_POS 288
-      #define Y_MAX_POS 300
+      #define Y_MAX_POS 296
       #define Z_MAX_POS 327 //mm | Hemera is positioned a little bit lower.
 
     #else
