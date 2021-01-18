@@ -1292,9 +1292,8 @@ non-belt-synced drives. In this case, a additional configuration has to be done
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-&& NONE(CUSTOM_STEPPER_DRIVERS)
 
-#elif ((ANY (SAPPHIRE_PRO, SAPPHIRE_PLUS)) && (ENABLED (E3D_HEMERA))
+#if ((ANY (SAPPHIRE_PRO, SAPPHIRE_PLUS)) && (ENABLED (E3D_HEMERA)))
   //Sapphire Pro & Plus with E3D Hemera (Tuned)
   #define DEFAULT_ACCELERATION          1250    // X, Y, Z and E acceleration for printing moves
   #define DEFAULT_RETRACT_ACCELERATION  2000    // E acceleration for retracts
@@ -1340,7 +1339,7 @@ non-belt-synced drives. In this case, a additional configuration has to be done
   #define DEFAULT_XJERK 15.0
   #define DEFAULT_YJERK 15.0
   #define DEFAULT_ZJERK  0.3
-#endif
+
 
   //#define TRAVEL_EXTRA_XYJERK 0.0     // Additional jerk allowance for all travel moves
 
